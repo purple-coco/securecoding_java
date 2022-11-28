@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Head -->
+<head th:replace="fragments/head :: head"></head>
+<body>
+<!-- Navigation-->
+<nav th:replace="fragments/nav :: nav"></nav>
+<!-- Header-->
+<head th:replace="fragments/header :: header"></head>
+<!-- Section-->
+<section class="py-5">
+  <div class="container px-4 px-lg-5 mt-5">
+    <h4 class="fw-bolder" style="text-align: center">7. 충분하지 않은 키 길이 사용</h4>
+    <p style="text-align: center">제2절 보안기능</p>
+    <br />
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+      <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
+        <hr />
+          <form action="/2/7/vuln" method="get">
+            <br />
+            <div class="card h-100">
+              <!-- Vulnerable code -->
+              <textarea readonly class="area">public class Encrypt {
+
+    static  final int KEY_SIZE = 1024;
+
+    public static void main(String[] args) {
+        HashMap<String, String> rsaKeyPair = createKeypairAsString();
+        String publicKey = rsaKeyPair.get("publicKey");
+        String privateKey = rsaKeyPair.get("privateKey");
+
+
+        String plainText = "password";
+
+        String encryptedText = encode(plainText, publicKey);
+
+    }
+              </textarea>
+            </div>
+          </form>
+      </div>
+      <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Secure</h4>
+        <hr />
+          <form action="/2/7/secure" method="get">
+            <br />
+            <div class="card h-100">
+              <!-- Secure Code -->
+<!--            <pre style="height: 80%">-->
+                <code class="form-control language-java">
+                <textarea class="area">public class Encrypt {
+
+    static final int KEY_SIZE = 2048;
+
+    public static void main(String[] args) {
+        HashMap<String, String> rsaKeyPair = createKeypairAsString();
+        String publicKey = rsaKeyPair.get("publicKey");
+        String privateKey = rsaKeyPair.get("privateKey");
+
+        String plainText = "password";
+
+        String encryptedText = encode(plainText, publicKey);
+                }
+                </textarea>
+<!--              </pre>-->
+                </code>
+            </div>
+          </form>
+      </div>
+    </div>
+  </div>
+</section>
+<br />
+<!-- Footer-->
+<footer th:replace="fragments/footer :: footer"></footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>
