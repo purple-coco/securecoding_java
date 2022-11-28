@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Head -->
+<head th:replace="fragments/head :: head"></head>
+<body>
+<!-- Navigation-->
+<nav th:replace="fragments/nav :: nav"></nav>
+<!-- Header-->
+<head th:replace="fragments/header :: header"></head>
+<!-- Section-->
+<section class="py-5">
+  <div class="container px-4 px-lg-5 mt-5">
+    <h3 class="fw-bolder" style="text-align: center">관리자 페이지</h3>
+    <br />
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+      <div class="col mb-5" style="width: 40%; height: 200%">
+        <form action="/admin" method="get">
+          <input type="text" id="username" name="username" class="form-control" placeholder="아이디" style="width: 80%; margin-left: 10%; margin-bottom: 4%; height: 50px" />
+          <input type="password" id="password" name="password" class="form-control" placeholder="비밀번호" style="width: 80%; margin-left: 10%; margin-bottom: 4%; height: 50px" />
+          <button type="submit" class="btn btn-outline-dark mt-auto" style="width: 80%; height: 50px; margin-left: 10%">로그인</button>
+          <br />
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+<br />
+<!-- Footer-->
+<footer th:replace="fragments/footer :: footer"></footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>
