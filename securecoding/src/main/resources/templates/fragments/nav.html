@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container px-4 px-lg-5">
+      <a class="navbar-brand" style="font-weight: 600" href="/">JAVA</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">제1절 입력데이터 검증 및 표현</a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="#!">1. SQL 삽입</a></li>
+              <li><a class="dropdown-item" th:href="@{/1/2}">2. 코드 삽입</a></li>
+              <li><a class="dropdown-item" th:href="@{/1/3}">3. 경로 조작 및 자원 삽입</a></li>
+              <li><a class="dropdown-item" th:href="@{/1/4}">4. 크로스사이트 스크립트</a></li>
+              <li><a class="dropdown-item" th:href="@{/1/5}">5. 운영체제 명령어 삽입</a></li>
+              <li><a class="dropdown-item" th:href="@{/1/6}">6. 위험한 형식 파일 업로드</a></li>
+              <li><a class="dropdown-item" th:href="@{/1/7}">7. 신뢰되지 않는 URL 주소로 자동접속 연결</a></li>
+              <li><a class="dropdown-item" th:href="@{/1/8}">8. 부적절한 XML 외부개체 참조</a></li>
+              <li><a class="dropdown-item" th:href="@{/1/9}">9. XML 삽입</a></li>
+              <li><a class="dropdown-item" href="#!">10. LDAP 삽입</a></li>
+              <li><a class="dropdown-item" href="#!">11. 크로스사이트 요청 위조</a></li>
+              <li><a class="dropdown-item" th:href="@{/1/12}">12. 서버사이드 요청 위조</a></li>
+              <li><a class="dropdown-item" href="#!">13. HTTP 응답분할</a></li>
+              <li><a class="dropdown-item" th:href="@{/1/14}">14. 정수형 오버플로우</a></li>
+              <li><a class="dropdown-item" href="#!">15. 보안기능 결정에 사용되는 부적절한 입력값</a></li>
+              <li><a class="dropdown-item" href="#!">16. 메모리 버퍼 오버플로우</a></li>
+              <li><a class="dropdown-item" href="#!">17. 포맷 스트링 삽입</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">제2절 보안기능</a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="#!">1. 적절한 인증 없는 중요기능 허용</a></li>
+              <li><a class="dropdown-item" href="#!">2. 부적절한 인가</a></li>
+              <li><a class="dropdown-item" href="#!">3. 중요한 자원에 대한 잘못된 권한 설정</a></li>
+              <li><a class="dropdown-item" th:href="@{/2/4}">4. 취약한 암호화 알고리즘 사용</a></li>
+              <li><a class="dropdown-item" href="#!">5. 암호화되지 않은 중요정보</a></li>
+              <li><a class="dropdown-item" href="#!">6. 하드코드된 중요정보</a></li>
+              <li><a class="dropdown-item" th:href="@{/2/7}">7. 충분하지 않은 키 길이 사용</a></li>
+              <li><a class="dropdown-item" th:href="@{/2/8}">8. 적절하지 않은 난수값 사용</a></li>
+              <li><a class="dropdown-item" th:href="@{/2/9}">9. 취약한 비밀번호 허용</a></li>
+              <li><a class="dropdown-item" href="#!">10. 부적절한 전자서명 확인</a></li>
+              <li><a class="dropdown-item" href="#!">11. 부적절한 인증서 유효성 검증</a></li>
+              <li><a class="dropdown-item" href="#!">12. 사용자 하드디스크에 저장되는 쿠키를 통한 정보노출</a></li>
+              <li><a class="dropdown-item" href="#!">13. 주석문 안에 포함된 시스템 주요정보</a></li>
+              <li><a class="dropdown-item" th:href="@{/2/14}">14. 솔트 없이 일방향 해쉬함수 사용</a></li>
+              <li><a class="dropdown-item" href="#!">15. 무결성 검사 없는 코드 다운로드</a></li>
+              <li><a class="dropdown-item" th:href="@{/2/16}">16. 반복된 인증시도 제한 기능 부재</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">제3절 시간 및 상태</a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="#!">1. 경쟁조건: 검사시점과 사용시점(TOCTOU)</a></li>
+              <li><a class="dropdown-item" href="#!">2. 종료되지 않는 반복문 또는 재귀함수</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown5" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">제4절 에러처리</a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="#!">1. 오류 메시지 정보노출</a></li>
+              <li><a class="dropdown-item" href="#!">2. 오류 상황 대응 부재</a></li>
+              <li><a class="dropdown-item" href="#!">3. 부적절한 예외 처리</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown6" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">제5절 코드오류</a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" th:href="@{/5/1}">1. Null Pointer 역참조</a></li>
+              <li><a class="dropdown-item" href="#!">2. 부적절한 자원 해제</a></li>
+              <li><a class="dropdown-item" href="#!">3. 해제된 자원 사용</a></li>
+              <li><a class="dropdown-item" href="#!">4. 초기화되지 않은 변수 사용</a></li>
+              <li><a class="dropdown-item" href="#!">5. 신뢰할 수 없는 데이터의 역직렬화</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown7" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">제6절 캡슐화</a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="#!">1. 잘못된 세션에 의한 데이터 정보노출</a></li>
+              <li><a class="dropdown-item" href="#!">2. 제거되지 않고 남은 디버그 코드</a></li>
+              <li><a class="dropdown-item" href="#!">3. Public 메소드부터 반환된 Private 배열</a></li>
+              <li><a class="dropdown-item" href="#!">4. Private 배열에 Public 데이터 할당</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown8" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">제7절 API 오용</a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="#!">1. DNS lookup에 의존한 보안결정</a></li>
+              <li><a class="dropdown-item" href="#!">2. 취약한 API 사용</a></li>
+            </ul>
+          </li>
+        </ul>
+        <form class="d-flex">
+          <button class="btn btn-outline-dark" type="submit" >
+            <i class="bi bi-person-circle"></i>
+            LOGIN
+          </button>
+        </form>
+      </div>
+    </div>
+  </nav>
+</body>
+</html>
