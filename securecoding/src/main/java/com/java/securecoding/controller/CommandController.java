@@ -183,7 +183,7 @@ public class CommandController {
         if (cmd == null) {
             return "/1/1.5";
         } else {
-            result = CommandService.commandService(cmd);
+            result = CommandService.OSCommandService(cmd);
             model.addAttribute("line", result);
         }
 
@@ -205,7 +205,7 @@ public class CommandController {
         }
 
         if (allowedCommands.contains(cmd2)) {
-            result2 = commandService.commandService(cmd2);
+            result2 = commandService.OSCommandService(cmd2);
             model.addAttribute("line2", result2);
 
         } else if (!cmd2.matches("[|;&:>-]*")) {
