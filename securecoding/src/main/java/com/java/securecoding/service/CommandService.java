@@ -54,7 +54,7 @@ public class CommandService {
     }
 
     //5. 운영체제 명령어 삽입
-    public static String commandService(String cmd) throws IOException {
+    public static String OSCommandService(String cmd) throws IOException {
 
         Process process = null;
 
