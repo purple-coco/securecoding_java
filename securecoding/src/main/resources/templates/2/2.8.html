@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Head -->
+<head th:replace="fragments/head :: head"></head>
+<body>
+<!-- Navigation-->
+<nav th:replace="fragments/nav :: nav"></nav>
+<!-- Header-->
+<head th:replace="fragments/header :: header"></head>
+<!-- Section-->
+<section class="py-5">
+  <div class="container px-4 px-lg-5 mt-5">
+    <h4 class="fw-bolder" style="text-align: center">8. 적절하지 않은 난수값 사용</h4>
+    <p style="text-align: center">제2절 보안기능</p>
+    <br />
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+      <div class="col mb-5" style="width: 40%; height: 200%">
+        <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
+        <hr />
+          <form action="/2/8/vuln" method="post">
+            <input type="text" id="value" name="value" class="form-control" style="width: 80%; margin-right: 4%; height: 50px; float: left" />
+            <button type="submit" class="btn" style="background-color: #F5Df4D; width: 16%; height: 50px">실행</button>
+            <br />
+            <br />
+            <div class="card h-100">
+              <!-- Vulnerable code -->
+              <textarea readonly class="area" th:text="${result}"></textarea>
+            </div>
+          </form>
+      </div>
+      <div class="col mb-5" style="width: 40%; height: 200%">
+        <h4 class="fw-bolder" style="text-align: center">Secure</h4>
+        <hr />
+          <form action="/2/8/secure" method="post">
+            <input type="text" id="value2" name="value2" placeholder="※ 난수 생성을 위한 별도의 입력값이 필요하지 않습니다." class="form-control" style="width: 80%; margin-right: 4%; height: 50px; float: left" />
+            <button type="submit" class="btn" style="background-color: #F5Df4D; width: 16%; height: 50px">실행</button>
+            <br />
+            <br />
+            <div class="card h-100">
+              <!-- Secure Code -->
+              <textarea readonly class="area" th:text="${result2}"></textarea>
+            </div>
+          </form>
+      </div>
+    </div>
+    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+      <div class="text-center"><a class="btn btn-outline-dark mt-auto" style="margin-left: 74%" href="#">코드 보기</a></div>
+    </div>
+  </div>
+</section>
+<br />
+<!-- Footer-->
+<footer th:replace="fragments/footer :: footer"></footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>
