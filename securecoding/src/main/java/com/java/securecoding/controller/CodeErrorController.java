@@ -17,6 +17,8 @@ import java.util.List;
 @Controller
 public class CodeErrorController {
 
+    private static CommandService commandService;
+
     @GetMapping("/5/1")
     public String NullForm(@RequestParam (required = false)String cmd) {
         return "/5/5.1";
@@ -28,7 +30,7 @@ public class CodeErrorController {
         String result;
 
         try {
-            result = CommandService.commandService(cmd);
+            result = commandService.OSCommandService(cmd);
             model.addAttribute("result", result);
         } catch (Exception e) {
             model.addAttribute("result", e.getMessage());
@@ -63,7 +65,7 @@ public class CodeErrorController {
 
             return "message";
         } else {
-            result2 = CommandService.commandService(cmd2);
+            result2 = commandService.OSCommandService(cmd2);
             model.addAttribute("result2", result2);
         }
 
