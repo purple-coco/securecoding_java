@@ -39,7 +39,7 @@ public class FileService {
         file.setFileName(originalFilename);
         file.setFilePath(filePath);
 
-        fileRepository.save(file);
+        fileRepository.save(File.createFile(file.getFileName(), file.getFilePath()));
 
         return file.getId();
     }
