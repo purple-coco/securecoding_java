@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Head -->
+<head th:replace="fragments/head :: head"></head>
+<body>
+<!-- Navigation-->
+<nav th:replace="fragments/nav :: nav"></nav>
+<!-- Header-->
+<head th:replace="fragments/header :: header"></head>
+<!-- Section-->
+<section class="py-5">
+  <div class="container px-4 px-lg-5 mt-5">
+    <h4 class="fw-bolder" style="text-align: center">17. 포맷 스트링 삽입</h4>
+    <p style="text-align: center">제1절 입력데이터 검증 및 표현</p>
+    <br />
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+      <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
+        <hr />
+          <form action="#" method="get">
+            <br />
+            <div class="card h-100">
+              <!-- Vulnerable code -->
+<!--                <pre class="line-numbers" style="height: 30%;">-->
+                <code class="code-area" style="height: 15em"><textarea readonly wrap="off" class="area" style="height: 15em">public class formatString {
+
+    public static void main(String[] args) {
+        Calendar validDate = Calendar.getInstance();
+        validDate.set(2022, Calendar.OCTOBER, 29);
+
+        System.out.printf(args[0] + " did not match! HINT: It was issued on %1$terd of some month", validDate);
+    }
+}
+              </textarea>
+                </code>
+<!--                </pre>-->
+            </div>
+          </form>
+      </div>
+      <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Secure</h4>
+        <hr />
+          <form action="#" method="get">
+            <br />
+            <div class="card h-100">
+              <!-- Secure Code -->
+                <code class="code-area" style="height: 15em"><textarea readonly wrap="off" class="area" style="height: 15em">public class formatString {
+
+    public static void main(String[] args) {
+        Calendar vaildate = Calendar.getInstance();
+        vaildate.set(2022, Calendar.OCTOBER, 29);
+
+        System.out.printf("%s did not match! HINT: It was issued on %2$terd of some month", args[0], vaildate);
+    }
+}
+                </textarea>
+                </code>
+            </div>
+          </form>
+      </div>
+    </div>
+  </div>
+</section>
+<br />
+<!-- Footer-->
+<footer th:replace="fragments/footer :: footer"></footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>
