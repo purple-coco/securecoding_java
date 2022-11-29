@@ -31,15 +31,15 @@ public class FileService {
             originalFilename = multipartFile.getOriginalFilename();
             filePath = fileDir + originalFilename;
 
-            multipartFile.transferTo(new java.io.File(filePath));
             log.info("파일 저장 {}", filePath);
+            multipartFile.transferTo(new java.io.File(filePath));
             log.info("저장 완료");
         }
 
         file.setFileName(originalFilename);
         file.setFilePath(filePath);
 
-        fileRepository.save(File.createFile(file.getFileName(), file.getFilePath()));
+        fileRepository.save(file);
 
         return file.getId();
     }
