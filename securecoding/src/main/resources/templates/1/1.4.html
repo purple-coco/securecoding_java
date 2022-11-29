@@ -14,7 +14,7 @@
     <p style="text-align: center">제1절 입력데이터 검증 및 표현</p>
     <br />
     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-      <div class="col mb-5" style="width: 40%; height: 200%">
+      <div class="col mb-5" style="width: 40%; height: 60%">
         <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
         <hr />
           <form action="/1/4/vuln" method="post">
@@ -23,7 +23,8 @@
             <br />
             <br />
             <p style="margin-bottom: 4%; color: #808080;">입력한 스크립트 구문:</p>
-            <p style="color: #808080" th:text="${result}"></p>
+            <p style="color: #808080; position: absolute; float: left" th:text="${result}"></p>
+            <br />
             <br />
             <div class="card h-100">
               <!-- Vulnerable code -->
@@ -31,7 +32,7 @@
             </div>
           </form>
       </div>
-      <div class="col mb-5" style="width: 40%; height: 200%">
+      <div class="col mb-5" style="width: 40%; height: 60%">
         <h4 class="fw-bolder" style="text-align: center">Secure</h4>
         <hr />
           <form action="/1/4/secure" id="secure2" method="post">
@@ -40,7 +41,8 @@
             <br />
             <br />
             <p style="margin-bottom: 4%; color: #808080;">입력한 스크립트 구문:</p>
-            <p style="color: #808080; float: left" th:text="${result2}"></p>
+            <p style="color: #808080; position: absolute; float: left" th:text="${result2}"></p>
+            <br />
             <br />
             <div class="card h-100">
               <!-- Secure Code -->
