@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Head -->
+<head th:replace="fragments/head :: head"></head>
+<body>
+<!-- Navigation-->
+<nav th:replace="fragments/nav :: nav"></nav>
+<!-- Header-->
+<head th:replace="fragments/header :: header"></head>
+<!-- Section-->
+<section class="py-5">
+  <div class="container px-4 px-lg-5 mt-5">
+    <h4 class="fw-bolder" style="text-align: center">3. 중요한 자원에 대한 잘못된 권한 설정</h4>
+    <p style="text-align: center">제2절 보안기능</p>
+    <br />
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+      <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
+        <hr />
+          <form action="#" method="get">
+            <br />
+            <div class="card h-100">
+              <!-- Vulnerable code -->
+<!--                <pre class="line-numbers" style="height: 30%;">-->
+                <code class="code-area" style="height: 15em"><textarea readonly class="area" style="height: 15em">@GetMapping("/2/3/vuln")
+public String FilePermission(Model model) {
+
+        File file = new File("./resources/application.yml");
+
+        file.setExecutable(true, false);
+        file.setReadable(true, false);
+        file.setWritable(true, false);
+        ...
+}
+              </textarea>
+                </code>
+<!--                </pre>-->
+            </div>
+          </form>
+          <br />
+          <hr />
+      </div>
+      <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Secure</h4>
+        <hr />
+          <form action="#" method="get">
+            <br />
+            <div class="card h-100">
+              <!-- Secure Code -->
+                <code class="code-area" style="height: 15em"><textarea readonly class="area" style="height: 15em">@GetMapping("/2/3/secure")
+public String FileNotPermission(Model model) {
+
+        File file = new File("./resources/application.yml");
+
+        file.setExecutable(false);
+        file.setReadable(true);
+        file.setWritable(false);
+        ...
+}
+                </textarea>
+                </code>
+            </div>
+          </form>
+          <br />
+          <hr />
+      </div>
+    </div>
+  </div>
+</section>
+<br />
+<!-- Footer-->
+<footer th:replace="fragments/footer :: footer"></footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>
