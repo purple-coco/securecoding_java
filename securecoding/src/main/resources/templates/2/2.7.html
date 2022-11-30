@@ -22,7 +22,7 @@
             <div class="card h-100">
               <!-- Vulnerable code -->
 <!--                <pre class="line-numbers" style="height: 30%;">-->
-                <code class="code-area" style="height: 15em"><textarea class="area" style="height: 15em">public class Encrypt {
+                <code class="code-area" style="height: 15em"><textarea readonly class="area" style="height: 15em">public class Encrypt {
 
     static  final int KEY_SIZE = 1024;
 
@@ -42,6 +42,8 @@
 <!--                </pre>-->
             </div>
           </form>
+          <br />
+          <hr />
       </div>
       <div class="col mb-5" style="width: 60%">
         <h4 class="fw-bolder" style="text-align: center">Secure</h4>
@@ -50,7 +52,7 @@
             <br />
             <div class="card h-100">
               <!-- Secure Code -->
-                <code class="code-area" style="height: 15em"><textarea class="area" style="height: 15em">public class Encrypt {
+                <code class="code-area" style="height: 15em"><textarea readonly class="area" style="height: 15em">public class Encrypt {
 
     static final int KEY_SIZE = 2048;
 
@@ -62,11 +64,13 @@
         String plainText = "password";
 
         String encryptedText = encode(plainText, publicKey);
-                }
+    }
                 </textarea>
                 </code>
             </div>
           </form>
+          <br />
+          <hr />
       </div>
     </div>
   </div>
