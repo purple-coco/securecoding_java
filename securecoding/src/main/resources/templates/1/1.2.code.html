@@ -96,7 +96,7 @@ public class CommandController {
         }
         if (!src2.matches("[\\w]*")) {
             model.addAttribute("message", "허용하지 않는 문자열입니다.");
-            model.addAttribute("searchUrl", "/1/2/secure");
+            model.addAttribute("searchUrl", "/1/2");
 
             return "message";
         } else {
