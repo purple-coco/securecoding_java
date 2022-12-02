@@ -14,60 +14,70 @@
     <p style="text-align: center">제2절 보안기능</p>
     <br />
     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-      <div class="col mb-5" style="width: 60%">
+        <!-- Vulnerable code -->
+        <div class="col mb-5" style="width: 60%">
         <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
-        <hr />
-          <form action="/2/7/vuln" method="get">
-            <br />
-            <div class="card h-100">
-              <!-- Vulnerable code -->
-<!--                <pre class="line-numbers" style="height: 30%;">-->
-                <code class="code-area" style="height: 15em"><textarea readonly wrap="off" class="area" style="height: 15em">@PostMapping("/2/8/vuln")
+            <hr />
+            <form action="#" method="get">
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+                          <label for="tab-1" class="tab-label">CommandController.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled class="area" style="height: 15em">@PostMapping("/2/8/vuln")
 public String RandomForm_vuln(HttpServletRequest request, Model model) {
 
-        String value = request.getParameter("value");
-        int int_value = Integer.parseInt(value);
-        int result;
+     String value = request.getParameter("value");
+     int int_value = Integer.parseInt(value);
+     int result;
 
-        Random random = new Random(100);
-        result = random.nextInt(int_value);
+     Random random = new Random(100);
+     result = random.nextInt(int_value);
 
-        model.addAttribute("result", result);
+     model.addAttribute("result", result);
 
-        return "/2/2.8";
-    }
-              </textarea>
-                </code>
-<!--                </pre>-->
-            </div>
-          </form>
-          <br />
-          <hr />
-      </div>
-      <div class="col mb-5" style="width: 60%">
-        <h4 class="fw-bolder" style="text-align: center">Secure</h4>
-        <hr />
-          <form action="/2/7/secure" method="get">
+     return "/2/2.8";
+}
+              </textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
             <br />
-            <div class="card h-100">
-              <!-- Secure Code -->
-                <code class="code-area" style="height: 15em"><textarea readonly wrap="off" class="area" style="height: 15em">@PostMapping("/2/8/secure")
+           <hr />
+          </form>
+      </div>
+        <!-- Secure Code -->
+        <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Secure</h4>
+          <hr />
+          <form action="#" method="get">
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-2" checked class="tab-switch">
+                          <label for="tab-2" class="tab-label">CommandController.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/2/8/secure")
 public String RandomForm_secure(HttpServletRequest request, Model model) throws NoSuchAlgorithmException {
 
-        SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
-        MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-        secureRandom.setSeed(secureRandom.generateSeed(128));
-        String authKey = new String(messageDigest.digest((secureRandom.nextLong() + "").getBytes()));
+     SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
+     MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+     secureRandom.setSeed(secureRandom.generateSeed(128));
+     String authKey = new String(messageDigest.digest((secureRandom.nextLong() + "").getBytes()));
 
-        authKey = Base64.getEncoder().encodeToString(authKey.getBytes());
+     authKey = Base64.getEncoder().encodeToString(authKey.getBytes());
 
-        model.addAttribute("result2", authKey);
+     model.addAttribute("result2", authKey);
 
-        return "/2/2.8";
-    }
-                </textarea>
-                </code>
-            </div>
+     return "/2/2.8";
+}
+              </textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
           </form>
           <br />
           <hr />
