@@ -1,0 +1,150 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Head -->
+<head th:replace="fragments/head :: head"></head>
+<body>
+<!-- Navigation-->
+<nav th:replace="fragments/nav :: nav"></nav>
+<!-- Header-->
+<head th:replace="fragments/header :: header"></head>
+<!-- Section-->
+<section class="py-5">
+  <div class="container px-4 px-lg-5 mt-5">
+    <h4 class="fw-bolder" style="text-align: center">2. 코드 삽입</h4>
+    <p style="text-align: center">제1절 입력데이터 검증 및 표현</p>
+    <br />
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        <!-- Vulnerable code -->
+        <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
+            <hr />
+            <form action="#" method="get">
+                <div class="wrapper" style="width: 100%">
+                    <div class="tabs">
+                        <div class="tab">
+                            <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+                            <label for="tab-1" class="tab-label">CommandController.java</label>
+                            <div class="tab-content">
+                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">@Controller
+public class CommandController {
+
+    private static CommandService commandService;
+
+    @PostMapping("/1/2/vuln")
+    public String CommandForm_vuln(HttpServletRequest request, Model model) throws ScriptException {
+        String src = request.getParameter("src");
+
+        if (src == null) {
+            return "/1/1.2";
+        }
+        String retValue = (String) commandService.EvalService(src);
+
+        model.addAttribute("value", retValue);
+
+        return "/1/1.2";
+    }
+}</textarea></code>
+                            </div>
+                        </div>
+                        <div class="tab">
+                            <input type="radio" name="css-tabs" id="tab-2" class="tab-switch">
+                            <label for="tab-2" class="tab-label">CommandService.java</label>
+                            <div class="tab-content">
+                                <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Service
+@RequiredArgsConstructor
+public class CommandService {
+
+    public static String EvalService(String src) throws ScriptException {
+
+        ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
+        ScriptEngine scriptEngine = scriptEngineManager.getEngineByName("javascript");
+
+        return (String)scriptEngine.eval(src);
+
+    }
+}</textarea></code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <br />
+           <hr />
+          </form>
+      </div>
+        <!-- Secure Code -->
+        <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Secure</h4>
+          <hr />
+          <form action="#" method="get">
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-3" checked class="tab-switch">
+                          <label for="tab-3" class="tab-label">CommandController.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Controller
+public class CommandController {
+
+    private static CommandService commandService;
+
+    @PostMapping("/1/2/secure")
+    public String CommandForm_secure(HttpServletRequest request, Model model) throws ScriptException {
+        String src2 = request.getParameter("src2");
+
+        if (src2 == null) {
+            return "/1/1.2";
+        }
+        if (!src2.matches("[\\w]*")) {
+            model.addAttribute("message", "허용하지 않는 문자열입니다.");
+            model.addAttribute("searchUrl", "/1/2/secure");
+
+            return "message";
+        } else {
+            String retValue2 = (String) commandService.EvalService(src2);
+            model.addAttribute("value2", retValue2);
+        }
+        return "/1/1.2";
+    }
+}</textarea></code>
+                          </div>
+                      </div>
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-4" class="tab-switch">
+                          <label for="tab-4" class="tab-label">CommandService.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Service
+@RequiredArgsConstructor
+public class CommandService {
+
+    public static String EvalService(String src) throws ScriptException {
+
+        ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
+        ScriptEngine scriptEngine = scriptEngineManager.getEngineByName("javascript");
+
+        return (String)scriptEngine.eval(src);
+
+    }
+}</textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </form>
+          <br />
+          <hr />
+      </div>
+    </div>
+      <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+          <div class="text-center"><a class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/1/2}">실습 하기</a></div>
+      </div>
+  </div>
+</section>
+<br />
+<!-- Footer-->
+<footer th:replace="fragments/footer :: footer"></footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>
