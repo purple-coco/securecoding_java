@@ -19,6 +19,7 @@ public class CodeErrorController {
 
     private static CommandService commandService;
 
+    //1. Null Pointer 역참조
     @GetMapping("/5/1")
     public String NullForm(@RequestParam (required = false)String cmd) {
         return "/5/5.1";
@@ -70,5 +71,11 @@ public class CodeErrorController {
         }
 
         return "/5/5.1";
+    }
+
+    //4. 초기화되지 않은 변수 사용
+    @GetMapping("/5/4")
+    public String VariableForm() {
+        return "/5/5.4";
     }
 }
