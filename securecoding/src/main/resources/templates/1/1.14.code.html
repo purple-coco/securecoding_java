@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Head -->
+<head th:replace="fragments/head :: head"></head>
+<body>
+<!-- Navigation-->
+<nav th:replace="fragments/nav :: nav"></nav>
+<!-- Header-->
+<head th:replace="fragments/header :: header"></head>
+<!-- Section-->
+<section class="py-5">
+  <div class="container px-4 px-lg-5 mt-5">
+    <h4 class="fw-bolder" style="text-align: center">14. 정수형 오버플로우</h4>
+    <p style="text-align: center">제1절 보안기능</p>
+    <br />
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+      <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
+        <hr />
+          <form action="#" method="get">
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+                          <label for="tab-1" class="tab-label">CommandController.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/1/14/vuln")
+public String IntegerBuffForm_vuln(HttpServletRequest request, HttpServletResponse response, Model model) throws NumberFormatException{
+        String integer1 = request.getParameter("integer1");
+        String integer2 = request.getParameter("integer2");
+
+        if(integer1 == null || integer2 == null) {
+            return "/1/1.14";
+        }
+
+        try {
+            Integer int_integer1 = Integer.parseInt(integer1);
+            Integer int_integer2 = Integer.parseInt(integer2);
+
+            Integer int_total = int_integer1 * int_integer2;
+
+            model.addAttribute("value", int_total);
+
+        } catch (NumberFormatException e) {
+            model.addAttribute("value", "Error");
+        }
+        return "/1/1.14";
+}</textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </form>
+          <br />
+          <hr />
+      </div>
+      <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Secure</h4>
+        <hr />
+          <form action="#" method="get">
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-2" checked class="tab-switch">
+                          <label for="tab-2" class="tab-label">CommandController.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/1/14/secure")
+public String IntegerBuffForm_secure(HttpServletRequest request, HttpServletResponse response, Model model) {
+        String integer3 = request.getParameter("integer3");
+        String integer4 = request.getParameter("integer4");
+
+        if(integer3 == null || integer4 == null) {
+            return "/1/1.14";
+        }
+
+        BigInteger big_integer1 = new BigInteger(integer3);
+        BigInteger big_integer2 = new BigInteger(integer4);
+
+        BigInteger total = big_integer1.multiply(big_integer2);
+
+        model.addAttribute("value2", total);
+
+        return "/1/1.14";
+}</textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </form>
+          <br />
+          <hr />
+      </div>
+    </div>
+      <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+          <div class="text-center"><a class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/1/14}">실습 하기</a></div>
+      </div>
+  </div>
+</section>
+<br />
+<!-- Footer-->
+<footer th:replace="fragments/footer :: footer"></footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>
