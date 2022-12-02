@@ -14,67 +14,105 @@
     <p style="text-align: center">제2절 보안기능</p>
     <br />
     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-      <div class="col mb-5" style="width: 60%">
+        <!-- Vulnerable code -->
+        <div class="col mb-5" style="width: 60%">
         <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
-        <hr />
-          <form action="#" method="get">
+            <hr />
+            <form action="#" method="get">
+                <div class="wrapper" style="width: 100%">
+                    <div class="tabs">
+                        <div class="tab">
+                            <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+                            <label for="tab-1" class="tab-label">CommandController.java</label>
+                            <div class="tab-content">
+                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">@PostMapping("/2/9/vuln")
+public String PasswordForm_vuln(HttpServletRequest request, Model model) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        if(username == null || password == null) {
+            return "/2/2.9";
+        }
+
+        model.addAttribute("message", "회원가입이 완료되었습니다.");
+        model.addAttribute("searchUrl", "/2/9");
+
+        return "message";
+}</textarea></code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             <br />
-            <div class="card h-100">
-              <!-- Vulnerable code -->
-<!--                <pre class="line-numbers" style="height: 30%;">-->
-                <code class="code-area" style="height: 15em"><textarea readonly wrap="off" class="area" style="height: 15em">@PostMapping("/2/8/vuln")
-public String RandomForm_vuln(HttpServletRequest request, Model model) {
-
-        String value = request.getParameter("value");
-        int int_value = Integer.parseInt(value);
-        int result;
-
-        Random random = new Random(100);
-        result = random.nextInt(int_value);
-
-        model.addAttribute("result", result);
-
-        return "/2/2.8";
-    }
-              </textarea>
-                </code>
-<!--                </pre>-->
-            </div>
+           <hr />
           </form>
-          <br />
-          <hr />
       </div>
-      <div class="col mb-5" style="width: 60%">
+        <!-- Secure Code -->
+        <div class="col mb-5" style="width: 60%">
         <h4 class="fw-bolder" style="text-align: center">Secure</h4>
-        <hr />
+          <hr />
           <form action="#" method="get">
-            <br />
-            <div class="card h-100">
-              <!-- Secure Code -->
-                <code class="code-area" style="height: 15em"><textarea readonly wrap="off" class="area" style="height: 15em">@PostMapping("/2/8/secure")
-public String RandomForm_secure(HttpServletRequest request, Model model) throws NoSuchAlgorithmException {
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-3" checked class="tab-switch">
+                          <label for="tab-3" class="tab-label">CommandController.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Controller
+public class AuthorityController {
 
-        SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
-        MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-        secureRandom.setSeed(secureRandom.generateSeed(128));
-        String authKey = new String(messageDigest.digest((secureRandom.nextLong() + "").getBytes()));
+    private static AuthorityService authorityService;
 
-        authKey = Base64.getEncoder().encodeToString(authKey.getBytes());
+    @PostMapping("/2/9/secure")
+    public String PasswordForm_secure(HttpServletRequest request, Model model) throws Exception {
 
-        model.addAttribute("result2", authKey);
+            String username2 = request.getParameter("username2");
+            String password2 = request.getParameter("password2");
 
-        return "/2/2.8";
+            if (username2 == null || password2 == null) {
+                return "/2/2.9";
+            }
+            if (authorityService.SecurePasswordService(password2)) {
+                model.addAttribute("message", "회원가입이 완료되었습니다.");
+            } else {
+                model.addAttribute("message", "최소 8자 이상, 숫자,문자,특수문자가 혼용되어야 합니다.");
+            }
+            model.addAttribute("searchUrl", "/2/9");
+            return "message";
     }
-                </textarea>
-                </code>
-            </div>
+}</textarea></code>
+                          </div>
+                      </div>
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-4" class="tab-switch">
+                          <label for="tab-4" class="tab-label">CommandService.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Service
+@RequiredArgsConstructor
+public class AuthorityService {
+
+    public static boolean SecurePasswordService(String password) {
+
+        String passwordPolicy = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$";
+
+        Pattern pattern = Pattern.compile(passwordPolicy);
+        Matcher matcher = pattern.matcher(password);
+
+        return matcher.matches();
+    }
+}</textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
           </form>
           <br />
           <hr />
       </div>
     </div>
       <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-          <div class="text-center"><a class="btn" style="margin-left: 55%; background-color: #F5Df4D" th:href="@{/2/9}">실습 하기</a></div>
+          <div class="text-center"><a class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/1/5}">실습 하기</a></div>
       </div>
   </div>
 </section>
