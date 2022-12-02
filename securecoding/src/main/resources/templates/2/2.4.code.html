@@ -1,0 +1,172 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Head -->
+<head th:replace="fragments/head :: head"></head>
+<body>
+<!-- Navigation-->
+<nav th:replace="fragments/nav :: nav"></nav>
+<!-- Header-->
+<head th:replace="fragments/header :: header"></head>
+<!-- Section-->
+<section class="py-5">
+  <div class="container px-4 px-lg-5 mt-5">
+    <h4 class="fw-bolder" style="text-align: center">4. 취약한 암호화 알고리즘 사용</h4>
+    <p style="text-align: center">제2절 보안기능</p>
+    <br />
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        <!-- Vulnerable code -->
+        <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
+            <hr />
+            <form action="#" method="get">
+                <div class="wrapper" style="width: 100%">
+                    <div class="tabs">
+                        <div class="tab">
+                            <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+                            <label for="tab-1" class="tab-label">AuthorityController.java</label>
+                            <div class="tab-content">
+                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">@Controller
+public class AuthorityController {
+
+    private static AuthorityService authorityService;
+
+    @PostMapping("/2/4/vuln")
+    public String WeakEncryptForm_vuln(HttpServletRequest request, Model model) {
+
+        String plainText = request.getParameter("plainText");
+        String DES;
+
+        if(plainText == null) {
+            return "/2/2.4";
+        }
+
+        DES = authorityService.WeakEncryptService(plainText);
+        model.addAttribute("value", DES);
+
+        return "/2/2.4";
+    }
+}</textarea></code>
+                            </div>
+                        </div>
+                        <div class="tab">
+                            <input type="radio" name="css-tabs" id="tab-2" class="tab-switch">
+                            <label for="tab-2" class="tab-label">AuthorityService.java</label>
+                            <div class="tab-content">
+                                <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Service
+public class AuthorityService {
+
+    private static AuthorityService authorityService;
+
+    public static String WeakEncryptService(String plainText) {
+
+        String DES = "";
+        StringBuffer stringBuffer = null;
+
+        try {
+            Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, key);
+            byte[] plaintext = plainText.getBytes(StandardCharsets.UTF_8);
+            byte[] ciphertext = cipher.doFinal(plaintext);
+
+            stringBuffer = new StringBuffer(ciphertext.length * 2);
+            for (int i = 0; i < ciphertext.length; i++) {
+                String hex = "0" + Integer.toHexString(0xff & ciphertext[i]);
+                stringBuffer.append(hex.substring(hex.length() - 2));
+            }
+
+            DES = stringBuffer.toString();
+            return DES;
+
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
+            System.out.println("e = " + e);
+        }
+        return null;
+    }
+}</textarea></code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <br />
+           <hr />
+          </form>
+      </div>
+        <!-- Secure Code -->
+        <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Secure</h4>
+          <hr />
+          <form action="#" method="get">
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-3" checked class="tab-switch">
+                          <label for="tab-3" class="tab-label">AuthorityController.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Controller
+public class AuthorityController {
+
+    @PostMapping("/2/4/secure")
+    public String WeakEncryptForm_secure(HttpServletRequest request, Model model) throws Exception {
+
+        String plainText2 = request.getParameter("plainText2");
+        String AES;
+
+        if(plainText2 == null) {
+            return "/2/2.4";
+        }
+
+        AES256 aes256 = new AES256();
+        AES = aes256.encrypt(plainText2);
+
+        model.addAttribute("value2", AES);
+
+        return "/2/2.4";
+    }
+}</textarea></code>
+                          </div>
+                      </div>
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-4" checked class="tab-switch">
+                          <label for="tab-4" class="tab-label">class AES256</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">class AES256 {
+    public static String algorithm = "AES/CBC/PKCS5Padding";
+    private final String key = "123456789012345678901234567890";
+    private final String iv = key.substring(0, 16);
+
+    public String encrypt(String text) throws Exception {
+
+        Cipher cipher = Cipher.getInstance(algorithm);
+        SecretKeySpec secretKeySpec = new SecretKeySpec(iv.getBytes(StandardCharsets.UTF_8), "AES");
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(iv.getBytes(StandardCharsets.UTF_8));
+        cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec);
+
+        byte[] encrypted = cipher.doFinal(text.getBytes(StandardCharsets.UTF_8));
+        return Base64.getEncoder().encodeToString(encrypted);
+
+    }
+
+}</textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </form>
+          <br />
+          <hr />
+      </div>
+    </div>
+      <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+          <div class="text-center"><a class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/2/4}">실습 하기</a></div>
+      </div>
+  </div>
+</section>
+<br />
+<!-- Footer-->
+<footer th:replace="fragments/footer :: footer"></footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>
