@@ -18,27 +18,30 @@
         <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
         <hr />
           <form action="#" method="get">
-            <br />
-            <div class="card h-100">
-              <!-- Vulnerable code -->
-<!--                <pre class="line-numbers" style="height: 30%;">-->
-                <code class="code-area" style="height: 15em"><textarea readonly wrap="off" class="area" style="height: 15em">@PostMapping("/1/7/vuln")
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+                          <label for="tab-1" class="tab-label">CommandController.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/1/7/vuln")
 public String URLConnected_vuln(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
 
-        String url = request.getParameter("url");
+    String url = request.getParameter("url");
 
-        if (url == null) {
-            return "/1/1.7";
-        } else {
-            response.sendRedirect("http://" + url);
-        }
+    if (url == null) {
+         return "/1/1.7";
+    } else {
+         response.sendRedirect("http://" + url);
+    }
 
         return "/1/1.7";
-    }
-              </textarea>
-                </code>
-<!--                </pre>-->
-            </div>
+}
+              </textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
           </form>
           <br />
           <hr />
@@ -47,10 +50,13 @@ public String URLConnected_vuln(HttpServletRequest request, HttpServletResponse 
         <h4 class="fw-bolder" style="text-align: center">Secure</h4>
         <hr />
           <form action="#" method="get">
-            <br />
-            <div class="card h-100">
-              <!-- Secure Code -->
-                <code class="code-area" style="height: 15em"><textarea readonly wrap="off" class="area" style="height: 15em">@PostMapping("/1/7/secure")
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-2" checked class="tab-switch">
+                          <label for="tab-2" class="tab-label">CommandController.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/1/7/secure")
 public String URLConnected_secure(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
 
         String[] allowedUrl = {"/", "/1/vuln5"};
@@ -71,17 +77,18 @@ public String URLConnected_secure(HttpServletRequest request, HttpServletRespons
         }
 
         return "/1/1.7";
-    }
-                </textarea>
-                </code>
-            </div>
+}</textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
           </form>
           <br />
           <hr />
       </div>
     </div>
       <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-          <div class="text-center"><a class="btn" style="margin-left: 55%; background-color: #F5Df4D" th:href="@{/1/7}">실습 하기</a></div>
+          <div class="text-center"><a class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/1/7}">실습 하기</a></div>
       </div>
   </div>
 </section>
