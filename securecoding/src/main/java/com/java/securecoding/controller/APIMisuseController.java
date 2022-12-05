@@ -20,10 +20,10 @@ public class APIMisuseController {
     }
 
     @GetMapping("/7/2")
-    public String VulnerableAPIForm() {
-        return "/7/7.2";
-    }
+    public String VulnerableAPIForm() { return "/7/7.2"; }
 
 }
+
+
 
 
