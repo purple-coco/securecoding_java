@@ -1,0 +1,152 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Head -->
+<head th:replace="fragments/head :: head"></head>
+<body>
+<!-- Navigation-->
+<nav th:replace="fragments/nav :: nav"></nav>
+<!-- Header-->
+<head th:replace="fragments/header :: header"></head>
+<!-- Section-->
+<section class="py-5">
+  <div class="container px-4 px-lg-5 mt-5">
+    <h4 class="fw-bolder" style="text-align: center">14. 솔트 없이 일방향 해쉬함수 사용</h4>
+    <p style="text-align: center">제2절 보안기능</p>
+    <br />
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        <!-- Vulnerable code -->
+        <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
+            <hr />
+            <form action="#" method="get">
+                <div class="wrapper" style="width: 100%">
+                    <div class="tabs">
+                        <div class="tab">
+                            <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+                            <label for="tab-1" class="tab-label">AuthorityController.java</label>
+                            <div class="tab-content">
+                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em"> @PostMapping("/2/14/vuln")
+public String HashForm_vuln(HttpServletRequest request, Model model) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+
+     String plainText = request.getParameter("plainText");
+     String result;
+
+     if(plainText == null) {
+         return "/2/2.14";
+     } else {
+         result = authorityService.NonSaltService(plainText);
+         model.addAttribute("value", result);
+     }
+     return "/2/2.14";
+}</textarea></code>
+                            </div>
+                        </div>
+                        <div class="tab">
+                            <input type="radio" name="css-tabs" id="tab-2" class="tab-switch">
+                            <label for="tab-2" class="tab-label">AuthorityService.java</label>
+                            <div class="tab-content">
+                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">@Service
+@RequiredArgsConstructor
+public class AuthorityService {public static String NonSaltService(String plainText) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+
+        MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = messageDigest.digest(plainText.getBytes("UTF-8"));
+        StringBuffer hexString = new StringBuffer();
+
+        for (int i = 0; i < hash.length; i++) {
+            String hex = Integer.toHexString(0xff & hash[i]);
+            if(hex.length() == 1)
+                hexString.append('0');
+            hexString.append(hex);
+        }
+
+        return hexString.toString();
+    }
+}</textarea></code>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            <br />
+           <hr />
+          </form>
+      </div>
+        <!-- Secure Code -->
+        <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Secure</h4>
+          <hr />
+          <form action="#" method="get">
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-3" checked class="tab-switch">
+                          <label for="tab-3" class="tab-label">AuthorityController.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Controller
+public class AuthorityController {
+
+    private static AuthorityService authorityService;
+
+    @PostMapping("/2/14/secure")
+    public String HashForm_secure(HttpServletRequest request, Model model) throws Exception {
+
+        String plainText2 = request.getParameter("plainText2");
+        String result2;
+
+        if (plainText2 == null) {
+            return "/2/2.14";
+        } else {
+            result2 = authorityService.SaltService(plainText2);
+            model.addAttribute("value2", result2);
+        }
+        return "/2/2.14";
+    }
+}</textarea></code>
+                          </div>
+                      </div>
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-4" class="tab-switch">
+                          <label for="tab-4" class="tab-label">AuthorityService.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Service
+@RequiredArgsConstructor
+public class AuthorityService {
+
+    public static String SaltService(String plainText) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+
+        SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+        byte[] bytes = new byte[32];
+        random.nextBytes(bytes);
+        String salt = new String(Base64.getEncoder().encode(bytes));
+
+        MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+        messageDigest.update(salt.getBytes(StandardCharsets.UTF_8));
+        messageDigest.update(plainText.getBytes(StandardCharsets.UTF_8));
+
+        return String.format("%64x", new BigInteger(1, messageDigest.digest()));
+    }
+}</textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </form>
+          <br />
+          <hr />
+      </div>
+    </div>
+      <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+          <div class="text-center"><a class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/2/14}">실습 하기</a></div>
+      </div>
+  </div>
+</section>
+<br />
+<!-- Footer-->
+<footer th:replace="fragments/footer :: footer"></footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>
