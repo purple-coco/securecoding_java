@@ -22,16 +22,23 @@
             <div class="card h-100">
               <!-- Vulnerable code -->
 <!--                <pre class="line-numbers" style="height: 30%;">-->
-                <code class="code-area" style="height: 15em"><textarea readonly class="area" style="height: 15em">@GetMapping("/2/3/vuln")
-public String FilePermission(Model model) {
+                <code class="code-area" style="height: 15em"><textarea readonly class="area" style="height: 15em">@GetMapping("/authority/33")
+    public String ResourcePermission(Model model) throws IOException {
 
-        File file = new File("./resources/application.yml");
+        File file = new File("./resources/application.properties");
 
         file.setExecutable(true, false);
         file.setReadable(true, false);
         file.setWritable(true, false);
-        ...
-}
+
+        if (file.createNewFile()) {
+            model.addAttribute("line","파일이 성공적으로 생성되었습니다.");
+        } else {
+            model.addAttribute("line","이미 존재하는 파일입니다.");
+        }
+
+        return "authority/FilePermission";
+    }
               </textarea>
                 </code>
 <!--                </pre>-->
@@ -48,7 +55,7 @@ public String FilePermission(Model model) {
             <div class="card h-100">
               <!-- Secure Code -->
                 <code class="code-area" style="height: 15em"><textarea readonly class="area" style="height: 15em">@GetMapping("/2/3/secure")
-public String FileNotPermission(Model model) {
+public String ResourceNotPermission(Model model) {
 
         File file = new File("./resources/application.yml");
 
