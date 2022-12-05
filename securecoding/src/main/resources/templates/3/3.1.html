@@ -1,0 +1,158 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Head -->
+<head th:replace="fragments/head :: head"></head>
+<body>
+<!-- Navigation-->
+<nav th:replace="fragments/nav :: nav"></nav>
+<!-- Header-->
+<head th:replace="fragments/header :: header"></head>
+<!-- Section-->
+<section class="py-5">
+  <div class="container px-4 px-lg-5 mt-5">
+    <h4 class="fw-bolder" style="text-align: center">1. 경쟁조건: 검사시점과 사용시점(TOCTOU)</h4>
+    <p style="text-align: center">제3절 시간 및 상태</p>
+    <br />
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        <!-- Vulnerable code -->
+        <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
+        <hr />
+        <form action="#" method="get">
+            <div class="wrapper" style="width: 100%">
+                <div class="tabs">
+                    <div class="tab">
+                        <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+                        <label for="tab-1" class="tab-label">RaceCondition.java</label>
+                        <div class="tab-content">
+                            <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">public class RaceCondition {
+    int counter = 0;
+
+    public void incrementCounter() {
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            System.out.println("error");
+        }
+        counter++;
+    }
+
+    public int getCounter() {
+        return counter;
+    }
+
+    public static void main(String[] args) {
+        RaceCondition raceCondition = new RaceCondition();
+        for (int i = 0; i < 10; i++) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    raceCondition.incrementCounter();
+                    System.out.println("value for " + Thread.currentThread().getName() + "-" + raceCondition.getCounter());
+                }
+            }).start();
+        }
+    }
+}</textarea></code>
+                        </div>
+                    </div>
+                    <div class="tab">
+                        <input type="radio" name="css-tabs" id="tab-2" class="tab-switch">
+                        <label for="tab-2" class="tab-label">실행 결과</label>
+                        <div class="tab-content">
+                            <code class="code-area" style="height: 15em"><textarea disabled class="area" style="height: 15em">value for Thread-0-10
+value for Thread-9-10
+value for Thread-4-10
+value for Thread-1-10
+value for Thread-6-10
+value for Thread-7-10
+value for Thread-2-10
+value for Thread-3-10
+value for Thread-8-10
+value for Thread-5-10</textarea></code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <hr />
+        </form>
+      </div>
+        <!-- Secure Code -->
+        <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Secure</h4>
+        <hr />
+        <form action="#" method="get">
+            <div class="wrapper" style="width: 100%">
+                <div class="tabs">
+                    <div class="tab">
+                        <input type="radio" name="css-tabs" id="tab-3" checked class="tab-switch">
+                        <label for="tab-3" class="tab-label">RaceCondition.java</label>
+                        <div class="tab-content">
+                            <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">public class RaceCondition {
+    int counter = 0;
+
+    public void incrementCounter() {
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            System.out.println("error");
+        }
+        counter++;
+    }
+
+    public int getCounter() {
+        return counter;
+    }
+
+    public static void main(String[] args) {
+        RaceCondition raceCondition = new RaceCondition();
+        for (int i = 0; i < 10; i++) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    synchronized (raceCondition) {
+                        raceCondition.incrementCounter();
+                        System.out.println("value for " + Thread.currentThread().getName() + "-" + raceCondition.getCounter());
+                    }
+                }
+            }).start();
+        }
+    }
+}</textarea></code>
+                        </div>
+                    </div>
+                    <div class="tab">
+                        <input type="radio" name="css-tabs" id="tab-4" class="tab-switch">
+                        <label for="tab-4" class="tab-label">실행 결과</label>
+                        <div class="tab-content">
+                            <code class="code-area" style="height: 15em"><textarea disabled class="area" style="height: 15em">value for Thread-0-1
+value for Thread-9-2
+value for Thread-8-3
+value for Thread-7-4
+value for Thread-6-5
+value for Thread-5-6
+value for Thread-4-7
+value for Thread-2-8
+value for Thread-3-9
+value for Thread-1-10</textarea></code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <hr />
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+<br />
+<!-- Footer-->
+<footer th:replace="fragments/footer :: footer"></footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>
