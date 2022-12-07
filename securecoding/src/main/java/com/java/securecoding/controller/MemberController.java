@@ -21,7 +21,7 @@ public class MemberController{
 
     private final MemberService memberService;
 
-    @GetMapping(value = {"/members/new", "/2/5"})
+    @GetMapping(value = {"/member/signup", "/2/5", "/2/5/vuln", "/2/5/secure"})
     public String CreateMemberForm(Model model) {
 
         model.addAttribute("memberForm", new MemberForm());
@@ -30,10 +30,11 @@ public class MemberController{
     }
 
     @PostMapping(value = {"/2/5/vuln"})
-    public String CreateMemberForm(@Valid MemberForm form, BindingResult result, Model model) {
+    public String CreateMemberForm_vuln(@Valid MemberForm form, BindingResult result, Model model) {
+
         if (result.hasErrors()) {
             model.addAttribute("message", "유효하지 않은 정보입니다.");
-            model.addAttribute("searchUrl", "/");
+            model.addAttribute("searchUrl", "/2/5");
 
             return "message";
         }
@@ -47,4 +48,24 @@ public class MemberController{
 
         return "redirect:/";
     }
+
+    @PostMapping(value = {"/2/5/secure"})
+    public String CreateMemberForm_secure(@Valid MemberForm form, BindingResult result, Model model) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("message", "유효하지 않은 정보입니다.");
+            model.addAttribute("searchUrl", "/2/5");
+
+            return "message";
+        }
+
+        Member member = new Member();
+
+        member.setName(form.getName());
+        member.setUsername(form.getUsername());
+        member.setPassword(form.getPassword());
+
+        return "redirect:/";
+    }
+
 }
