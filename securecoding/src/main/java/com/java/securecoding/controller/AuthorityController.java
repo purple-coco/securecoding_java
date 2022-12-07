@@ -1,6 +1,7 @@
 package com.java.securecoding.controller;
 
 import com.java.securecoding.service.AuthorityService;
+import com.java.securecoding.service.FileService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,10 +23,22 @@ import java.util.Random;
 @Controller
 public class AuthorityController {
 
+    private static AuthorityService authorityService;
+
+    //3. 중요한 자원에 대한 잘못된 권한 설정
+    @GetMapping("/2/3")
+    public String ResourceForm() {
+        return "/2/2.3";
+    }
+
     @GetMapping(value = {"/2/4", "/2/4/vuln", "/2/4/secure"})
     public String WeakEncryptForm(@RequestParam(required = false) String plainText) {
-
         return "/2/2.4";
+    }
+
+    @GetMapping("/2/4/code")
+    public String WeakEncryptForm_code() {
+        return "/2/2.4.code";
     }
 
     //4. 취약한 암호화 알고리즘 사용
@@ -39,7 +52,7 @@ public class AuthorityController {
             return "/2/2.4";
         }
 
-        DES = AuthorityService.WeakEncryptService(plainText);
+        DES = authorityService.WeakEncryptService(plainText);
         model.addAttribute("value", DES);
 
         return "/2/2.4";
@@ -63,9 +76,21 @@ public class AuthorityController {
         return "/2/2.4";
     }
 
+    //5. 암호화되지 않은 중요정보
+    @GetMapping("/2/5")
+    public String SecretInfoForm() {
+        return "/2/2.5";
+    }
+
+    //6. 하드코드된 중요정보
+    @GetMapping("/2/6")
+    public String SecretInfo2Form() {
+        return "/2/2.6";
+    }
+
     //7. 충분하지 않은 키 길이 사용
     @GetMapping("/2/7")
-    public String KeyForm(@RequestParam(required = false) Integer value) {
+    public String KeyForm() {
         return "/2/2.7";
     }
 
@@ -73,6 +98,11 @@ public class AuthorityController {
     @GetMapping(value = {"/2/8", "/2/8/vuln", "/2/8/secure"})
     public String RandomForm(@RequestParam(required = false) Integer value) {
         return "/2/2.8";
+    }
+
+    @GetMapping("/2/8/code")
+    public String RandomForm_code() {
+        return "/2/2.8.code";
     }
 
     //8. 적절하지 않은 난수값 사용
@@ -92,7 +122,7 @@ public class AuthorityController {
 
     //8. 적절하지 않은 난수값 사용
     @PostMapping("/2/8/secure")
-    public String RandomForm_secure(HttpServletRequest request, @RequestParam(required = false) String value2, Model model) throws NoSuchAlgorithmException {
+    public String RandomForm_secure(HttpServletRequest request, Model model) throws NoSuchAlgorithmException {
 
         SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
         MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
@@ -110,6 +140,11 @@ public class AuthorityController {
     public String PasswordForm(@RequestParam(required = false) String username,
                                 @RequestParam(required = false) String password ) {
         return "/2/2.9";
+    }
+
+    @GetMapping("/2/9/code")
+    public String PasswordForm_code() {
+        return "/2/2.9.code";
     }
 
     //9. 취약한 비밀번호 허용
@@ -139,20 +174,31 @@ public class AuthorityController {
         if (username2 == null || password2 == null) {
             return "/2/2.9";
         }
-        if (AuthorityService.SecurePasswordService(password2)) {
+        if (authorityService.SecurePasswordService(password2)) {
             model.addAttribute("message", "회원가입이 완료되었습니다.");
 
         } else {
             model.addAttribute("message", "최소 8자 이상, 숫자,문자,특수문자가 혼용되어야 합니다.");
-
         }
         model.addAttribute("searchUrl", "/2/9");
         return "message";
     }
 
+    //13. 주석문 안에 포함된 시스템 주요정보
+    @GetMapping("/2/13")
+    public String CommentaryForm() {
+        return "/2/2.13";
+    }
+
+    //14. 솔트 없이 일방향 해쉬함수 사용
     @GetMapping(value = {"/2/14", "/2/14/vuln", "/2/14/secure"})
     public String HashForm(@RequestParam(required = false) String plainText) {
         return "/2/2.14";
+    }
+
+    @GetMapping("/2/14/code")
+    public String HashForm_code() {
+        return "/2/2.14.code";
     }
 
     //14. 솔트 없이 일방향 해쉬함수 사용
@@ -165,7 +211,7 @@ public class AuthorityController {
         if(plainText == null) {
             return "/2/2.14";
         } else {
-            result = AuthorityService.NonSaltService(plainText);
+            result = authorityService.NonSaltService(plainText);
             model.addAttribute("value", result);
         }
         return "/2/2.14";
@@ -181,7 +227,7 @@ public class AuthorityController {
         if (plainText2 == null) {
             return "/2/2.14";
         } else {
-            result2 = AuthorityService.SaltService(plainText2);
+            result2 = authorityService.SaltService(plainText2);
             model.addAttribute("value2", result2);
         }
         return "/2/2.14";
@@ -219,7 +265,7 @@ public class AuthorityController {
         if (username2 == null || password2 == null) {
             return "/2/2.16";
         } else {
-            if (AuthorityService.SecurePasswordService(password2)) {
+            if (authorityService.SecurePasswordService(password2)) {
                 model.addAttribute("message", "회원가입이 완료되었습니다.");
             } else {
                 model.addAttribute("message", "최소 8자 이상, 숫자,문자,특수문자가 혼용되어야 합니다.");
