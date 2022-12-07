@@ -76,11 +76,11 @@ public class AuthorityController {
         return "/2/2.4";
     }
 
-    //5. 암호화되지 않은 중요정보
-    @GetMapping("/2/5")
-    public String SecretInfoForm() {
-        return "/2/2.5";
-    }
+//    //5. 암호화되지 않은 중요정보
+//    @GetMapping("/2/5")
+//    public String SecretInfoForm() {
+//        return "/2/2.5";
+//    }
 
     //6. 하드코드된 중요정보
     @GetMapping("/2/6")
