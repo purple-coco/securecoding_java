@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Head -->
+<head th:replace="fragments/head :: head"></head>
+<body>
+<!-- Navigation-->
+<nav th:replace="fragments/nav :: nav"></nav>
+<!-- Header-->
+<head th:replace="fragments/header :: header"></head>
+<!-- Section-->
+<section class="py-5">
+  <div class="container px-4 px-lg-5 mt-5">
+    <h4 class="fw-bolder" style="text-align: center">2. 제거되지 않고 남은 디버그 코드</h4>
+    <p style="text-align: center">제6절 캡슐화</p>
+    <br />
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        <!-- Vulnerable code -->
+        <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
+        <hr />
+        <form action="#" method="get">
+            <div class="wrapper" style="width: 100%">
+                <div class="tabs">
+                    <div class="tab">
+                        <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+                        <label for="tab-1" class="tab-label">application.yml</label>
+                        <div class="tab-content">
+                            <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">spring:
+  jpa:
+    properties:
+        hibernate:
+            show_sql: true
+            format_sql: true
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace</textarea></code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <hr />
+        </form>
+      </div>
+        <!-- Secure Code -->
+        <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Secure</h4>
+        <hr />
+        <form action="#" method="get">
+            <div class="wrapper" style="width: 100%">
+                <div class="tabs">
+                    <div class="tab">
+                        <input type="radio" name="css-tabs" id="tab-2" checked class="tab-switch">
+                        <label for="tab-2" class="tab-label">application.yml</label>
+                        <div class="tab-content">
+                            <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">spring:
+  jpa:
+    properties:
+        hibernate:
+            show_sql: false
+
+  logging:
+    level:
+        org.hibernate.SQL: info
+        org.hibernate.type: info</textarea></code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <hr />
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+<br />
+<!-- Footer-->
+<footer th:replace="fragments/footer :: footer"></footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>
