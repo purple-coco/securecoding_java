@@ -14,45 +14,39 @@
     <p style="text-align: center">제1절 입력데이터 검증 및 표현</p>
     <br />
     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-      <div class="col mb-5" style="width: 40%; height: 60%">
+      <div class="col mb-5" style="width: 40%">
         <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
         <hr />
           <form action="/1/4/vuln" method="post">
             <input type="text" id="input" name="input" class="form-control" th:utext="${input}" style="width: 80%; margin-right: 4%; height: 50px; float: left" />
-            <button type="submit" class="btn" style="background-color: #F5Df4D; width: 16%; height: 50px">실행</button>
+            <button type="submit" class="btn" style="background-color: #ffe74a; width: 16%; height: 50px">실행</button>
             <br />
             <br />
             <p style="margin-bottom: 4%; color: #808080;">입력한 스크립트 구문:</p>
             <p style="color: #808080; position: absolute; float: left" th:text="${result}"></p>
             <br />
             <br />
-            <div class="card h-100">
-              <!-- Vulnerable code -->
-<!--              <textarea readonly class="area" th:utext="${input}"></textarea>-->
-            </div>
+            <hr />
           </form>
       </div>
-      <div class="col mb-5" style="width: 40%; height: 60%">
+      <div class="col mb-5" style="width: 40%">
         <h4 class="fw-bolder" style="text-align: center">Secure</h4>
         <hr />
           <form action="/1/4/secure" id="secure2" method="post">
             <input type="text" id="input2" name="input2" class="form-control" th:utext="${input2}" style="width: 80%; margin-right: 4%; height: 50px; float: left" />
-            <button type="submit" class="btn" style="background-color: #F5Df4D; width: 16%; height: 50px">실행</button>
+            <button type="submit" class="btn" style="background-color: #ffe74a; width: 16%; height: 50px">실행</button>
             <br />
             <br />
             <p style="margin-bottom: 4%; color: #808080;">입력한 스크립트 구문:</p>
             <p style="color: #808080; position: absolute; float: left" th:text="${result2}"></p>
             <br />
             <br />
-            <div class="card h-100">
-              <!-- Secure Code -->
-<!--              <textarea readonly class="area" th:utext="${input2}"></textarea>-->
-            </div>
           </form>
+          <hr />
       </div>
     </div>
     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-      <div class="text-center"><a class="btn btn-outline-dark mt-auto" style="margin-left: 75%" th:href="@{/1/4/code}">코드 보기</a></div>
+      <div class="text-center"><a class="btn btn-outline-dark mt-auto" style="margin-left: 75%; margin-bottom: 10%" th:href="@{/1/4/code}">코드 보기</a></div>
     </div>
   </div>
 </section>
