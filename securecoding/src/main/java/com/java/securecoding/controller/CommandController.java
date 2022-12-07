@@ -44,20 +44,21 @@ public class CommandController {
         return "/1/1.2";
     }
 
+    @GetMapping("/1/2/code")
+    public String CommandForm_code(){
+        return "/1/1.2.code";
+    }
+
     //2. 코드 삽입
     @PostMapping("/1/2/vuln")
     public String CommandForm_vuln(HttpServletRequest request, Model model) throws ScriptException {
-        ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
         String src = request.getParameter("src");
 
         if (src == null) {
             return "/1/1.2";
         }
+        String retValue = (String) commandService.EvalService(src);
 
-        ScriptEngine scriptEngine = scriptEngineManager.getEngineByName("javascript");
-        String retValue = (String) scriptEngine.eval(src);
-
-        model.addAttribute("src", src);
         model.addAttribute("value", retValue);
 
         return "/1/1.2";
@@ -66,7 +67,6 @@ public class CommandController {
     //2. 코드 삽입
     @PostMapping("/1/2/secure")
     public String CommandForm_secure(HttpServletRequest request, Model model) throws ScriptException {
-        ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
         String src2 = request.getParameter("src2");
 
         if (src2 == null) {
@@ -75,15 +75,13 @@ public class CommandController {
 
         if (!src2.matches("[\\w]*")) {
             model.addAttribute("message", "허용하지 않는 문자열입니다.");
-            model.addAttribute("searchUrl", "/1/secure2");
+            model.addAttribute("searchUrl", "/1/2");
 
             return "message";
         } else {
-            ScriptEngine scriptEngine = scriptEngineManager.getEngineByName("javascript");
-            String returnValue2 = (String) scriptEngine.eval(src2);
+            String retValue2 = (String) commandService.EvalService(src2);
 
-            model.addAttribute("src2", src2);
-            model.addAttribute("value2", returnValue2);
+            model.addAttribute("value2", retValue2);
         }
 
         return "/1/1.2";
@@ -93,6 +91,11 @@ public class CommandController {
     @GetMapping(value = {"/1/3", "/1/3/vuln", "/1/3/secure"})
     public String PathForm(@RequestParam(required = false) String fileName) {
         return "/1/1.3";
+    }
+
+    @GetMapping("/1/3/code")
+    public String PathForm_code() {
+        return "1/1.3.code";
     }
 
     //3. 경로 조작 및 자원 삽입
@@ -105,7 +108,7 @@ public class CommandController {
         if (fileName == null) {
             return "/1/1.3";
         } else {
-            result = CommandService.filePathService(fileName);
+            result = commandService.filePathService(fileName);
             model.addAttribute("line", result);
         }
 
@@ -159,7 +162,7 @@ public class CommandController {
     @PostMapping("/1/4/secure")
     public String XSSForm_secure(HttpServletRequest request, Model model) {
         String input2 = request.getParameter("input2");
-        String result2 = CommandService.XSSFilterService(input2);
+        String result2 = commandService.XSSFilterService(input2);
 
 //        model.addAttribute("input2", result2);
         model.addAttribute("result2", result2);
@@ -173,6 +176,11 @@ public class CommandController {
         return "/1/1.5";
     }
 
+    @GetMapping("/1/5/code")
+    public String OSCommand_code() {
+        return "1/1.5.code";
+    }
+
     //5. 운영체제 명령어 삽입
     @PostMapping("/1/5/vuln")
     public String OSCommand_vuln(HttpServletRequest request, Model model) throws IOException {
@@ -183,7 +191,7 @@ public class CommandController {
         if (cmd == null) {
             return "/1/1.5";
         } else {
-            result = CommandService.OSCommandService(cmd);
+            result = commandService.OSCommandService(cmd);
             model.addAttribute("line", result);
         }
 
@@ -222,17 +230,25 @@ public class CommandController {
     @GetMapping(value = {"/1/6", "/1/6/vuln", "/1/6/secure"})
     public String UploadFileForm(@RequestParam(required = false) String fileName, String filePath, Model model) {
         FileForm fileForm = new FileForm();
-
         model.addAttribute("form", fileForm);
         return "/1/1.6";
     }
 
+    @GetMapping(value = "/1/6/code")
+    public String UploadFileForm_code() {
+        return "/1/1.6.code";
+    }
+
     @PostMapping("/1/6/vuln")
-    public String UploadFileForm_vuln(FileForm form, MultipartHttpServletRequest request, Model model, MultipartFile multipartFile) throws IOException {
+    public String UploadFileForm_vuln(FileForm form, MultipartHttpServletRequest request,
+                                      Model model, MultipartFile multipartFile) throws IOException {
 
         com.java.securecoding.domain.file.File file = com.java.securecoding.domain.file.File.createFile(
                 form.getFileName(),
                 form.getFilePath());
+
+        System.out.println("file.getFileName() = " + form.getFileName());
+        System.out.println("file.getFilePath() = " + form.getFilePath());
 
         fileService.saveFile(file, multipartFile);
 
@@ -248,13 +264,16 @@ public class CommandController {
         return "/1/1.6";
     }
 
-
     //7. 신뢰되지 않는 URL 주소로 자동접속 연결
     @GetMapping(value = {"/1/7", "/1/7/vuln", "/1/7/secure"})
     public String URLConnected(@RequestParam(required = false) String url) {
         return "/1/1.7";
     }
 
+    @GetMapping("/1/7/code")
+    public String URLConnected_code() {
+        return "/1/1.7.code";
+    }
     //7. 신뢰되지 않는 URL 주소로 자동접속 연결
     @PostMapping("/1/7/vuln")
     public String URLConnected_vuln(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
@@ -436,9 +455,14 @@ public class CommandController {
 
     //14. 정수형 오버플로우
     @GetMapping(value = {"/1/14", "/1/14/vuln", "/1/14/secure"})
-    public String URLConnected(@RequestParam(required = false) String integer1,
+    public String IntegerBuffForm(@RequestParam(required = false) String integer1,
                                @RequestParam(required = false) String integer2) {
         return "/1/1.14";
+    }
+
+    @GetMapping("/1/14/code")
+    public String IntegerBuffForm_code() {
+        return "/1/1.14.code";
     }
 
     //14. 정수형 오버플로우
@@ -482,5 +506,10 @@ public class CommandController {
         model.addAttribute("value2", total);
 
         return "/1/1.14";
+    }
+
+    @GetMapping("/1/17")
+    public String FormatStringForm_code() {
+        return "/1/1.17";
     }
 }
