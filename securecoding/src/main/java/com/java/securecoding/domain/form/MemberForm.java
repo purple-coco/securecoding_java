@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 
+/*제2절 보안기능 5.암호화되지 않은 중요정보 Vulnerable 회원가입 폼*/
 @Getter
 @Setter
 public class MemberForm {
