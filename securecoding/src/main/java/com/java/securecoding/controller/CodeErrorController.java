@@ -25,7 +25,13 @@ public class CodeErrorController {
         return "/5/5.1";
     }
 
-    @PostMapping("/5/vuln1")
+    @GetMapping("/5/1/code")
+    public String NullForm_code() {
+        return "/5/5.1.code";
+    }
+
+
+    @PostMapping("/5/1/vuln")
     public String NullForm_vuln(HttpServletRequest request, Model model) throws IOException {
         String cmd = request.getParameter("cmd");
         String result;
@@ -40,7 +46,7 @@ public class CodeErrorController {
         return "/5/5.1";
     }
 
-    @PostMapping("/5/secure1")
+    @PostMapping("/5/1/secure")
     public String NullForm_secure(HttpServletRequest request, Model model) throws IOException {
 
         String cmd2 = request.getParameter("cmd2");
