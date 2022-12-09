@@ -68,7 +68,6 @@ public class MemberController{
 
             return "message";
         }
-
     }
 
     @PostMapping(value = {"/2/5/secure"})
