@@ -3,6 +3,7 @@ package com.java.securecoding.service;
 
 import com.java.securecoding.domain.member.Member;
 import com.java.securecoding.repository.MemberRepository;
+import exception.NotJoinException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mindrot.jbcrypt.BCrypt;
@@ -24,12 +25,12 @@ public class MemberService {
     public Long join(Member member) {
 
         if(validateDuplicateMember(member.getUsername())) {
-            memberRepository.save(member);
+            throw new NotJoinException("중복된 아이디입니다.");
         } else {
-//            throw new RuntimeException()
-        }
+            memberRepository.save(member);
 
-        return member.getId();
+            return member.getId();
+        }
     }
 
     private boolean validateDuplicateMember(String username) {
