@@ -24,10 +24,8 @@
             <button type="submit" class="btn" style="background-color: #ffe74a; width: 80%; height: 50px; margin-left: 10%">회원가입</button>
             <br />
             <br />
-            <p style="margin-left: 10%; margin-bottom: 4%; color: #808080">※ 입력한 정보가 실제로 DB에 저장되지 않습니다.</p>
+            <p style="margin-left: 10%; margin-bottom: 4%; color: #808080">※ 입력한 정보가 실제로 DB에 저장됩니다.</p>
             <div class="card h-100">
-              <!-- Vulnerable code -->
-<!--              <textarea readonly class="area" th:text="${value}"></textarea>-->
             </div>
           </form>
       </div>
@@ -35,16 +33,14 @@
         <h4 class="fw-bolder" style="text-align: center">Secure</h4>
         <hr />
           <form action="/2/5/secure" method="post">
-            <input type="text" id="name2" name="name2" class="form-control" placeholder="이름" style="width: 80%; margin-left: 10%; margin-bottom: 4%; height: 50px" />
-            <input type="text" id="username2" name="username2" class="form-control" placeholder="아이디" style="width: 80%; margin-left: 10%; margin-bottom: 4%; height: 50px; float: left" />
-            <input type="password" id="password2" name="password2" class="form-control" placeholder="비밀번호" style="width: 80%; margin-left: 10%; margin-bottom: 4%; height: 50px; float: left" />
+            <input type="text" id="name2" name="name" class="form-control" placeholder="이름" style="width: 80%; margin-left: 10%; margin-bottom: 4%; height: 50px" />
+            <input type="text"  id="username2" name="username" class="form-control" placeholder="아이디" style="width: 80%; margin-left: 10%; margin-bottom: 4%; height: 50px; float: left" />
+            <input type="password" id="password2" name="password" class="form-control" placeholder="비밀번호" style="width: 80%; margin-left: 10%; margin-bottom: 4%; height: 50px; float: left" />
             <button type="submit" class="btn" style="background-color: #ffe74a; width: 80%; height: 50px; margin-left: 10%">회원가입</button>
             <br />
             <br />
-            <p style="margin-left: 10%; margin-bottom: 4%; color: #808080">※ 입력한 정보가 실제로 DB에 저장되지 않습니다.</p>
+            <p style="margin-left: 10%; margin-bottom: 4%; color: #808080">※ 입력한 정보가 실제로 DB에 저장됩니다.</p>
             <div class="card h-100">
-              <!-- Secure Code -->
-<!--              <textarea readonly class="area" th:text="${value2}"></textarea>-->
             </div>
           </form>
       </div>
