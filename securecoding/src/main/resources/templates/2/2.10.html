@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Head -->
+<head th:replace="fragments/head :: head"></head>
+<body>
+<!-- Navigation-->
+<nav th:replace="fragments/nav :: nav"></nav>
+<!-- Header-->
+<head th:replace="fragments/header :: header"></head>
+<!-- Section-->
+<section class="py-5">
+  <div class="container px-4 px-lg-5 mt-5">
+    <h4 class="fw-bolder" style="text-align: center">10. 부적절한 전자서명 확인</h4>
+    <p style="text-align: center">제2절 보안기능</p>
+    <br />
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+      <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
+        <hr />
+          <form action="#" method="get">
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+                          <label for="tab-1" class="tab-label">AuthorityController.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/5/1/vuln")
+public String NullForm_vuln(HttpServletRequest request, Model model) throws IOException {
+      String cmd = request.getParameter("cmd");
+      String result;
+
+      result = commandService.OSCommandService(cmd);
+      model.addAttribute("result", result);
+
+      return "/5/5.1";
+}</textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </form>
+          <br />
+          <hr />
+      </div>
+      <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Secure</h4>
+        <hr />
+          <form action="#" method="get">
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-2" checked class="tab-switch">
+                          <label for="tab-2" class="tab-label">AuthorityController.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/5/1/secure")
+public String NullForm_secure(HttpServletRequest request, Model model) throws IOException {
+
+        String cmd2 = request.getParameter("cmd2");
+        String result2;
+
+        List<String> allowedCommands = new ArrayList<String>();
+        allowedCommands.add("cal");
+
+        if (cmd2 == null) {
+            model.addAttribute("result2", "명령어를 입력하세요");
+
+        } else if (cmd2.matches("[|;&:>-]*")) {
+            model.addAttribute("message", "허용하지 않는 명령어입니다.");
+            model.addAttribute("searchUrl", "/5/1");
+
+            return "message";
+        } else if (!allowedCommands.contains(cmd2)) {
+            model.addAttribute("message", "허용하지 않는 명령어입니다.");
+            model.addAttribute("searchUrl", "/5/1");
+
+            return "message";
+        } else {
+            result2 = commandService.OSCommandService(cmd2);
+            model.addAttribute("result2", result2);
+        }
+
+        return "/5/5.1";
+}</textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </form>
+          <br />
+          <hr />
+      </div>
+    </div>
+      <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+          <div class="text-center"><a class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/5/1}">실습 하기</a></div>
+      </div>
+  </div>
+</section>
+<br />
+<!-- Footer-->
+<footer th:replace="fragments/footer :: footer"></footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>
