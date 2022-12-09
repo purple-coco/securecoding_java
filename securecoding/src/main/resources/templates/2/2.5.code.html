@@ -10,8 +10,8 @@
 <!-- Section-->
 <section class="py-5">
   <div class="container px-4 px-lg-5 mt-5">
-    <h4 class="fw-bolder" style="text-align: center">3. Public 메소드부터 반환된 Private 배열</h4>
-    <p style="text-align: center">제6절 캡슐화</p>
+    <h4 class="fw-bolder" style="text-align: center">5. 암호화되지 않은 중요정보</h4>
+    <p style="text-align: center">제2절 보안기능</p>
     <br />
     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
         <!-- Vulnerable code -->
@@ -23,57 +23,81 @@
                     <div class="tabs">
                         <div class="tab">
                             <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
-                            <label for="tab-1" class="tab-label">Test2.java</label>
+                            <label for="tab-1" class="tab-label">MemberController.java</label>
                             <div class="tab-content">
-                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">public class Test2 {
+                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">@PostMapping("/2/5/vuln")
+public String CreateMemberForm_vuln(@Valid MemberForm form, BindingResult result, Model model) {
 
-    private String[] stringarray = new String[3];
+        if (result.hasErrors()) {
+            model.addAttribute("message", "유효하지 않은 정보입니다.");
+            model.addAttribute("searchUrl", "/2/5");
 
-    public Test2() {
-        stringarray[0] = "abc";
-        stringarray[1] = "def";
-        stringarray[2] = "ghi";
+            return "message";
+        }
+
+        Member member = new Member();
+
+        member.setName(form.getName());
+        member.setUsername(form.getUsername());
+
+        if(!memberService.passwordValidate(form.getPassword())) {
+
+            model.addAttribute("message", "최소 8자 이상, 영어 대·소문자, 숫자, 특수문자가 혼용되어야 합니다.");
+            model.addAttribute("searchUrl", "/member/signup");
+
+            return "message";
+        } else {
+            member.setPassword(form.getPassword());
+
+            memberService.join(member);
+
+            model.addAttribute("message", "회원가입이 완료되었습니다.");
+            model.addAttribute("searchUrl", "/member/login");
+
+            return "message";
+        }
     }
-
-    public String[] getStringArray() {
-        return stringarray;
-    }
-
-    public void setStringArray(String[] stringarray) {
-        this.stringarray = stringarray;
-    }
-
 }</textarea></code>
                             </div>
                         </div>
                         <div class="tab">
                             <input type="radio" name="css-tabs" id="tab-2" class="tab-switch">
-                            <label for="tab-2" class="tab-label">Test.java</label>
+                            <label for="tab-2" class="tab-label">MemberService.java</label>
                             <div class="tab-content">
-                                <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">public class Test {
+                                <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Service
+@Transactional
+@RequiredArgsConstructor
+public class MemberService {
 
-    public static void main(String[] args) {
-        Test2 test2 = new Test2();
+    private final MemberRepository memberRepository;
 
-        String[] inputStringArray = {"qwe", "asd", "zxc"};
-        System.out.println("\n[-] test2.getStringArray[] : " + Arrays.deepToString(test2.getStringArray()));
-        test2.setStringArray(inputStringArray);
-        System.out.println("[-] test2 stringarray[] : " + Arrays.deepToString(test2.getStringArray()));
-        inputStringArray[0] = "iop";
-        System.out.println("[i] inputStringArray[0] = iop");
-        System.out.println("[-] test2 stringarray[] : " + Arrays.deepToString(test2.getStringArray()));
+    public Long join(Member member) {
+
+        if(validateDuplicateMember(member.getUsername())) {
+            throw new NotJoinException("중복된 아이디입니다.");
+        } else {
+            memberRepository.save(member);
+
+            return member.getId();
+        }
     }
+
+    private boolean validateDuplicateMember(String username) {
+        return memberRepository.existsByUsername(username);
+    }
+    ...
 }</textarea></code>
                             </div>
                         </div>
                         <div class="tab">
                             <input type="radio" name="css-tabs" id="tab-3" class="tab-switch">
-                            <label for="tab-3" class="tab-label">실행 결과</label>
+                            <label for="tab-3" class="tab-label">MemberRepository.java</label>
                             <div class="tab-content">
-                                <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">[-] test2 stringarray[] : [abc, def, ghi]
-[-] test2 stringarray[] = xyz
-[i] inputStringArray[0] = iop
-[-] test2 stringarray[] : [xyz, def, ghi]</textarea></code>
+                                <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">public interface MemberRepository extends JpaRepository<Member, Long> {
+
+  boolean existsByUsername(String username);
+
+}</textarea></code>
                             </div>
                         </div>
                     </div>
@@ -91,78 +115,78 @@
                   <div class="tabs">
                       <div class="tab">
                           <input type="radio" name="css-tabs" id="tab-4" checked class="tab-switch">
-                          <label for="tab-4" class="tab-label">Test2.java</label>
+                          <label for="tab-4" class="tab-label">MemberController.java</label>
                           <div class="tab-content">
-                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">public class Test2 {
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/2/5/secure")
+    public String CreateMemberForm_secure(@Valid MemberForm2 form, BindingResult result, Model model) {
 
-    private String[] stringarray = new String[3];
+        if (result.hasErrors()) {
+            model.addAttribute("message", "유효하지 않은 정보입니다.");
+            model.addAttribute("searchUrl", "/2/5");
 
-    public Test2() {
-        stringarray[0] = "abc";
-        stringarray[1] = "def";
-        stringarray[2] = "ghi";
-    }
-
-    public String[] getNewArray() {
-        String[] returnArray = null;
-        if(this.stringarray != null) {
-            returnArray = new String[stringarray.length];
-
-            for (int i = 0; i < stringarray.length; i++) {
-                returnArray[i] = this.stringarray[i];
-            }
+            return "message";
         }
-        return returnArray;
-    }
-}</textarea></code>
+
+        Member member = new Member();
+
+        member.setName(form.getName());
+        member.setUsername(form.getUsername());
+
+        if(memberService.passwordValidate(form.getPassword())) {
+
+            member.setPassword(memberService.HashPassword(form.getPassword()));
+            memberService.join(member);
+
+            model.addAttribute("message", "회원가입이 완료되었습니다.");
+            model.addAttribute("searchUrl", "/member/login");
+
+            return "message";
+        } else {
+            model.addAttribute("message", "최소 8자 이상, 영어 대·소문자, 숫자, 특수문자가 혼용되어야 합니다.");
+            model.addAttribute("searchUrl", "/member/signup");
+
+            return "message";
+        }
+    }</textarea></code>
                           </div>
                       </div>
                       <div class="tab">
                           <input type="radio" name="css-tabs" id="tab-5" class="tab-switch">
-                          <label for="tab-5" class="tab-label">Test.java</label>
+                          <label for="tab-5" class="tab-label">MemberService.java</label>
                           <div class="tab-content">
                               <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Service
+@Transactional
 @RequiredArgsConstructor
-public class AuthorityService {
+public class MemberService {
 
-    public static boolean SecurePasswordService(String password) {
+    private final MemberRepository memberRepository;
 
-        String passwordPolicy = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$";
+    public Long join(Member member) {
 
-        Pattern pattern = Pattern.compile(passwordPolicy);
-        Matcher matcher = pattern.matcher(password);
+        if(validateDuplicateMember(member.getUsername())) {
+            throw new NotJoinException("중복된 아이디입니다.");
+        } else {
+            memberRepository.save(member);
 
-        return matcher.matches();
+            return member.getId();
+        }
     }
+
+    private boolean validateDuplicateMember(String username) {
+        return memberRepository.existsByUsername(username);
+    }
+    ....
 }</textarea></code>
                           </div>
                       </div>
                       <div class="tab">
                           <input type="radio" name="css-tabs" id="tab-6" class="tab-switch">
-                          <label for="tab-6" class="tab-label">실행 결과</label>
+                          <label for="tab-6" class="tab-label">MemberRepository.java</label>
                           <div class="tab-content">
-                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Controller
-public class AuthorityController {
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    private static AuthorityService authorityService;
+  boolean existsByUsername(String username);
 
-    @PostMapping("/2/9/secure")
-    public String PasswordForm_secure(HttpServletRequest request, Model model) throws Exception {
-
-            String username2 = request.getParameter("username2");
-            String password2 = request.getParameter("password2");
-
-            if (username2 == null || password2 == null) {
-                return "/2/2.9";
-            }
-            if (authorityService.SecurePasswordService(password2)) {
-                model.addAttribute("message", "회원가입이 완료되었습니다.");
-            } else {
-                model.addAttribute("message", "최소 8자 이상, 숫자,문자,특수문자가 혼용되어야 합니다.");
-            }
-            model.addAttribute("searchUrl", "/2/9");
-            return "message";
-    }
 }</textarea></code>
                           </div>
                       </div>
@@ -173,6 +197,9 @@ public class AuthorityController {
           <hr />
       </div>
     </div>
+      <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+          <div class="text-center"><a class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/2/5}">실습 하기</a></div>
+      </div>
   </div>
 </section>
 <br />
