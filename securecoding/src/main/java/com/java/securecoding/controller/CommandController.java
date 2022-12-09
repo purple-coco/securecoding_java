@@ -3,6 +3,7 @@ package com.java.securecoding.controller;
 import com.java.securecoding.domain.form.FileForm;
 import com.java.securecoding.service.CommandService;
 import com.java.securecoding.service.FileService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,8 +16,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,11 +31,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
+@RequiredArgsConstructor
 @Controller
 public class CommandController {
 
     private static CommandService commandService;
-    private static FileService fileService;
+    private final FileService fileService;
+
 
     //2. 코드 삽입
     @GetMapping(value = {"/1/2", "/1/2/vuln", "/1/2/secure"})
@@ -387,6 +388,11 @@ public class CommandController {
         }
 
         return "/1/1.9";
+    }
+
+    @GetMapping("/1/10")
+    public String LDAPInjection_code() {
+        return "/1/1.10";
     }
 
     //12. 서버사이드 요청 위조 - admin 페이지
