@@ -76,11 +76,11 @@ public class AuthorityController {
         return "/2/2.4";
     }
 
-//    //5. 암호화되지 않은 중요정보
-//    @GetMapping("/2/5")
-//    public String SecretInfoForm() {
-//        return "/2/2.5";
-//    }
+    //5. 암호화되지 않은 중요정보
+    @GetMapping("/2/5/code")
+    public String SecretInfoForm_code() {
+        return "/2/2.5.code";
+    }
 
     //6. 하드코드된 중요정보
     @GetMapping("/2/6")
@@ -268,7 +268,7 @@ public class AuthorityController {
 //            if (authorityService.SecurePasswordService(password2)) {
 //                model.addAttribute("message", "회원가입이 완료되었습니다.");
 //            } else {
-//                model.addAttribute("message", "최소 8자 이상, 숫자,문자,특수문자가 혼용되어야 합니다.");
+//                model.addAttribute("message", "최소 8자 이상,숫자,문자,특수문자가 혼용되어야 합니다.");
 //            }
 //            model.addAttribute("searchUrl", "/2/16");
 //            return "message";
