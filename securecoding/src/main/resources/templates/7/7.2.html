@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Head -->
+<head th:replace="fragments/head :: head"></head>
+<body>
+<!-- Navigation-->
+<nav th:replace="fragments/nav :: nav"></nav>
+<!-- Header-->
+<head th:replace="fragments/header :: header"></head>
+<!-- Section-->
+<section class="py-5">
+  <div class="container px-4 px-lg-5 mt-5">
+    <h4 class="fw-bolder" style="text-align: center">2. 취약한 API 사용</h4>
+    <p style="text-align: center">제7절 API 오용</p>
+    <br />
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        <!-- Vulnerable code -->
+        <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
+        <hr />
+        <form action="#" method="get">
+            <div class="wrapper" style="width: 100%">
+                <div class="tabs">
+                    <div class="tab">
+                        <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+                        <label for="tab-1" class="tab-label">APIMisuseController.java</label>
+                        <div class="tab-content">
+                            <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">@GetMapping("/members/delete/{memberId}")
+public String deleteMember(@PathVariable("memberId") Long memberId, HttpServletRequest request, Model model) throws UnknownHostException {
+
+    String ip = request.getServerName();
+
+    if(ip.equalsIgnoreCase("localhost")) {
+        Member member = memberService.findOne(memberId);
+
+        MemberForm form = new MemberForm();
+
+        form.setId(member.getId());
+        form.setName(member.getName());
+        form.setUsername(member.getUsername());
+        form.setMemberAuthority(member.getMemberAuthority());
+
+        model.addAttribute("form", form);
+        return "members/deleteMemberForm";
+    }
+
+    return "redirect:/members";
+}</textarea></code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <hr />
+        </form>
+      </div>
+        <!-- Secure Code -->
+        <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Secure</h4>
+        <hr />
+        <form action="#" method="get">
+            <div class="wrapper" style="width: 100%">
+                <div class="tabs">
+                    <div class="tab">
+                        <input type="radio" name="css-tabs" id="tab-2" checked class="tab-switch">
+                        <label for="tab-2" class="tab-label">APIMisuseController.java</label>
+                        <div class="tab-content">
+                            <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">@GetMapping("/members/delete/{memberId}")
+public String deleteMember(@PathVariable("memberId") Long memberId, HttpServletRequest request, Model model) {
+    String ip = request.getRemoteAddr();
+
+    MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute("memberInfo");
+    memberService.validateUpdate(memberInfo.getId(), memberId);
+
+    if (ip.equals("127.0.0.1")) {
+        Member member = memberService.findOne(memberId);
+
+        MemberForm form = new MemberForm();
+
+        form.setId(member.getId());
+        form.setName(member.getName());
+        form.setUsername(member.getUsername());
+        form.setMemberAuthority(member.getMemberAuthority());
+
+        model.addAttribute("form", form);
+        return "members/deleteMemberForm";
+        }
+}</textarea></code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <hr />
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+<br />
+<!-- Footer-->
+<footer th:replace="fragments/footer :: footer"></footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>
