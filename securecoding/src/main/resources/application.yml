@@ -12,9 +12,20 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
 
   jpa:
-    show-sql: true
+    properties:
+      hibernate:
+        # 서버 시작 시마다 DB 초기화
+        ddl-auto: create
+        show-sql: true
+        format_sql: true
+
 
  # 파일 업로드 크기 설정
   servlet:
     multipart:
       max-file-size: 1000MB
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
