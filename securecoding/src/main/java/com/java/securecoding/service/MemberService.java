@@ -33,11 +33,17 @@ public class MemberService {
         }
     }
 
+    /* 회원 아이디 조회 */
+    @Transactional(readOnly = true)
+    public Member findOne(String username) { return memberRepository.findByUsername(username);}
+
+
+    /* 아이디 중복 회원 검증 */
     private boolean validateDuplicateMember(String username) {
         return memberRepository.existsByUsername(username);
     }
 
-//    안전한 비밀번호 생성 규칙 적용
+    /* 안전한 비밀번호 규칙 생성 적용 */
     public boolean passwordValidate(String inputPassword) {
         String passwordPolicy = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$";
 
