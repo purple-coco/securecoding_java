@@ -13,16 +13,18 @@
     <h4 class="fw-bolder" style="text-align: center">17. 포맷 스트링 삽입</h4>
     <p style="text-align: center">제1절 입력데이터 검증 및 표현</p>
     <br />
-    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" style="min-height: 400px">
       <div class="col mb-5" style="width: 60%">
         <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
         <hr />
           <form action="#" method="get">
-            <br />
-            <div class="card h-100">
-              <!-- Vulnerable code -->
-<!--                <pre class="line-numbers" style="height: 30%;">-->
-                <code class="code-area" style="height: 15em"><textarea readonly wrap="off" class="area" style="height: 15em">public class formatString {
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+                          <label for="tab-1" class="tab-label">FormatString.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled class="area" style="height: 15em">public class formatString {
 
     public static void main(String[] args) {
         Calendar validDate = Calendar.getInstance();
@@ -30,21 +32,41 @@
 
         System.out.printf(args[0] + " did not match! HINT: It was issued on %1$terd of some month", validDate);
     }
-}
-              </textarea>
-                </code>
-<!--                </pre>-->
-            </div>
+}</textarea></code>
+                          </div>
+                      </div>
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-2" class="tab-switch">
+                          <label for="tab-2" class="tab-label">실행 결과</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled class="area" style="height: 15em">public class formatString {
+
+    public static void main(String[] args) {
+        Calendar validDate = Calendar.getInstance();
+        validDate.set(2022, Calendar.OCTOBER, 29);
+
+        System.out.printf(args[0] + " did not match! HINT: It was issued on %1$terd of some month", validDate);
+    }
+}</textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
           </form>
+          <br />
+          <hr />
       </div>
       <div class="col mb-5" style="width: 60%">
         <h4 class="fw-bolder" style="text-align: center">Secure</h4>
         <hr />
           <form action="#" method="get">
-            <br />
-            <div class="card h-100">
-              <!-- Secure Code -->
-                <code class="code-area" style="height: 15em"><textarea readonly wrap="off" class="area" style="height: 15em">public class formatString {
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-3" checked class="tab-switch">
+                          <label for="tab-3" class="tab-label">FormatString.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled class="area" style="height: 15em">public class formatString {
 
     public static void main(String[] args) {
         Calendar vaildate = Calendar.getInstance();
@@ -52,11 +74,29 @@
 
         System.out.printf("%s did not match! HINT: It was issued on %2$terd of some month", args[0], vaildate);
     }
-}
-                </textarea>
-                </code>
-            </div>
+}</textarea></code>
+                          </div>
+                      </div>
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-4" class="tab-switch">
+                          <label for="tab-4" class="tab-label">실행 결과</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled class="area" style="height: 15em">public class formatString {
+
+    public static void main(String[] args) {
+        Calendar validDate = Calendar.getInstance();
+        validDate.set(2022, Calendar.OCTOBER, 29);
+
+        System.out.printf(args[0] + " did not match! HINT: It was issued on %1$terd of some month", validDate);
+    }
+}</textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
           </form>
+          <br />
+          <hr />
       </div>
     </div>
   </div>
