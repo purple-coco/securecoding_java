@@ -14,38 +14,84 @@
     <p style="text-align: center">제1절 입력데이터 검증 및 표현</p>
     <br />
     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-      <div class="col mb-5" style="width: 40%; height: 200%">
+      <div class="col mb-5" style="width: 60%">
         <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
         <hr />
-          <form action="/1/13/vuln" id="vulnerable13" method="post">
-            <input type="text" id="input" name="input" class="form-control" style="width: 80%; margin-right: 4%; height: 50px; float: left" />
-            <button type="submit" id="execute" class="btn" style="background-color: #ffe74a; width: 16%; height: 50px">실행</button>
-            <br />
-            <br />
-            <div class="card h-100">
-              <!-- Vulnerable code -->
-              <textarea readonly class="area" th:text="${result}"></textarea>
-            </div>
+          <form action="#" method="get">
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+                          <label for="tab-1" class="tab-label">LoginCheckInterceptor.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@RequiredArgsConstructor
+public class LoginCheckInterceptor implements HandlerInterceptor {
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        HttpSession session = request.getSession();
+        session.setMaxInactiveInterval(1800);
+
+        String lastLogin = request.getParameter("lastLogin");
+
+        if (session.getAttribute("memberInfo") == null || cookie == null) {
+            throw new PermissionException("정상적인 접근이 아닙니다.");
+        }
+        return true;
+    }
+
+}</textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
           </form>
+          <br />
+          <hr />
       </div>
-      <div class="col mb-5" style="width: 40%; height: 200%">
+      <div class="col mb-5" style="width: 60%">
         <h4 class="fw-bolder" style="text-align: center">Secure</h4>
         <hr />
-          <form action="/1/13/secure" id="secure13" method="post">
-            <input type="text" id="input2" name="input2" class="form-control" style="width: 80%; margin-right: 4%; height: 50px; float: left" />
-            <button type="submit" class="btn" style="background-color: #ffe74a; width: 16%; height: 50px">실행</button>
-            <br />
-            <br />
-            <div class="card h-100">
-              <!-- Secure Code -->
-              <textarea readonly class="area" th:text="${result2}"></textarea>
-            </div>
+          <form action="#" method="get">
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-2" checked class="tab-switch">
+                          <label for="tab-2" class="tab-label">LoginCheckInterceptor.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@RequiredArgsConstructor
+public class LoginCheckInterceptor implements HandlerInterceptor {
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        HttpSession session = request.getSession();
+        session.setMaxInactiveInterval(1800);
+
+        String lastLogin = request.getParameter("lastLogin");
+
+        if(lastLogin != null) {
+            lastLogin = lastLogin.replaceAll("[\\r\\n]", "");
+        }
+
+        if (session.getAttribute("memberInfo") == null || cookie == null) {
+            throw new PermissionException("정상적인 접근이 아닙니다.");
+        }
+        return true;
+    }
+
+}</textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
           </form>
+          <br />
+          <hr />
       </div>
     </div>
-    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-      <div class="text-center"><a class="btn btn-outline-dark mt-auto" style="margin-left: 74%" href="#">코드 보기</a></div>
-    </div>
+      <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+          <div class="text-center"><a class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/1/14}">실습 하기</a></div>
+      </div>
   </div>
 </section>
 <br />
