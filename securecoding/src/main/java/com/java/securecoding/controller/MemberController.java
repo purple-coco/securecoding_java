@@ -14,6 +14,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -86,10 +89,6 @@ public class MemberController{
         member.setName(form.getName());
         member.setUsername(form.getUsername());
 
-        log.info("{}", form.getName());
-        log.info("{}", form.getUsername());
-        log.info("{}", form.getPassword());
-
         System.out.println("member = " + member);
 
         if(memberService.passwordValidate(form.getPassword())) {
@@ -107,6 +106,14 @@ public class MemberController{
 
             return "message";
         }
+    }
+
+    @GetMapping("member/logout")
+    public String logoutMember(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+        request.getSession().removeAttribute("memberInfo");
+        session.invalidate();
+
+        return "redirect:/";
     }
 
 }
