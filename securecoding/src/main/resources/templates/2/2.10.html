@@ -24,7 +24,8 @@
                           <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
                           <label for="tab-1" class="tab-label">AuthorityController.java</label>
                           <div class="tab-content">
-                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">File file = new File(downloadFilePath);
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">// 신뢰할 수 없는 곳에서 다운로드 한 JAR 파일의 서명 확인 없이 그대로 사용
+File file = new File(downloadFilePath);
 JarFile jarfile = new JarFile(file);</textarea></code>
                           </div>
                       </div>
@@ -45,6 +46,7 @@ JarFile jarfile = new JarFile(file);</textarea></code>
                           <label for="tab-2" class="tab-label">AuthorityController.java</label>
                           <div class="tab-content">
                               <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">File file = new File(downloadFilePath);
+// JAR 파일에 대한 전자서명 확인 로직 구현
 JarFile jarfile = new JarFile(f, true);
 Enumeration<JarEntry> ens = jarfile.entries();
 
