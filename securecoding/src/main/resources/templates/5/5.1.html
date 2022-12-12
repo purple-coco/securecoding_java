@@ -17,9 +17,9 @@
             <div class="col mb-5" style="width: 40%; height: 200%">
                 <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
                 <hr />
-                <form action="/5/vuln1" method="post">
+                <form action="/5/1/vuln" method="post">
                     <input type="text" id="cmd" name="cmd" class="form-control" style="width: 80%; margin-right: 4%; height: 50px; float: left" />
-                    <button type="submit" class="btn" style="background-color: #F5Df4D; width: 16%; height: 50px">실행</button>
+                    <button type="submit" class="btn" style="background-color: #ffe74a; width: 16%; height: 50px">실행</button>
                     <br />
                     <br />
                     <div class="card h-100">
@@ -31,9 +31,9 @@
             <div class="col mb-5" style="width: 40%; height: 200%">
                 <h4 class="fw-bolder" style="text-align: center">Secure</h4>
                 <hr />
-                <form action="/5/secure1" method="post">
+                <form action="/5/1/secure" method="post">
                     <input type="text" id="cmd2" name="cmd2" class="form-control" style="width: 80%; margin-right: 4%; height: 50px; float: left" />
-                    <button type="submit" class="btn" style="background-color: #F5Df4D; width: 16%; height: 50px">실행</button>
+                    <button type="submit" class="btn" style="background-color: #ffe74a; width: 16%; height: 50px">실행</button>
                     <br />
                     <br />
                     <div class="card h-100">
@@ -44,7 +44,7 @@
             </div>
         </div>
         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-            <div class="text-center"><a class="btn btn-outline-dark mt-auto" style="margin-left: 74%" href="#">코드 보기</a></div>
+            <div class="text-center"><a class="btn btn-outline-dark mt-auto" style="margin-left: 75%" th:href="@{/5/1/code}">코드 보기</a></div>
         </div>
     </div>
 </section>
