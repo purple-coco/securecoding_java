@@ -52,21 +52,22 @@ public class CodeErrorController {
         String cmd2 = request.getParameter("cmd2");
         String result2;
 
+        if (cmd2.equals("")) {
+            model.addAttribute("result2", "명령어를 입력하세요");
+        }
+
+
         List<String> allowedCommands = new ArrayList<String>();
         allowedCommands.add("cal");
 
         System.out.println("cmd2.matches(\"[|;&:>-]*\") = " + cmd2.matches("[|;&:>-]*"));
 
-
-        if (cmd2.equals("")) {
-            model.addAttribute("result2", "명령어를 입력하세요");
-
-        } else if (cmd2.matches("[|;&:>-]*")) {
+        if (!allowedCommands.contains(cmd2)) {
             model.addAttribute("message", "허용하지 않는 명령어입니다.");
             model.addAttribute("searchUrl", "/5/1");
 
             return "message";
-        } else if (!(allowedCommands.contains(cmd2))) {
+        } else if (cmd2.matches("[|;&:>-]*")) {
             model.addAttribute("message", "허용하지 않는 명령어입니다.");
             model.addAttribute("searchUrl", "/5/1");
 
