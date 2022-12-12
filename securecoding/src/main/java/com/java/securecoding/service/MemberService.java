@@ -54,17 +54,11 @@ public class MemberService {
     }
 
     public String HashPassword(String inputPassword) {
-        String encryptedPassword = BCrypt.hashpw(inputPassword, BCrypt.gensalt(10));
-
-        return encryptedPassword;
+        return BCrypt.hashpw(inputPassword, BCrypt.gensalt(10));
     }
 
     public boolean checkPassword(String inputPassword, String encryptedPassword) {
-        if (BCrypt.checkpw(inputPassword, encryptedPassword)) {
-            return true;
-        } else {
-            return false;
-        }
+        return BCrypt.checkpw(inputPassword, encryptedPassword);
     }
 
 
