@@ -14,33 +14,31 @@
     <p style="text-align: center">제2절 보안기능</p>
     <br />
     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+      <!-- Vulnerable code -->
       <div class="col mb-5" style="width: 40%; height: 200%">
         <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
         <hr />
           <form action="/2/16/vuln" method="post">
             <input type="text" id="username" name="username" class="form-control" placeholder="아이디" style="width: 80%; margin-left: 10%; margin-bottom: 4%; height: 50px" />
-            <input type="text" id="password" name="password" class="form-control" placeholder="비밀번호" style="width: 80%; margin-left: 10%; margin-bottom: 4%; height: 50px" />
+            <input type="password" id="password" name="password" class="form-control" placeholder="비밀번호" style="width: 80%; margin-left: 10%; margin-bottom: 4%; height: 50px" />
             <button type="submit" class="btn" style="background-color: #ffe74a; width: 80%; height: 50px; margin-left: 10%">로그인</button>
             <br />
             <br />
             <div class="card h-100">
-              <!-- Vulnerable code -->
-<!--              <textarea readonly class="area" th:text="${value}"></textarea>-->
             </div>
           </form>
       </div>
+      <!-- Secure Code -->
       <div class="col mb-5" style="width: 40%; height: 200%">
         <h4 class="fw-bolder" style="text-align: center">Secure</h4>
         <hr />
           <form action="/2/16/secure" method="post">
             <input type="text" id="username2" name="username2" class="form-control" placeholder="아이디" style="width: 80%; margin-left: 10%; margin-bottom: 4%; height: 50px" />
-            <input type="text" id="password2" name="password2" class="form-control" placeholder="비밀번호" style="width: 80%; margin-left: 10%; margin-bottom: 4%; height: 50px" />
+            <input type="password" id="password2" name="password2" class="form-control" placeholder="비밀번호" style="width: 80%; margin-left: 10%; margin-bottom: 4%; height: 50px" />
             <button type="submit" class="btn" style="background-color: #ffe74a; width: 80%; height: 50px; margin-left: 10%">로그인</button>
             <br />
             <br />
             <div class="card h-100">
-              <!-- Secure Code -->
-<!--              <textarea readonly class="area" th:text="${value2}"></textarea>-->
             </div>
           </form>
       </div>
