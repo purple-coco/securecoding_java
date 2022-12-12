@@ -459,6 +459,7 @@ public class CommandController {
         return "/1/1.12";
     }
 
+    //13. HTTP 응답분할
     @GetMapping("/1/13")
     public String HttpSplitForm() {
         return "/1/1.13";
