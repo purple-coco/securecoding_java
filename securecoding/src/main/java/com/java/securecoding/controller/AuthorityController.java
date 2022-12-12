@@ -189,6 +189,18 @@ public class AuthorityController {
         return "message";
     }
 
+    //10. 부적절한 전자서명 확인
+    @GetMapping("/2/10")
+    public String SignForm() {
+        return "/2/2.10";
+    }
+
+    //11. 부적절한 인증서 유효성 검증
+    @GetMapping("/2/11")
+    public String CertificateForm() {
+        return "/2/2.11";
+    }
+
     //13. 주석문 안에 포함된 시스템 주요정보
     @GetMapping("/2/13")
     public String CommentaryForm() {
