@@ -1,0 +1,190 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Head -->
+<head th:replace="fragments/head :: head"></head>
+<body>
+<!-- Navigation-->
+<nav th:replace="fragments/nav :: nav"></nav>
+<!-- Header-->
+<head th:replace="fragments/header :: header"></head>
+<!-- Section-->
+<section class="py-5">
+  <div class="container px-4 px-lg-5 mt-5">
+    <h4 class="fw-bolder" style="text-align: center">7. 충분하지 않은 키 길이 사용</h4>
+    <p style="text-align: center">제2절 보안기능</p>
+    <br />
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+      <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
+        <hr />
+          <form action="#" method="get">
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+                          <label for="tab-1" class="tab-label">Encrypt.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">public class Encrypt {
+
+    static  final int KEY_SIZE = 1024;
+
+    public static void main(String[] args) {
+        HashMap<String, String> rsaKeyPair = createKeypairAsString();
+        String publicKey = rsaKeyPair.get("publicKey");
+        String privateKey = rsaKeyPair.get("privateKey");
+
+
+        String plainText = "password";
+
+        String encryptedText = encode(plainText, publicKey);
+
+    }
+
+    /**
+     * 키페어 생성
+     */
+    static HashMap<String, String> createKeypairAsString() {
+        HashMap<String, String> stringKeypair = new HashMap<>();
+        try {
+            SecureRandom secureRandom = new SecureRandom();
+            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+            keyPairGenerator.initialize(KEY_SIZE, secureRandom);
+            KeyPair keyPair = keyPairGenerator.genKeyPair();
+
+            PublicKey publicKey = keyPair.getPublic();
+            PrivateKey privateKey = keyPair.getPrivate();
+
+            String stringPublicKey = Base64.getEncoder().encodeToString(publicKey.getEncoded());
+            String stringPrivateKey = Base64.getEncoder().encodeToString(privateKey.getEncoded());
+
+            stringKeypair.put("publicKey", stringPublicKey);
+            stringKeypair.put("privateKey", stringPrivateKey);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return stringKeypair;
+    }
+
+    /**
+     * 암호화
+     */
+    static String encode(String plainData, String stringPublicKey) {
+        String encryptedData = null;
+        try {
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            byte[] bytePublicKey = Base64.getDecoder().decode(stringPublicKey.getBytes());
+            X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(bytePublicKey);
+            PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
+
+            Cipher cipher = Cipher.getInstance("RSA");
+            cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+
+            byte[] byteEncryptedData = cipher.doFinal(plainData.getBytes());
+            encryptedData = Base64.getEncoder().encodeToString(byteEncryptedData);
+        } catch (Exception e) {
+            System.out.println("error");
+        }
+        return encryptedData;
+    }
+}</textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </form>
+          <br />
+          <hr />
+      </div>
+      <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Secure</h4>
+        <hr />
+          <form action="#" method="get">
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-2" checked class="tab-switch">
+                          <label for="tab-2" class="tab-label">Encrypt.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">public class Encrypt {
+
+    static final int KEY_SIZE = 2048;
+
+    public static void main(String[] args) {
+        HashMap<String, String> rsaKeyPair = createKeypairAsString();
+        String publicKey = rsaKeyPair.get("publicKey");
+        String privateKey = rsaKeyPair.get("privateKey");
+
+        String plainText = "password";
+        String encryptedText = encode(plainText, publicKey);
+
+    }
+
+    /**
+     * 키페어 생성
+     */
+    static HashMap<String, String> createKeypairAsString() {
+        HashMap<String, String> stringKeypair = new HashMap<>();
+        try {
+            SecureRandom secureRandom = new SecureRandom();
+            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+            keyPairGenerator.initialize(KEY_SIZE, secureRandom);
+            KeyPair keyPair = keyPairGenerator.genKeyPair();
+
+            PublicKey publicKey = keyPair.getPublic();
+            PrivateKey privateKey = keyPair.getPrivate();
+
+            String stringPublicKey = Base64.getEncoder().encodeToString(publicKey.getEncoded());
+            String stringPrivateKey = Base64.getEncoder().encodeToString(privateKey.getEncoded());
+
+            stringKeypair.put("publicKey", stringPublicKey);
+            stringKeypair.put("privateKey", stringPrivateKey);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return stringKeypair;
+    }
+
+    /**
+     * 암호화
+     */
+    static String encode(String plainData, String stringPublicKey) {
+        String encryptedData = null;
+        try {
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            byte[] bytePublicKey = Base64.getDecoder().decode(stringPublicKey.getBytes());
+            X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(bytePublicKey);
+            PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
+
+            Cipher cipher = Cipher.getInstance("RSA");
+            cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+
+            byte[] byteEncryptedData = cipher.doFinal(plainData.getBytes());
+            encryptedData = Base64.getEncoder().encodeToString(byteEncryptedData);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return encryptedData;
+    }
+}</textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </form>
+          <br />
+          <hr />
+      </div>
+    </div>
+  </div>
+</section>
+<br />
+<!-- Footer-->
+<footer th:replace="fragments/footer :: footer"></footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>
