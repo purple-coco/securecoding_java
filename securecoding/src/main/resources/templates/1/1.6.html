@@ -22,7 +22,7 @@
             <div style="margin-top: 2%; text-align: left">파일 선택</div>
             <input type="file" id="file" name="file" style="display: none" />
           </label>
-          <button type="submit" class="btn" style="background-color: #F5Df4D; width: 16%; height: 50px">업로드</button>
+          <button type="submit" class="btn" style="background-color: #ffe74a; width: 16%; height: 50px">업로드</button>
           <br />
           <br />
           <div class="card h-100">
@@ -36,9 +36,13 @@
         <form action="/1/6/secure" id="secure6" method="post" th:object="${form}" enctype="multipart/form-data">
           <label for="file" class="form-control" style="width: 80%; margin-right: 4%; height: 50px; float: left;">
             <div style="margin-top: 2%; text-align: left">파일 선택</div>
+            <input type="file" id="file2" name="file2" style="display: none" />
           </label>
-          <input type="file" id="file2" name="file2"  />
-          <button type="submit" class="btn" style="background-color: #F5Df4D; width: 16%; height: 50px">업로드</button>
+<!--          <label for="file" class="form-control" style="width: 80%; margin-right: 4%; height: 50px; float: left;">-->
+<!--            <div style="margin-top: 2%; text-align: left">파일 선택</div>-->
+<!--          </label>-->
+<!--          <input type="file" id="file2" name="file2"  />-->
+          <button type="submit" class="btn" style="background-color: #ffe74a; width: 16%; height: 50px">업로드</button>
           <br />
           <br />
           <div class="card h-100">
@@ -48,7 +52,7 @@
       </div>
     </div>
     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-      <div class="text-center"><a class="btn btn-outline-dark mt-auto" style="margin-left: 74%" href="#">코드 보기</a></div>
+      <div class="text-center"><a class="btn btn-outline-dark mt-auto" style="margin-left: 75%; margin-bottom: 10%" th:href="@{/1/6/code}">코드 보기</a></div>
     </div>
   </div>
 </section>
