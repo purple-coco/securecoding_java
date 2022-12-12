@@ -1,0 +1,127 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Head -->
+<head th:replace="fragments/head :: head"></head>
+<body>
+<!-- Navigation-->
+<nav th:replace="fragments/nav :: nav"></nav>
+<!-- Header-->
+<head th:replace="fragments/header :: header"></head>
+<!-- Section-->
+<section class="py-5">
+  <div class="container px-4 px-lg-5 mt-5">
+    <h4 class="fw-bolder" style="text-align: center">12. 사용자 하드디스크에 저장되는 쿠키를 통한 정보노출</h4>
+    <p style="text-align: center">제2절 보안기능</p>
+    <br />
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+      <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
+        <hr />
+          <form action="#" method="get">
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+                          <label for="tab-1" class="tab-label">LoginCheckInterceptor.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@RequiredArgsConstructor
+public class LoginCheckInterceptor implements HandlerInterceptor {
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        HttpSession session = request.getSession();
+        session.setMaxInactiveInterval(1800);
+
+        SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
+        MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+        secureRandom.setSeed(secureRandom.generateSeed(128));
+        String authKey = new String(messageDigest.digest((secureRandom.nextLong() + "").getBytes()));
+
+        authKey = Base64.getEncoder().encodeToString(authKey.getBytes());
+
+        // cookie에 authKey 정보가 저장됨
+        // cookie 만료시간 1년으로 설정
+        Cookie cookie = new Cookie("cookie", "cookie" + authKey);
+        cookie.setMaxAge(60*60*24*365);
+        cookie.setHttpOnly(false);
+        cookie.setPath("/");
+
+        response.addCookie(cookie);
+
+        if (session.getAttribute("memberInfo") == null || cookie == null) {
+            throw new PermissionException("올바르지 않은 접근입니다.");
+        }
+
+        return true;
+    }
+
+}</textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </form>
+          <br />
+          <hr />
+      </div>
+      <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Secure</h4>
+        <hr />
+          <form action="#" method="get">
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-2" checked class="tab-switch">
+                          <label for="tab-2" class="tab-label">LoginCheckInterceptor.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@RequiredArgsConstructor
+public class LoginCheckInterceptor implements HandlerInterceptor {
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        HttpSession session = request.getSession();
+        session.setMaxInactiveInterval(1800);
+
+        SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
+        MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+        secureRandom.setSeed(secureRandom.generateSeed(128));
+        String authKey = new String(messageDigest.digest((secureRandom.nextLong() + "").getBytes()));
+
+        authKey = Base64.getEncoder().encodeToString(authKey.getBytes());
+
+        // cookie에 authKey 정보가 저장됨
+        // cookie 만료시간 하루로 설정
+        Cookie cookie = new Cookie("cookie", "cookie" + authKey);
+        cookie.setMaxAge(60*60*24);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+
+        response.addCookie(cookie);
+
+        if (session.getAttribute("memberInfo") == null || cookie == null) {
+            throw new PermissionException("올바르지 않은 접근입니다.");
+        }
+        return true;
+    }
+
+}</textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </form>
+          <br />
+          <hr />
+      </div>
+    </div>
+  </div>
+</section>
+<br />
+<!-- Footer-->
+<footer th:replace="fragments/footer :: footer"></footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>
