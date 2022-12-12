@@ -459,6 +459,11 @@ public class CommandController {
         return "/1/1.12";
     }
 
+    @GetMapping("/1/13")
+    public String HttpSplitForm() {
+        return "/1/1.13";
+    }
+
     //14. 정수형 오버플로우
     @GetMapping(value = {"/1/14", "/1/14/vuln", "/1/14/secure"})
     public String IntegerBuffForm(@RequestParam(required = false) String integer1,
