@@ -24,8 +24,12 @@
                           <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
                           <label for="tab-1" class="tab-label">AuthorityController.java</label>
                           <div class="tab-content">
-                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">File file = new File(downloadFilePath);
-JarFile jarfile = new JarFile(file);</textarea></code>
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">cert = SSL_get_peer_certificate(ssl);
+
+if (cert && (SSL_get_verify_result(ssl) == X509_V_OK)) {
+	// 인증서 검증 결과만으로 인증서 신뢰 여부 결정
+	// 호스트와 Common Name 일치 여부를 확인하는 프로세스 부재
+}</textarea></code>
                           </div>
                       </div>
                   </div>
@@ -44,34 +48,20 @@ JarFile jarfile = new JarFile(file);</textarea></code>
                           <input type="radio" name="css-tabs" id="tab-2" checked class="tab-switch">
                           <label for="tab-2" class="tab-label">AuthorityController.java</label>
                           <div class="tab-content">
-                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/5/1/secure")
-public String NullForm_secure(HttpServletRequest request, Model model) throws IOException {
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">private boolean verifySignature(X509Certificate toVerify, X509Certificate signingCert) {
+	if(!toVerify.getIssuerDN().equals(signingCert.getSubjectDN()))
+		return false;
 
-        String cmd2 = request.getParameter("cmd2");
-        String result2;
+	try {
+		// 호스트 인증서가 CA 인증서로 서명 여부 확인
+		toVerify.verify(signingCert.getPublicKey());
+		// 호스트 인증서 유효기간 만료 여부 확인
+		toVerify.checkValidity();
 
-        List<String> allowedCommands = new ArrayList<String>();
-        allowedCommands.add("cal");
-
-        if (cmd2 == null) {
-            model.addAttribute("result2", "명령어를 입력하세요");
-
-        } else if (cmd2.matches("[|;&:>-]*")) {
-            model.addAttribute("message", "허용하지 않는 명령어입니다.");
-            model.addAttribute("searchUrl", "/5/1");
-
-            return "message";
-        } else if (!allowedCommands.contains(cmd2)) {
-            model.addAttribute("message", "허용하지 않는 명령어입니다.");
-            model.addAttribute("searchUrl", "/5/1");
-
-            return "message";
-        } else {
-            result2 = commandService.OSCommandService(cmd2);
-            model.addAttribute("result2", result2);
-        }
-
-        return "/5/5.1";
+		return true;
+	} catch (GeneralSecurityException verifyFailed) {
+		return false;
+	}
 }</textarea></code>
                           </div>
                       </div>
@@ -82,9 +72,6 @@ public String NullForm_secure(HttpServletRequest request, Model model) throws IO
           <hr />
       </div>
     </div>
-      <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-          <div class="text-center"><a class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/5/1}">실습 하기</a></div>
-      </div>
   </div>
 </section>
 <br />
