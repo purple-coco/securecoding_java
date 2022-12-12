@@ -53,6 +53,7 @@ public class MemberService {
         return matcher.matches();
     }
 
+    /* 비밀번호 DB 암호화 저장 */
     public String HashPassword(String inputPassword) {
         return BCrypt.hashpw(inputPassword, BCrypt.gensalt(10));
     }
