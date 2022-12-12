@@ -91,7 +91,7 @@ public class AuthorityController {
     //7. 충분하지 않은 키 길이 사용
     @GetMapping("/2/7")
     public String KeyForm() {
-        return "/2/2.7";
+        return "/2/2.7.code";
     }
 
     //8. 적절하지 않은 난수값 사용
@@ -109,6 +109,11 @@ public class AuthorityController {
     @PostMapping("/2/8/vuln")
     public String RandomForm_vuln(HttpServletRequest request, Model model) {
         String value = request.getParameter("value");
+
+        if(value.equals("")) {
+            return "/2/2.8";
+        }
+
         int int_value = Integer.parseInt(value);
         int result;
 
