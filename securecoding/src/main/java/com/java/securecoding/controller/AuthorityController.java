@@ -183,7 +183,7 @@ public class AuthorityController {
             model.addAttribute("message", "회원가입이 완료되었습니다.");
 
         } else {
-            model.addAttribute("message", "최소 8자 이상, 숫자,문자,특수문자가 혼용되어야 합니다.");
+            model.addAttribute("message", "비밀번호는 최소 8자 이상, 숫자,문자,특수문자가 혼용되어야 합니다.");
         }
         model.addAttribute("searchUrl", "/2/9");
         return "message";
@@ -199,6 +199,12 @@ public class AuthorityController {
     @GetMapping("/2/11")
     public String CertificateForm() {
         return "/2/2.11";
+    }
+
+    //12. 사용자 하드디스크에 저장되는 쿠키를 통한 정보노출
+    @GetMapping("/2/12")
+    public String CookieForm() {
+        return "/2/2.12";
     }
 
     //13. 주석문 안에 포함된 시스템 주요정보
