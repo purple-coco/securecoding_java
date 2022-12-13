@@ -80,6 +80,12 @@ public class CodeErrorController {
         return "/5/5.1";
     }
 
+    //2. 부적절한 자원 해제
+    @GetMapping("/5/2")
+    public String ResourceForm() {
+        return "/5/5.2";
+    }
+
     //4. 초기화되지 않은 변수 사용
     @GetMapping("/5/4")
     public String VariableForm() {
