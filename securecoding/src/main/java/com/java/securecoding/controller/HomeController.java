@@ -64,8 +64,12 @@ public class HomeController {
                 session.setAttribute("memberInfo", memberInfo);
 
                 return "index";
-            }
-            else if (memberService.checkPassword(form.getPassword(), findMember.getPassword())) { /* 비밀번호 DB 암호화 저장 */
+            } else if (!form.getPassword().equals(findMember.getPassword())) {
+                model.addAttribute("message", "아이디, 비밀번호를 확인해주세요");
+                model.addAttribute("searchUrl", "/member/login");
+
+                return "message";
+            } else if (memberService.checkPassword(form.getPassword(), findMember.getPassword())) { /* 비밀번호 DB 암호화 저장 */
                 MemberInfo memberInfo = new MemberInfo();
                 memberInfo.setId(findMember.getId());
                 memberInfo.setUsername(findMember.getUsername());
@@ -85,6 +89,7 @@ public class HomeController {
 
         Member findMember = memberService.findOne(form.getUsername());
         log.info("findMember {}", findMember);
+        log.info("findMember.isIslocked{}" , findMember.isIslocked());
 
 
         if (findMember == null) {
@@ -104,7 +109,8 @@ public class HomeController {
                 session.setAttribute("memberInfo", memberInfo);
 
                 return "index";
-            } else if (memberService.checkPassword(form.getPassword(), findMember.getPassword())) {
+
+            } else if (memberService.checkPassword(form.getPassword(), findMember.getPassword()) && !findMember.isIslocked()) {
                 MemberInfo memberInfo = new MemberInfo();
                 memberInfo.setId(findMember.getId());
                 memberInfo.setUsername(findMember.getUsername());
@@ -112,9 +118,23 @@ public class HomeController {
                 HttpSession session = request.getSession(true);
                 session.setAttribute("memberInfo", memberInfo);
 
+                if (findMember.getCount() != 0) {
+                    memberService.clearLoginCount(findMember.getUsername());
+                }
+
                 return "index";
+            } else {
+                if (findMember.isIslocked()) {
+                    model.addAttribute("message", "잠긴 계정입니다.");
+
+                } else {
+                    memberService.updateFailure(form.getUsername());
+                    model.addAttribute("message", "아이디, 비밀번호를 확인해주세요");
+
+                }
+                model.addAttribute("searchUrl", "/member/login");
+                return "message";
             }
         }
-       return "/2/2.16";
     }
 }
