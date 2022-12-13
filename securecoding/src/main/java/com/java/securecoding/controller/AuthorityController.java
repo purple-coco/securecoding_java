@@ -2,6 +2,7 @@ package com.java.securecoding.controller;
 
 import com.java.securecoding.service.AuthorityService;
 import com.java.securecoding.service.FileService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ import java.util.Base64;
 import java.util.Random;
 
 @Slf4j
+@RequiredArgsConstructor
 @Controller
 public class AuthorityController {
 
@@ -91,7 +93,7 @@ public class AuthorityController {
     //7. 충분하지 않은 키 길이 사용
     @GetMapping("/2/7")
     public String KeyForm() {
-        return "/2/2.7.code";
+        return "/2/2.7";
     }
 
     //8. 적절하지 않은 난수값 사용
@@ -255,49 +257,6 @@ public class AuthorityController {
         }
         return "/2/2.14";
     }
-
-    //16. 반복된 인증시도 제한 기능 부재
-    @GetMapping(value = {"/2/16", "/2/16/vuln", "/2/16/secure"})
-    public String LoginForm(@RequestParam(required = false) String username,
-                            @RequestParam(required = false) String password) {
-        return "/2/2.16";
-    }
-
-    //16. 반복된 인증시도 제한 기능 부재
-//    @PostMapping("/2/16/vuln")
-//    public String LoginForm_vuln(HttpServletRequest request, Model model) throws UnsupportedEncodingException, NoSuchAlgorithmException {
-//
-//        String username = request.getParameter("username");
-//        String password = request.getParameter("password");
-//
-//        if(username == null || password == null) {
-//            return "/2/2.16";
-//        } else {
-//            model.addAttribute("value", password);
-//        }
-//        return "/2/2.16";
-//    }
-
-    //16. 반복된 인증시도 제한 기능 부재
-//    @PostMapping("/2/16/secure")
-//    public String LoginForm_secure(HttpServletRequest request, Model model) throws Exception {
-//
-//        String username2 = request.getParameter("username2");
-//        String password2 = request.getParameter("password2");
-//
-//        if (username2 == null || password2 == null) {
-//            return "/2/2.16";
-//        } else {
-//            if (authorityService.SecurePasswordService(password2)) {
-//                model.addAttribute("message", "회원가입이 완료되었습니다.");
-//            } else {
-//                model.addAttribute("message", "최소 8자 이상,숫자,문자,특수문자가 혼용되어야 합니다.");
-//            }
-//            model.addAttribute("searchUrl", "/2/16");
-//            return "message";
-//        }
-//    }
-
 }
 
 //AES256
