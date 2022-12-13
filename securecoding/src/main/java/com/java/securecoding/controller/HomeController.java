@@ -44,7 +44,7 @@ public class HomeController {
     public String LoginForm_vuln(@Valid @ModelAttribute("form")MemberLoginForm form,
                                  HttpServletRequest request, HttpServletResponse response, Model model) {
 
-        Member findMember = memberService.findOne(form.getUsername());
+        Member findMember = memberService.findByUsername(form.getUsername());
 
         log.info("findMember {}", findMember);
 
@@ -55,7 +55,8 @@ public class HomeController {
 
             return "message";
         } else {
-            if (form.getPassword().equals(findMember.getPassword())) { /* 비밀번호 DB 평문 저장 */
+            if (form.getPassword().equals(findMember.getPassword()) ||
+                    memberService.checkPassword(form.getPassword(), findMember.getPassword())) { /* 비밀번호 DB 평문 저장 */
                 MemberInfo memberInfo = new MemberInfo();
                 memberInfo.setId(findMember.getId());
                 memberInfo.setUsername(findMember.getUsername());
@@ -69,15 +70,6 @@ public class HomeController {
                 model.addAttribute("searchUrl", "/member/login");
 
                 return "message";
-            } else if (memberService.checkPassword(form.getPassword(), findMember.getPassword())) { /* 비밀번호 DB 암호화 저장 */
-                MemberInfo memberInfo = new MemberInfo();
-                memberInfo.setId(findMember.getId());
-                memberInfo.setUsername(findMember.getUsername());
-
-                HttpSession session = request.getSession(true);
-                session.setAttribute("memberInfo", memberInfo);
-
-                return "index";
             }
         }
         return "/2/2.16";
@@ -87,10 +79,7 @@ public class HomeController {
     public String LoginForm_secure(@Valid @ModelAttribute("form")MemberLoginForm2 form,
                                    HttpServletRequest request, HttpServletResponse response, Model model) {
 
-        Member findMember = memberService.findOne(form.getUsername());
-        log.info("findMember {}", findMember);
-        log.info("findMember.isIslocked{}" , findMember.isIslocked());
-
+        Member findMember = memberService.findByUsername(form.getUsername());
 
         if (findMember == null) {
             model.addAttribute("message", "아이디, 비밀번호를 확인해주세요");
@@ -108,7 +97,7 @@ public class HomeController {
                 HttpSession session = request.getSession(true);
                 session.setAttribute("memberInfo", memberInfo);
 
-                return "index";
+                return "redirect:/";
 
             } else if (memberService.checkPassword(form.getPassword(), findMember.getPassword()) && !findMember.isIslocked()) {
                 MemberInfo memberInfo = new MemberInfo();
@@ -122,7 +111,8 @@ public class HomeController {
                     memberService.clearLoginCount(findMember.getUsername());
                 }
 
-                return "index";
+                return "redirect:/";
+
             } else {
                 if (findMember.isIslocked()) {
                     model.addAttribute("message", "잠긴 계정입니다.");
