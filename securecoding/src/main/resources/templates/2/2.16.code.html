@@ -1,0 +1,189 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Head -->
+<head th:replace="fragments/head :: head"></head>
+<body>
+<!-- Navigation-->
+<nav th:replace="fragments/nav :: nav"></nav>
+<!-- Header-->
+<head th:replace="fragments/header :: header"></head>
+<!-- Section-->
+<section class="py-5">
+  <div class="container px-4 px-lg-5 mt-5">
+    <h4 class="fw-bolder" style="text-align: center">16. 반복된 인증시도 제한 기능 부재</h4>
+    <p style="text-align: center">제2절 보안기능</p>
+    <br />
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        <!-- Vulnerable code -->
+        <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
+            <hr />
+            <form action="#" method="get">
+                <div class="wrapper" style="width: 100%">
+                    <div class="tabs">
+                        <div class="tab">
+                            <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+                            <label for="tab-1" class="tab-label">HomeController.java</label>
+                            <div class="tab-content">
+                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">@PostMapping("/2/16/vuln")
+public String LoginForm_vuln(@Valid @ModelAttribute("form")MemberLoginForm form,
+                                 HttpServletRequest request, HttpServletResponse response, Model model) {
+
+    Member findMember = memberService.findOne(form.getUsername());
+
+    if(findMember == null) {
+        model.addAttribute("message", "아이디, 비밀번호를 확인해주세요");
+        model.addAttribute("searchUrl", "/member/login");
+
+        return "message";
+
+    } else {
+        if (form.getPassword().equals(findMember.getPassword())) {
+            memberInfo.setId(findMember.getId());
+            memberInfo.setUsername(findMember.getUsername());
+
+            HttpSession session = request.getSession(true);
+            session.setAttribute("memberInfo", memberInfo);
+
+            return "index";
+
+        } else {
+            model.addAttribute("message", "아이디, 비밀번호를 확인해주세요");
+            model.addAttribute("searchUrl", "/member/login");
+
+            return "message";
+        }
+    }
+    return "/2/2.16";
+}</textarea></code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <br />
+           <hr />
+          </form>
+      </div>
+        <!-- Secure Code -->
+        <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Secure</h4>
+          <hr />
+          <form action="#" method="get">
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-4" checked class="tab-switch">
+                          <label for="tab-4" class="tab-label">HomeController.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping(value = {"/member/login", "/2/16/secure"})
+public String LoginForm_secure(@Valid @ModelAttribute("form")MemberLoginForm2 form,
+                                   HttpServletRequest request, HttpServletResponse response, Model model) {
+
+    Member findMember = memberService.findOne(form.getUsername());
+
+    if (findMember == null) {
+        model.addAttribute("message", "아이디, 비밀번호를 확인해주세요");
+        model.addAttribute("searchUrl", "/member/login");
+
+        return "message";
+    }
+
+    else {
+        if (memberService.checkPassword(form.getPassword(), findMember.getPassword()) && !findMember.isIslocked()) {
+            MemberInfo memberInfo = new MemberInfo();
+            memberInfo.setId(findMember.getId());
+            memberInfo.setUsername(findMember.getUsername());
+
+            HttpSession session = request.getSession(true);
+            session.setAttribute("memberInfo", memberInfo);
+
+            if (findMember.getCount() != 0) {
+                memberService.clearLoginCount(findMember.getUsername());
+            }
+
+            return "redirect:/";
+
+        } else {
+            if (findMember.isIslocked()) {
+                model.addAttribute("message", "잠긴 계정입니다.");
+
+            } else {
+                memberService.updateFailure(form.getUsername());
+                model.addAttribute("message", "아이디, 비밀번호를 확인해주세요");
+
+            }
+            model.addAttribute("searchUrl", "/member/login");
+            return "message";
+        }
+    }
+}</textarea></code>
+                          </div>
+                      </div>
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-5" class="tab-switch">
+                          <label for="tab-5" class="tab-label">MemberService.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Service
+@Transactional
+@RequiredArgsConstructor
+public class MemberService {
+
+    private final MemberRepository memberRepository;
+    ....
+
+    /* 인증 시도 제한 */
+    @Transactional
+    public void clearLoginCount(String username) {
+        Member member = findOne(username);
+        member.setCount(0);
+    }
+
+    @Transactional
+    public void updateFailure(String username) {
+        Member member = findOne(username);
+        if (member.getCount() == 4) {
+            member.setIslocked(true);
+        }
+
+        memberRepository.updateCountFailure(username);
+    }
+
+}</textarea></code>
+                          </div>
+                      </div>
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-6" class="tab-switch">
+                          <label for="tab-6" class="tab-label">MemberRepository.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Repository
+public interface MemberRepository extends JpaRepository<Member, Long> {
+    ....
+
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE Member m SET m.count = m.count + 1 WHERE m.username = :username")
+    int updateCountFailure(@Param("username") String username);
+
+}</textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </form>
+          <br />
+          <hr />
+      </div>
+    </div>
+      <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+          <div class="text-center"><a class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/2/16}">실습 하기</a></div>
+      </div>
+  </div>
+</section>
+<br />
+<!-- Footer-->
+<footer th:replace="fragments/footer :: footer"></footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>
