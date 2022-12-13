@@ -22,6 +22,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
+    /* 회원가입 */
     public Long join(Member member) {
 
         if(validateDuplicateMember(member.getUsername())) {
@@ -36,7 +37,6 @@ public class MemberService {
     /* 회원 아이디 조회 */
     @Transactional(readOnly = true)
     public Member findOne(String username) { return memberRepository.findByUsername(username);}
-
 
     /* 아이디 중복 회원 검증 */
     private boolean validateDuplicateMember(String username) {
@@ -60,6 +60,23 @@ public class MemberService {
 
     public boolean checkPassword(String inputPassword, String encryptedPassword) {
         return BCrypt.checkpw(inputPassword, encryptedPassword);
+    }
+
+    /* 인증 시도 제한 */
+    @Transactional
+    public void clearLoginCount(String username) {
+        Member member = findOne(username);
+        member.setCount(0);
+    }
+
+    @Transactional
+    public void updateFailure(String username) {
+        Member member = findOne(username);
+        if (member.getCount() == 4) {
+            member.setIslocked(true);
+        }
+
+        memberRepository.updateCountFailure(username);
     }
 
 
