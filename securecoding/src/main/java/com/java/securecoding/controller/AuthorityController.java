@@ -257,6 +257,13 @@ public class AuthorityController {
         }
         return "/2/2.14";
     }
+
+    //16. 반복된 인증시도 제한 기능 부재
+    @GetMapping("/2/16/code")
+    public String LoginForm_code() {
+            return "/2/2.16.code";
+    }
+
 }
 
 //AES256
