@@ -14,17 +14,20 @@
     <p style="text-align: center">제2절 보안기능</p>
     <br />
     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-      <div class="col mb-5" style="width: 60%">
+        <!-- Vulnerable code -->
+        <div class="col mb-5" style="width: 60%">
         <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
-        <hr />
-          <form action="#" method="get">
-            <br />
-            <div class="card h-100">
-              <!-- Vulnerable code -->
-<!--                <pre class="line-numbers" style="height: 30%;">-->
-                <code class="code-area" style="height: 15em"><textarea readonly class="area" style="height: 15em">public class Encrypt {
+            <hr />
+            <form action="#" method="get">
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+                          <label for="tab-1" class="tab-label">Encrypt.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled class="area" style="height: 15em">public class Encrypt {
 
-    static  final int KEY_SIZE = 1024;
+    static final int KEY_SIZE = 1024;
 
     public static void main(String[] args) {
         HashMap<String, String> rsaKeyPair = createKeypairAsString();
@@ -34,24 +37,29 @@
         String plainText = "password";
 
         String encryptedText = encode(plainText, publicKey);
-
     }
-              </textarea>
-                </code>
-<!--                </pre>-->
-            </div>
-          </form>
-          <br />
-          <hr />
-      </div>
-      <div class="col mb-5" style="width: 60%">
-        <h4 class="fw-bolder" style="text-align: center">Secure</h4>
-        <hr />
-          <form action="#" method="get">
+    ....
+}</textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
             <br />
-            <div class="card h-100">
-              <!-- Secure Code -->
-                <code class="code-area" style="height: 15em"><textarea readonly class="area" style="height: 15em">public class Encrypt {
+           <hr />
+          </form>
+      </div>
+        <!-- Secure Code -->
+        <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Secure</h4>
+          <hr />
+          <form action="#" method="get">
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-2" checked class="tab-switch">
+                          <label for="tab-2" class="tab-label">Encrypt.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">public class Encrypt {
 
     static final int KEY_SIZE = 2048;
 
@@ -64,9 +72,12 @@
 
         String encryptedText = encode(plainText, publicKey);
     }
-                </textarea>
-                </code>
-            </div>
+    ....
+}</textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
           </form>
           <br />
           <hr />
