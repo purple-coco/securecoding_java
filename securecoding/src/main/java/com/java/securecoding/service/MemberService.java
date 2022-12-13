@@ -34,9 +34,13 @@ public class MemberService {
         }
     }
 
+    /* 회원 정보 조회 */
+//    @Transactional(readOnly = true)
+//    public Member findById(Long memberId) { return memberRepository.findById(memberId);}
+
     /* 회원 아이디 조회 */
     @Transactional(readOnly = true)
-    public Member findOne(String username) { return memberRepository.findByUsername(username);}
+    public Member findByUsername(String username) { return memberRepository.findByUsername(username);}
 
     /* 아이디 중복 회원 검증 */
     private boolean validateDuplicateMember(String username) {
@@ -65,13 +69,13 @@ public class MemberService {
     /* 인증 시도 제한 */
     @Transactional
     public void clearLoginCount(String username) {
-        Member member = findOne(username);
+        Member member = findByUsername(username);
         member.setCount(0);
     }
 
     @Transactional
     public void updateFailure(String username) {
-        Member member = findOne(username);
+        Member member = findByUsername(username);
         if (member.getCount() == 4) {
             member.setIslocked(true);
         }
