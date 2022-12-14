@@ -35,8 +35,8 @@ public class MemberService {
     }
 
     /* 회원 정보 조회 */
-//    @Transactional(readOnly = true)
-//    public Member findById(Long memberId) { return memberRepository.findById(memberId);}
+    @Transactional(readOnly = true)
+    public Member findOne(Long memberId) { return memberRepository.findAllById(memberId);}
 
     /* 회원 아이디 조회 */
     @Transactional(readOnly = true)
@@ -63,7 +63,13 @@ public class MemberService {
     }
 
     public boolean checkPassword(String inputPassword, String encryptedPassword) {
-        return BCrypt.checkpw(inputPassword, encryptedPassword);
+        boolean result = false;
+        try{
+            result = BCrypt.checkpw(inputPassword, encryptedPassword);
+            return result;
+        } catch (Exception e) {
+            return result;
+        }
     }
 
     /* 인증 시도 제한 */
@@ -83,6 +89,15 @@ public class MemberService {
         memberRepository.updateCountFailure(username);
     }
 
+    /* 회원 정보 수정 */
+    @Transactional
+    public void updateMemberInfo(Long memberId, String name, String password) {
+        Member findMemberInfo = memberRepository.findAllById(memberId);
+
+        findMemberInfo.setName(name);
+
+        memberRepository.save(findMemberInfo);
+    }
 
 
 }
