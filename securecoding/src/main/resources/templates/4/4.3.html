@@ -10,7 +10,7 @@
 <!-- Section-->
 <section class="py-5">
   <div class="container px-4 px-lg-5 mt-5">
-    <h4 class="fw-bolder" style="text-align: center">2. 오류 상황 대응 부재</h4>
+    <h4 class="fw-bolder" style="text-align: center">3. 부적절한 예외 처리</h4>
     <p style="text-align: center">제4절 에러처리</p>
     <br />
     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
@@ -23,28 +23,42 @@
                     <div class="tabs">
                         <div class="tab">
                             <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
-                            <label for="tab-1" class="tab-label">CommandController.java</label>
+                            <label for="tab-1" class="tab-label">ErrorController.java</label>
                             <div class="tab-content">
-                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">@PostMapping("/1/7/secure")
-public String URLConnected_secure(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
+                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">@GetMapping("/4/3/vuln")
+public String NotImproperException_vuln(HttpServletRequest request, Model model) {
 
-    String[] allowedUrl = {"/", "/1/vuln5"};
+    String DES = null;
+    StringBuffer stringBuffer = null;
+    String plainText = request.getParameter("plainText");
 
-    String url2 = request.getParameter("url2");
 
-    if (url2 == null) {
-        return "/1/1.7";
+    if(plainText == null) {
+        return "/4/4.3";
     }
+
     try {
-        url2 = allowedUrl[Integer.parseInt(url2)];
-        response.sendRedirect(url2);
-    } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+        Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+        byte[] plaintext = plainText.getBytes(StandardCharsets.UTF_8);
+        byte[] ciphertext = cipher.doFinal(plaintext);
 
-       // 예외 발생 상황에 대한 적절한 예외 처리 로직 부재
+        stringBuffer = new StringBuffer(ciphertext.length * 2);
+        for (int i = 0; i < ciphertext.length; i++) {
+            String hex = "0" + Integer.toHexString(0xff & ciphertext[i]);
+            stringBuffer.append(hex.substring(hex.length() - 2));
+        }
 
+    } catch (Exception e) {
+        System.out.println("e.getMessage() = " + e.getMessage());
     }
 
-    return "/1/1.7";
+    DES = stringBuffer.toString();
+
+    model.addAttribute("plainText", plainText);
+    model.addAttribute("value", DES);
+
+    return "/2/2.4";
 }</textarea></code>
                             </div>
                         </div>
@@ -63,29 +77,49 @@ public String URLConnected_secure(HttpServletRequest request, HttpServletRespons
                   <div class="tabs">
                       <div class="tab">
                           <input type="radio" name="css-tabs" id="tab-2" checked class="tab-switch">
-                          <label for="tab-2" class="tab-label">CommandController.java</label>
+                          <label for="tab-2" class="tab-label">ErrorController.java</label>
                           <div class="tab-content">
-                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/1/7/secure")
-public String URLConnected_secure(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@GetMapping("/4/3/secure")
+public String NotImproperException_vuln(HttpServletRequest request, Model model) {
 
-    String[] allowedUrl = {"/", "/1/vuln5"};
+    String DES = null;
+    StringBuffer stringBuffer = null;
+    String plainText2 = request.getParameter("plainText2");
 
-    String url2 = request.getParameter("url2");
-
-    if (url2 == null) {
-        return "/1/1.7";
+    if(plainText2 == null) {
+        return "/4/4.3";
     }
+
     try {
-        url2 = allowedUrl[Integer.parseInt(url2)];
-        response.sendRedirect(url2);
-    } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-        model.addAttribute("message", "잘못된 접근입니다.");
-        model.addAttribute("searchUrl", "/1/7");
+        Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+        byte[] plaintext = plainText2.getBytes(StandardCharsets.UTF_8);
+        byte[] ciphertext = cipher.doFinal(plaintext2);
 
-        return "message";
+        stringBuffer = new StringBuffer(ciphertext.length * 2);
+        for (int i = 0; i < ciphertext.length; i++) {
+            String hex = "0" + Integer.toHexString(0xff & ciphertext[i]);
+            stringBuffer.append(hex.substring(hex.length() - 2));
+        }
+
+    } catch (NoSuchAlgorithmException e) {
+         System.out.println("No Such Algorithm");
+    } catch (NoSuchPaddingException e) {
+         System.out.println("Padding Exception");
+    } catch (InvalidKeyException e) {
+         System.out.println("Invalid Key");
+    } catch (BadPaddingException e) {
+         System.out.println("Bad Padding Exception");
+    } catch (IllegalBlockSizeException e) {
+         System.out.println("Block Size Exception");
     }
 
-    return "/1/1.7";
+    DES = stringBuffer.toString();
+
+    model.addAttribute("plainText2", plainText2);
+    model.addAttribute("value", DES);
+
+    return "/2/2.4";
 }</textarea></code>
                           </div>
                       </div>
