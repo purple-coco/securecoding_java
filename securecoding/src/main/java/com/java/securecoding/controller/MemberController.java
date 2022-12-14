@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -108,6 +110,48 @@ public class MemberController{
         }
     }
 
+    /* 회원 정보 수정 */
+    @GetMapping("/mypage/info/{memberId}")
+    public String MemberInfoForm_id(@PathVariable("memberId") Long memberId, Model model) {
+        Member member = memberService.findOne(memberId);
+
+        MemberForm form = new MemberForm();
+
+        form.setId(member.getId());
+        form.setName(member.getName());
+        form.setUsername(member.getUsername());
+
+        model.addAttribute("form", form);
+
+        return "/2/2.1";
+    }
+
+    @PostMapping("/mypage/info/{memberId}")
+    public String MemberInfoForm_id(@PathVariable("memberId") Long memberId,
+                                    HttpServletRequest request, @ModelAttribute("form") MemberForm form) {
+
+
+        return "/2/2.1";
+    }
+
+    /* 회원 정보 수정 */
+    @GetMapping(value = {"/2/1", "/2/1/vuln", "/2/1/secure"})
+    public String MemberInfoForm(Long memberId, Model model) {
+        Member member = memberService.findOne(memberId);
+
+        MemberForm form = new MemberForm();
+
+        form.setId(member.getId());
+        form.setName(member.getName());
+        form.setUsername(member.getUsername());
+
+        model.addAttribute("form", form);
+
+        return "/2/2.1";
+    }
+
+
+    /* 로그아웃 */
     @GetMapping("member/logout")
     public String logoutMember(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
         request.getSession().removeAttribute("memberInfo");
