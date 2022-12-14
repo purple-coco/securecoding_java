@@ -24,15 +24,21 @@
                           <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
                           <label for="tab-1" class="tab-label">CodeErrorController.java</label>
                           <div class="tab-content">
-                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/5/1/vuln")
-public String NullForm_vuln(HttpServletRequest request, Model model) throws IOException {
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/5/2/vuln")
+public String InappropriateResource_vuln(HttpServletRequest request, Model model) throws IOException {
       String cmd = request.getParameter("cmd");
-      String result;
 
-      result = commandService.OSCommandService(cmd);
-      model.addAttribute("result", result);
+      Process process = null;
+      InputStream inputStream = null;
+      InputStreamReader inputStreamReader = null;
+      BufferedReader bufferedReader = null;
 
-      return "/5/5.1";
+      try {
+            process = Runtime.getRuntime().exec(cmd);
+            inputStream = process.getInputStream();
+            inputStreamReader = new InputStreamReader(inputStream);
+            bufferedReader = new BufferedReader(inputStreamReader);
+      }
 }</textarea></code>
                           </div>
                       </div>
@@ -49,37 +55,30 @@ public String NullForm_vuln(HttpServletRequest request, Model model) throws IOEx
               <div class="wrapper" style="width: 100%">
                   <div class="tabs">
                       <div class="tab">
-                          <input type="radio" name="css-tabs" id="tab-3" checked class="tab-switch">
-                          <label for="tab-3" class="tab-label">CodeErrorController.java</label>
+                          <input type="radio" name="css-tabs" id="tab-2" checked class="tab-switch">
+                          <label for="tab-2" class="tab-label">CodeErrorController.java</label>
                           <div class="tab-content">
-                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/5/1/secure")
-public String NullForm_secure(HttpServletRequest request, Model model) throws IOException {
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/5/2/secure")
+public String InappropriateResource_secure(HttpServletRequest request, Model model) throws IOException {
+      String cmd2 = request.getParameter("cmd2");
 
-        String cmd2 = request.getParameter("cmd2");
-        String result2;
+      Process process = Runtime.getRuntime().exec(cmd2);
 
-        List<String> allowedCommands = new ArrayList<String>();
-        allowedCommands.add("cal");
-
-        if (cmd2 == null) {
-            model.addAttribute("result2", "명령어를 입력하세요");
-
-        } else if (cmd2.matches("[|;&:>-]*")) {
-            model.addAttribute("message", "허용하지 않는 명령어입니다.");
-            model.addAttribute("searchUrl", "/5/1");
-
-            return "message";
-        } else if (!allowedCommands.contains(cmd2)) {
-            model.addAttribute("message", "허용하지 않는 명령어입니다.");
-            model.addAttribute("searchUrl", "/5/1");
-
-            return "message";
-        } else {
-            result2 = commandService.OSCommandService(cmd2);
-            model.addAttribute("result2", result2);
-        }
-
-        return "/5/5.1";
+      // Try-with-Resources 구문 이용하여 자동 자원 해제 처리
+      try {
+            InputStream inputStream = process.getInputStream();
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+      } {
+          String line = null;
+          String result = null;
+          while((line = bufferedReader.readLine()) != null) {
+            result += " " + line;
+            model.addAttribute("line", result);
+          }
+      } catch (IOException e) {
+          System.out.println("error");
+      }
 }</textarea></code>
                           </div>
                       </div>
@@ -90,9 +89,6 @@ public String NullForm_secure(HttpServletRequest request, Model model) throws IO
           <hr />
       </div>
     </div>
-      <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-          <div class="text-center"><a class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/5/1}">실습 하기</a></div>
-      </div>
   </div>
 </section>
 <br />
