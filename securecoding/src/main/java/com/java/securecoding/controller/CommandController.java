@@ -165,7 +165,6 @@ public class CommandController {
         String input2 = request.getParameter("input2");
         String result2 = commandService.XSSFilterService(input2);
 
-//        model.addAttribute("input2", result2);
         model.addAttribute("result2", result2);
 
         return "/1/1.4";
