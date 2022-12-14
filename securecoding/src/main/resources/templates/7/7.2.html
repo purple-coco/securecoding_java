@@ -25,26 +25,16 @@
                         <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
                         <label for="tab-1" class="tab-label">APIMisuseController.java</label>
                         <div class="tab-content">
-                            <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">@GetMapping("/members/delete/{memberId}")
-public String deleteMember(@PathVariable("memberId") Long memberId, HttpServletRequest request, Model model) throws UnknownHostException {
-
-    String ip = request.getServerName();
-
-    if(ip.equalsIgnoreCase("localhost")) {
-        Member member = memberService.findOne(memberId);
-
-        MemberForm form = new MemberForm();
-
-        form.setId(member.getId());
-        form.setName(member.getName());
-        form.setUsername(member.getUsername());
-        form.setMemberAuthority(member.getMemberAuthority());
-
-        model.addAttribute("form", form);
-        return "members/deleteMemberForm";
-    }
-
-    return "redirect:/members";
+                            <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">public class APIMisUseForm_vuln extends javax.servlet.http.HttpServlet {
+   private Socket socket
+   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+    try {
+       // 프레임워크의 메서드 호출 대신 소켓 직접 사용
+       socket = new Socket("shieldus.com", 18080);
+    } catch (UnknownHostException e) {
+        ....
+      }
+   }
 }</textarea></code>
                         </div>
                     </div>
@@ -65,26 +55,19 @@ public String deleteMember(@PathVariable("memberId") Long memberId, HttpServletR
                         <input type="radio" name="css-tabs" id="tab-2" checked class="tab-switch">
                         <label for="tab-2" class="tab-label">APIMisuseController.java</label>
                         <div class="tab-content">
-                            <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">@GetMapping("/members/delete/{memberId}")
-public String deleteMember(@PathVariable("memberId") Long memberId, HttpServletRequest request, Model model) {
-    String ip = request.getRemoteAddr();
+                            <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">public class APIMisUseForm_secure extends javax.servlet.http.HttpServlet {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+      ObjectOutputStream oos = null;
+      ObjectInputStream ois = null;
+      try {
+        URL url = new URL("http://127.0.0.1:18080/DataServlet");
 
-    MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute("memberInfo");
-    memberService.validateUpdate(memberInfo.getId(), memberId);
-
-    if (ip.equals("127.0.0.1")) {
-        Member member = memberService.findOne(memberId);
-
-        MemberForm form = new MemberForm();
-
-        form.setId(member.getId());
-        form.setName(member.getName());
-        form.setUsername(member.getUsername());
-        form.setMemberAuthority(member.getMemberAuthority());
-
-        model.addAttribute("form", form);
-        return "members/deleteMemberForm";
-        }
+        // 보안기능을 제공하는 프레임워크의 메서드 사용
+        URLConnection urlConn = url.openConnection();
+        urlConn.setDoOutput(true);
+        ....
+      }
+    }
 }</textarea></code>
                         </div>
                     </div>
