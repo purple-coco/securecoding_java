@@ -6,6 +6,7 @@ import com.java.securecoding.domain.member.MemberLoginForm;
 import com.java.securecoding.domain.member.MemberLoginForm2;
 import com.java.securecoding.domain.session.MemberInfo;
 import com.java.securecoding.service.MemberService;
+import exception.LoginException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -82,24 +83,16 @@ public class HomeController {
         Member findMember = memberService.findByUsername(form.getUsername());
 
         if (findMember == null) {
-            model.addAttribute("message", "아이디, 비밀번호를 확인해주세요");
+            model.addAttribute("message", "아이디, 비밀번호를 확인해주세요1");
             model.addAttribute("searchUrl", "/member/login");
 
             return "message";
         }
 
         else {
-            if (form.getPassword().equals(findMember.getPassword())) {
-                MemberInfo memberInfo = new MemberInfo();
-                memberInfo.setId(findMember.getId());
-                memberInfo.setUsername(findMember.getUsername());
-
-                HttpSession session = request.getSession(true);
-                session.setAttribute("memberInfo", memberInfo);
-
-                return "redirect:/";
-
-            } else if (memberService.checkPassword(form.getPassword(), findMember.getPassword()) && !findMember.isIslocked()) {
+            if (form.getPassword().equals(findMember.getPassword())
+                    || (memberService.checkPassword(form.getPassword(), findMember.getPassword())
+                    && !findMember.isIslocked())) {
                 MemberInfo memberInfo = new MemberInfo();
                 memberInfo.setId(findMember.getId());
                 memberInfo.setUsername(findMember.getUsername());
@@ -119,7 +112,7 @@ public class HomeController {
 
                 } else {
                     memberService.updateFailure(form.getUsername());
-                    model.addAttribute("message", "아이디, 비밀번호를 확인해주세요");
+                    model.addAttribute("message", "아이디, 비밀번호를 확인해주세요3");
 
                 }
                 model.addAttribute("searchUrl", "/member/login");
