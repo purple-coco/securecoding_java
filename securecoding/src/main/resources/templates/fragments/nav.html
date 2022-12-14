@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container px-4 px-lg-5">
-      <a class="navbar-brand" style="font-weight: 600" href="/">JAVA</a>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light" style="height: 15%">
+    <div class="container px-4 px-lg-5" style="height: 15%">
+      <a class="navbar-brand" style="font-weight: 500; font-size: 30px" href="/">JAVA</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
@@ -61,8 +61,8 @@
             <a class="nav-link dropdown-toggle" id="navbarDropdown5" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">제4절 에러처리</a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li><a class="dropdown-item" th:href="@{/4/1}">1. 오류 메시지 정보노출</a></li>
-              <li><a class="dropdown-item" href="#!">2. 오류 상황 대응 부재</a></li>
-              <li><a class="dropdown-item" href="#!">3. 부적절한 예외 처리</a></li>
+              <li><a class="dropdown-item" th:href="@{/4/2}">2. 오류 상황 대응 부재</a></li>
+              <li><a class="dropdown-item" th:href="@{/4/3}">3. 부적절한 예외 처리</a></li>
             </ul>
           </li>
           <li class="nav-item dropdown">
@@ -70,7 +70,7 @@
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li><a class="dropdown-item" th:href="@{/5/1}">1. Null Pointer 역참조</a></li>
               <li><a class="dropdown-item" th:href="@{/5/2}">2. 부적절한 자원 해제</a></li>
-              <li><a class="dropdown-item" href="#!">3. 해제된 자원 사용</a></li>
+              <li><a class="dropdown-item" th:href="@{/5/3}">3. 해제된 자원 사용</a></li>
               <li><a class="dropdown-item" th:href="@{/5/4}">4. 초기화되지 않은 변수 사용</a></li>
               <li><a class="dropdown-item" href="#!">5. 신뢰할 수 없는 데이터의 역직렬화</a></li>
             </ul>
