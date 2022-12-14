@@ -10,4 +10,14 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
     public String ErrorMessageForm() {
         return "/4/4.1";
     }
+
+    @GetMapping("/4/2")
+    public String ErrorResponseForm() {
+        return "/4/4.2";
+    }
+
+    @GetMapping("/4/3")
+    public String NotExceptionForm() {
+        return "/4/4.3";
+    }
 }
