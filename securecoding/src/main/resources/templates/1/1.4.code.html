@@ -76,31 +76,28 @@ public class CommandController {
                             <label for="tab-4" class="tab-label">CommandService.java</label>
                             <div class="tab-content">
                                 <pre><code class="code-area" style="height: 15em"><textarea disabled class="area" style="height: 15em">public static String XSSFilterService(String input) {
-    input = input.replaceAll("<", "&lt;");
-    input = input.replaceAll(">", "&gt;");
-    input = input.replaceAll("/", "&#47;");
-    input = input.replaceAll("'", "&#39;");
-    input = input.replaceAll("\"", "&#x22;");
-    input = input.replaceAll("`", "&#96;");
-    input = input.replaceAll("[(]", "&#x28;");
-    input = input.replaceAll("[)]", "&#x29;");
+    input = input.replaceAll("<", "&amp;lt;");
+    input = input.replaceAll(">", "&amp;gt;");
+    input = input.replaceAll("/", "&amp;#47;");
+    input = input.replaceAll("'", "&amp;#39;");
+    input = input.replaceAll("\"", "&amp;#x22;");
+    input = input.replaceAll("`", "&amp;#96;");
+    input = input.replaceAll("(", "&amp;#x28;");
+    input = input.replaceAll(")", "&amp;#x29;");
 
     return input;
-
-    }
-              </textarea></code></pre>
+}</textarea></code></pre>
                             </div>
                         </div>
                     </div>
                 </div>
-              <br />
           </form>
           <br />
           <hr/>
       </div>
     </div>
     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-      <div class="text-center"><a class="btn" style="margin-left: 55%; background-color: #F5Df4D" th:href="@{/1/4}">실습 하기</a></div>
+      <div class="text-center"><a class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/1/4}">실습 하기</a></div>
     </div>
   </div>
 </section>
