@@ -14,64 +14,85 @@
     <p style="text-align: center">제1절 입력데이터 검증 및 표현</p>
     <br />
     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-      <div class="col mb-5" style="width: 60%">
+        <!-- Vulnerable code -->
+        <div class="col mb-5" style="width: 60%">
         <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
-        <hr />
-          <form action="#" method="get">
-            <br />
-            <div class="card h-100">
-              <!-- Vulnerable code -->
-<!--                <pre class="line-numbers" style="height: 30%;">-->
-                <code class="code-area" style="height: 15em"><textarea class="area" style="height: 15em">@Service
-@Transactional
-@RequiredArgsConstructor
-public class MemberService {
+            <hr />
+            <form action="#" method="get">
+                <div class="wrapper" style="width: 100%">
+                    <div class="tabs">
+                        <div class="tab">
+                            <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+                            <label for="tab-1" class="tab-label">Overflow.java</label>
+                            <div class="tab-content">
+                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">public class Overflow {
+    public static void main(String[] args) {
+        int Data = 1;
+        int [] buffer = new int[10];
 
-    private final MemberRepository memberRepository;
+        for (int i = 0; i < 15; i++) {
+            buffer[i] = i + Data;
+        }
 
-    /**
-     * 회원 전체 조회
-     * @return : 회원 엔티티 리스트
-     */
-    // 관리자 계정정보
-    // ID: admin PW: admin
-    @Transactional(readOnly = true)
-    public List<Member> findMembers() {
-        return memberRepository.findAll();
+        System.out.println("after buffer overflow ");
+        System.out.println("buffer data  = " + buffer[5]);
     }
-              </textarea>
-                </code>
-<!--                </pre>-->
-            </div>
+}</textarea></code>
+                            </div>
+                        </div>
+                        <div class="tab">
+                            <input type="radio" name="css-tabs" id="tab-2" class="tab-switch">
+                            <label for="tab-2" class="tab-label">실행 결과</label>
+                            <div class="tab-content">
+                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException:
+Index 10 out of bounds for length 10</textarea></code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <br />
+           <hr />
           </form>
       </div>
-      <div class="col mb-5" style="width: 60%">
+        <!-- Secure Code -->
+        <div class="col mb-5" style="width: 60%">
         <h4 class="fw-bolder" style="text-align: center">Secure</h4>
-        <hr />
+          <hr />
           <form action="#" method="get">
-            <br />
-            <div class="card h-100">
-              <!-- Secure Code -->
-                <code class="code-area" style="height: 15em"><textarea class="area" style="height: 15em">@Service
-@Transactional
-@RequiredArgsConstructor
-public class MemberService {
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-3" checked class="tab-switch">
+                          <label for="tab-3" class="tab-label">Overflow.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">public class Overflow {
+    public static void main(String[] args) {
+        int Data = 1;
+        int [] buffer = new int[10];
 
+        for (int i = 0; i < buffer.length; i++) {
+            buffer[i] = i + Data;
+        }
 
-    private final MemberRepository memberRepository;
-
-    /**
-     * 회원 전체 조회
-     * @return : 회원 엔티티 리스트
-     */
-    @Transactional(readOnly = true)
-    public List<Member> findMembers() {
-        return memberRepository.findAll();
+        System.out.println("after buffer overflow");
+        System.out.println("buffer data = " + buffer[5]);
     }
-                </textarea>
-                </code>
-            </div>
+}</textarea></code>
+                          </div>
+                      </div>
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-4" class="tab-switch">
+                          <label for="tab-4" class="tab-label">실행 결과</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">after buffer overflow
+buffer data = 6</textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
           </form>
+          <br />
+          <hr />
       </div>
     </div>
   </div>
