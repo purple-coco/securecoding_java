@@ -6,7 +6,6 @@ import com.java.securecoding.domain.member.MemberLoginForm;
 import com.java.securecoding.domain.member.MemberLoginForm2;
 import com.java.securecoding.domain.session.MemberInfo;
 import com.java.securecoding.service.MemberService;
-import exception.LoginException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
