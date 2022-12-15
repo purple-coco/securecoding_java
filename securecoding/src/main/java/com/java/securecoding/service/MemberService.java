@@ -4,12 +4,14 @@ package com.java.securecoding.service;
 import com.java.securecoding.domain.member.Member;
 import com.java.securecoding.repository.MemberRepository;
 import exception.NotJoinException;
+import exception.PermissionException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,6 +35,10 @@ public class MemberService {
             return member.getId();
         }
     }
+
+    /* 모든 회원 정보 조회 */
+    @Transactional(readOnly = true)
+    public List<Member> findMembers() { return memberRepository.findAll(); }
 
     /* 회원 정보 조회 */
     @Transactional(readOnly = true)
@@ -88,6 +94,14 @@ public class MemberService {
 
         memberRepository.updateCountFailure(username);
     }
+
+    /* 회원 검증 */
+    public void validateUpdate(Long id, Long memberId) {
+        if(!id.equals(memberId)) {
+            throw new PermissionException("권한이 없습니다.");
+        }
+    }
+
 
     /* 회원 정보 수정 */
     @Transactional
