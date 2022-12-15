@@ -1,0 +1,203 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Head -->
+<head th:replace="fragments/head :: head"></head>
+<body>
+<!-- Navigation-->
+<nav th:replace="fragments/nav :: nav"></nav>
+<!-- Header-->
+<head th:replace="fragments/header :: header"></head>
+<!-- Section-->
+<section class="py-5">
+  <div class="container px-4 px-lg-5 mt-5">
+    <h4 class="fw-bolder" style="text-align: center">15. 보안기능 결정에 사용되는 부적절한 입력값</h4>
+    <p style="text-align: center">제1절 입력데이터 검증 및 표현</p>
+    <br />
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        <!-- Vulnerable code -->
+        <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
+            <hr />
+            <form action="#" method="get">
+                <div class="wrapper" style="width: 100%">
+                    <div class="tabs">
+                        <div class="tab">
+                            <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+                            <label for="tab-1" class="tab-label">deleteMemberForm.html</label>
+                            <div class="tab-content">
+                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">@PostMapping("/2/5/vuln")
+public String CreateMemberForm_vuln(@Valid MemberForm form, BindingResult result, Model model) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("message", "유효하지 않은 정보입니다.");
+            model.addAttribute("searchUrl", "/2/5");
+
+            return "message";
+        }
+
+        Member member = new Member();
+
+        member.setName(form.getName());
+        member.setUsername(form.getUsername());
+
+        if(!memberService.passwordValidate(form.getPassword())) {
+
+            model.addAttribute("message", "최소 8자 이상, 영어 대·소문자, 숫자, 특수문자가 혼용되어야 합니다.");
+            model.addAttribute("searchUrl", "/member/signup");
+
+            return "message";
+        } else {
+            member.setPassword(form.getPassword());
+
+            memberService.join(member);
+
+            model.addAttribute("message", "회원가입이 완료되었습니다.");
+            model.addAttribute("searchUrl", "/member/login");
+
+            return "message";
+        }
+    }
+}</textarea></code>
+                            </div>
+                        </div>
+                        <div class="tab">
+                            <input type="radio" name="css-tabs" id="tab-2" class="tab-switch">
+                            <label for="tab-2" class="tab-label">MemberController.java</label>
+                            <div class="tab-content">
+                                <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Service
+@Transactional
+@RequiredArgsConstructor
+public class MemberService {
+
+    private final MemberRepository memberRepository;
+
+    public Long join(Member member) {
+
+        if(validateDuplicateMember(member.getUsername())) {
+            throw new NotJoinException("중복된 아이디입니다.");
+        } else {
+            memberRepository.save(member);
+
+            return member.getId();
+        }
+    }
+
+    private boolean validateDuplicateMember(String username) {
+        return memberRepository.existsByUsername(username);
+    }
+    ...
+}</textarea></code>
+                            </div>
+                        </div>
+                        <div class="tab">
+                            <input type="radio" name="css-tabs" id="tab-3" class="tab-switch">
+                            <label for="tab-3" class="tab-label">MemberService.java</label>
+                            <div class="tab-content">
+                                <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">public interface MemberRepository extends JpaRepository<Member, Long> {
+
+  boolean existsByUsername(String username);
+
+}</textarea></code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <br />
+           <hr />
+          </form>
+      </div>
+        <!-- Secure Code -->
+        <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Secure</h4>
+          <hr />
+          <form action="#" method="get">
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-4" checked class="tab-switch">
+                          <label for="tab-4" class="tab-label">MemberController.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/2/5/secure")
+    public String CreateMemberForm_secure(@Valid MemberForm2 form, BindingResult result, Model model) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("message", "유효하지 않은 정보입니다.");
+            model.addAttribute("searchUrl", "/2/5");
+
+            return "message";
+        }
+
+        Member member = new Member();
+
+        member.setName(form.getName());
+        member.setUsername(form.getUsername());
+
+        if(memberService.passwordValidate(form.getPassword())) {
+
+            member.setPassword(memberService.HashPassword(form.getPassword()));
+            memberService.join(member);
+
+            model.addAttribute("message", "회원가입이 완료되었습니다.");
+            model.addAttribute("searchUrl", "/member/login");
+
+            return "message";
+        } else {
+            model.addAttribute("message", "최소 8자 이상, 영어 대·소문자, 숫자, 특수문자가 혼용되어야 합니다.");
+            model.addAttribute("searchUrl", "/member/signup");
+
+            return "message";
+        }
+    }</textarea></code>
+                          </div>
+                      </div>
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-5" class="tab-switch">
+                          <label for="tab-5" class="tab-label">MemberService.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Service
+@Transactional
+@RequiredArgsConstructor
+public class MemberService {
+
+    private final MemberRepository memberRepository;
+
+    public Long join(Member member) {
+
+        if(validateDuplicateMember(member.getUsername())) {
+            throw new NotJoinException("중복된 아이디입니다.");
+        } else {
+            memberRepository.save(member);
+
+            return member.getId();
+        }
+    }
+
+    private boolean validateDuplicateMember(String username) {
+        return memberRepository.existsByUsername(username);
+    }
+    ....
+}</textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </form>
+          <br />
+          <hr />
+      </div>
+    </div>
+      <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+          <div th:each="member: ${members}" class="text-center">
+              <a th:if="${member.id == session.memberInfo.id}" class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/mypage/delete/{memberId} (memberId=${member.id})}">실습 하기</a></div>
+      </div>
+  </div>
+</section>
+<br />
+<!-- Footer-->
+<footer th:replace="fragments/footer :: footer"></footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>
