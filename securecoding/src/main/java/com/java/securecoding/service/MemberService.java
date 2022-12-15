@@ -99,5 +99,11 @@ public class MemberService {
         memberRepository.save(findMemberInfo);
     }
 
+    /* 회원 탈퇴 */
+    @Transactional
+    public void deleteMember(Long memberId) { memberRepository.deleteById(memberId); }
+
+
+
 
 }
