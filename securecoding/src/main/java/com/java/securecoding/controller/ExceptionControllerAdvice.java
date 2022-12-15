@@ -19,7 +19,7 @@ public class ExceptionControllerAdvice {
 
     @ExceptionHandler(PermissionException.class)
     public String NotPermission(Model model) {
-        model.addAttribute("message", "정상적인 접근이 아닙니다.");
+        model.addAttribute("message", "권한이 없습니다.");
         model.addAttribute("searchUrl", "/");
 
         return "message";
