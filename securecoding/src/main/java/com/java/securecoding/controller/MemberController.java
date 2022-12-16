@@ -112,7 +112,7 @@ public class MemberController{
 
     /* 회원 정보 수정 */
     @GetMapping("/mypage/info/{memberId}")
-    public String MemberInfoForm_id(@PathVariable("memberId") Long memberId, Model model) {
+    public String updateMemberForm_id(@PathVariable("memberId") Long memberId, Model model) {
         Member member = memberService.findOne(memberId);
 
         MemberForm form = new MemberForm();
@@ -127,7 +127,7 @@ public class MemberController{
     }
 
     @PostMapping("/mypage/info/{memberId}")
-    public String MemberInfoForm_id(@PathVariable("memberId") Long memberId,
+    public String updateMemberForm_id(@PathVariable("memberId") Long memberId,
                                     HttpServletRequest request, @ModelAttribute("form") MemberForm form) {
 
 
@@ -136,7 +136,7 @@ public class MemberController{
 
     /* 회원 정보 수정 */
     @GetMapping(value = {"/2/1", "/2/1/vuln", "/2/1/secure"})
-    public String MemberInfoForm(Long memberId, Model model) {
+    public String updateMemberForm(Long memberId, Model model) {
         Member member = memberService.findOne(memberId);
 
         MemberForm form = new MemberForm();
@@ -149,6 +149,62 @@ public class MemberController{
 
         return "/2/2.1";
     }
+
+    /* 회원 탈퇴 */
+    @GetMapping("/mypage/delete/{memberId}")
+    public String deleteMemberForm_id(@PathVariable("memberId") Long memberId, Model model) {
+        Member member = memberService.findOne(memberId);
+
+        MemberForm form = new MemberForm();
+
+        form.setName(member.getName());
+        form.setUsername(member.getUsername());
+
+        model.addAttribute("form", form);
+
+        return "/1/1.15";
+    }
+
+    @PostMapping("/1/15/vuln")
+    public String deleteMemberForm_vuln(@PathVariable("memberId") Long memberId, HttpServletRequest request, Model model) {
+        String id = request.getParameter("id");
+
+        if (id == null) {
+            return "/1/1.15";
+        }
+        Long memberid = Long.parseLong(id);
+
+        memberService.deleteMember(memberid);
+
+        model.addAttribute("message", "정말 탈퇴하시겠습니까?");
+        model.addAttribute("searchUrl", "/");
+
+        return "message";
+    }
+
+    @PostMapping("/1/15/secure")
+    public String deleteMemberForm_secure(@PathVariable("memberId") Long memberId, HttpServletRequest request, Model model) {
+        String id = request.getParameter("id");
+
+        if (id == null) {
+            return "/1/1.15";
+        }
+        Long memberid = Long.parseLong(id);
+
+        memberService.deleteMember(memberid);
+
+        model.addAttribute("message", "정말 탈퇴하시겠습니까?");
+        model.addAttribute("searchUrl", "/");
+
+        return "message";
+    }
+
+
+    @GetMapping(value = {"/1/15", "/1/15/vuln", "/1/15/secure"})
+    public String deleteMember(HttpServletRequest request, Model model) {
+        return "";
+    }
+
 
 
     /* 로그아웃 */
