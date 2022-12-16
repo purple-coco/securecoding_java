@@ -23,11 +23,29 @@
                     <div class="tabs">
                         <div class="tab">
                             <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
-                            <label for="tab-1" class="tab-label">Test2.java</label>
+                            <label for="tab-1" class="tab-label">class Test2</label>
+                            <div class="tab-content">
+                                <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">public class Test {
+
+    public static void main(String[] args) {
+        Test2 test2 = new Test2();
+        String[] test2StringArray = test2.getStringArray();
+        System.out.println("[-] test2 stringarray[] : " + Arrays.deepToString(test2StringArray));
+        test2StringArray[0] = "xyz";
+        System.out.println("[i] test2 stringarray[] = xyz ");
+        System.out.println("[-] test2 stringarray[] : " + Arrays.deepToString(test2StringArray));
+    }
+}</textarea></code>
+                            </div>
+                        </div>
+                        <div class="tab">
+                            <input type="radio" name="css-tabs" id="tab-2" class="tab-switch">
+                            <label for="tab-2" class="tab-label">Test.java</label>
                             <div class="tab-content">
                                 <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">public class Test2 {
 
     private String[] stringarray = new String[3];
+    private String string;
 
     public Test2() {
         stringarray[0] = "abc";
@@ -38,90 +56,54 @@
     public String[] getStringArray() {
         return stringarray;
     }
-
-    public void setStringArray(String[] stringarray) {
-        this.stringarray = stringarray;
-    }
-
 }</textarea></code>
-                            </div>
-                        </div>
-                        <div class="tab">
-                            <input type="radio" name="css-tabs" id="tab-2" class="tab-switch">
-                            <label for="tab-2" class="tab-label">Test.java</label>
-                            <div class="tab-content">
-                                <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">public class Test {
-
-    public static void main(String[] args) {
-        Test2 test2 = new Test2();
-
-        String[] inputStringArray = {"qwe", "asd", "zxc"};
-        System.out.println("\n[-] test2.getStringArray[] : " + Arrays.deepToString(test2.getStringArray()));
-        test2.setStringArray(inputStringArray);
-        System.out.println("[-] test2 stringarray[] : " + Arrays.deepToString(test2.getStringArray()));
-        inputStringArray[0] = "iop";
-        System.out.println("[i] inputStringArray[0] = iop");
-        System.out.println("[-] test2 stringarray[] : " + Arrays.deepToString(test2.getStringArray()));
-    }
-}</textarea></code>
-                            </div>
-                        </div>
+                          </div>
+                      </div>
                         <div class="tab">
                             <input type="radio" name="css-tabs" id="tab-3" class="tab-switch">
                             <label for="tab-3" class="tab-label">실행 결과</label>
                             <div class="tab-content">
                                 <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">[-] test2 stringarray[] : [abc, def, ghi]
-[-] test2 stringarray[] = xyz
-[i] inputStringArray[0] = iop
+[i] test2 stringarray[] = xyz
 [-] test2 stringarray[] : [xyz, def, ghi]</textarea></code>
                             </div>
                         </div>
                     </div>
-                </div>
-            <br />
-           <hr />
+              </div>
           </form>
-      </div>
-        <!-- Secure Code -->
-        <div class="col mb-5" style="width: 60%">
-        <h4 class="fw-bolder" style="text-align: center">Secure</h4>
+          <br />
           <hr />
-          <form action="#" method="get">
-              <div class="wrapper" style="width: 100%">
-                  <div class="tabs">
-                      <div class="tab">
-                          <input type="radio" name="css-tabs" id="tab-4" checked class="tab-switch">
-                          <label for="tab-4" class="tab-label">Test2.java</label>
-                          <div class="tab-content">
-                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">public class Test2 {
+      </div>
+        <!-- Secure code -->
+        <div class="col mb-5" style="width: 60%">
+            <h4 class="fw-bolder" style="text-align: center">Secure</h4>
+            <hr />
+            <form action="#" method="get">
+                <div class="wrapper" style="width: 100%">
+                    <div class="tabs">
+                        <div class="tab">
+                            <input type="radio" name="css-tabs" id="tab-4" checked class="tab-switch">
+                            <label for="tab-4" class="tab-label">Test.java</label>
+                            <div class="tab-content">
+                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">public class Test {
 
-    private String[] stringarray = new String[3];
-
-    public Test2() {
-        stringarray[0] = "abc";
-        stringarray[1] = "def";
-        stringarray[2] = "ghi";
-    }
-
-    public String[] getNewArray() {
-        String[] returnArray = null;
-        if(this.stringarray != null) {
-            returnArray = new String[stringarray.length];
-
-            for (int i = 0; i < stringarray.length; i++) {
-                returnArray[i] = this.stringarray[i];
-            }
-        }
-        return returnArray;
-    }
-}</textarea></code>
-                          </div>
-                      </div>
-                      <div class="tab">
-                          <input type="radio" name="css-tabs" id="tab-5" class="tab-switch">
-                          <label for="tab-5" class="tab-label">Test.java</label>
-                          <div class="tab-content">
-                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Service
+    public static void main(String[] args) {
+        Test2 test2 = new Test2();
+        String[] test2StringArray = test2.getStringArray();
+        System.out.println("[-] test2 stringarray[] : " + Arrays.deepToString(test2StringArray));
+        test2StringArray[0] = "xyz";
+        System.out.println("[i] test2 stringarray[] = xyz ");
+        System.out.println("[-] test2 stringarray[] : " + Arrays.deepToString(test2StringArray));
+        System.out.println("[-] test2.getStringArray[] : " + test2.getStringArray());
+                                    }
+                                    }</textarea></code>
+                            </div>
+                        </div>
+                        <div class="tab">
+                            <input type="radio" name="css-tabs" id="tab-5" class="tab-switch">
+                            <label for="tab-5" class="tab-label">class Test2</label>
+                            <div class="tab-content">
+                                <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Service
 @RequiredArgsConstructor
 public class AuthorityService {
 
@@ -135,43 +117,34 @@ public class AuthorityService {
         return matcher.matches();
     }
 }</textarea></code>
-                          </div>
-                      </div>
-                      <div class="tab">
-                          <input type="radio" name="css-tabs" id="tab-6" class="tab-switch">
-                          <label for="tab-6" class="tab-label">실행 결과</label>
-                          <div class="tab-content">
-                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Controller
-public class AuthorityController {
+                            </div>
+                        </div>
+                        <div class="tab">
+                            <input type="radio" name="css-tabs" id="tab-6" class="tab-switch">
+                            <label for="tab-6" class="tab-label">실행 결과</label>
+                            <div class="tab-content">
+                                <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Service
+@RequiredArgsConstructor
+public class AuthorityService {
 
-    private static AuthorityService authorityService;
+    public static boolean SecurePasswordService(String password) {
 
-    @PostMapping("/2/9/secure")
-    public String PasswordForm_secure(HttpServletRequest request, Model model) throws Exception {
+        String passwordPolicy = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$";
 
-            String username2 = request.getParameter("username2");
-            String password2 = request.getParameter("password2");
+        Pattern pattern = Pattern.compile(passwordPolicy);
+        Matcher matcher = pattern.matcher(password);
 
-            if (username2 == null || password2 == null) {
-                return "/2/2.9";
-            }
-            if (authorityService.SecurePasswordService(password2)) {
-                model.addAttribute("message", "회원가입이 완료되었습니다.");
-            } else {
-                model.addAttribute("message", "최소 8자 이상, 숫자,문자,특수문자가 혼용되어야 합니다.");
-            }
-            model.addAttribute("searchUrl", "/2/9");
-            return "message";
+        return matcher.matches();
     }
 }</textarea></code>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </form>
-          <br />
-          <hr />
-      </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <br />
+            <hr />
+        </div>
     </div>
   </div>
 </section>
