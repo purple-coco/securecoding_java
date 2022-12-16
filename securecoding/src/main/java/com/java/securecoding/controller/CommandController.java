@@ -1,8 +1,7 @@
 package com.java.securecoding.controller;
 
-import com.java.securecoding.domain.form.FileForm;
 import com.java.securecoding.service.CommandService;
-import com.java.securecoding.service.FileService;
+import com.java.securecoding.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -36,7 +35,8 @@ import java.util.List;
 public class CommandController {
 
     private static CommandService commandService;
-    private final FileService fileService;
+    private final MemberService memberService;
+
 
 
     //2. 코드 삽입
@@ -227,42 +227,7 @@ public class CommandController {
     }
 
     //6. 위험한 형식 파일 업로드
-    @GetMapping(value = {"/1/6", "/1/6/vuln", "/1/6/secure"})
-    public String UploadFileForm(@RequestParam(required = false) String fileName, String filePath, Model model) {
-        FileForm fileForm = new FileForm();
-        model.addAttribute("form", fileForm);
-        return "/1/1.6";
-    }
 
-    @GetMapping(value = "/1/6/code")
-    public String UploadFileForm_code() {
-        return "/1/1.6.code";
-    }
-
-    @PostMapping("/1/6/vuln")
-    public String UploadFileForm_vuln(FileForm form, MultipartHttpServletRequest request,
-                                      Model model, MultipartFile multipartFile) throws IOException {
-
-        com.java.securecoding.domain.file.File file = com.java.securecoding.domain.file.File.createFile(
-                form.getFileName(),
-                form.getFilePath());
-
-        System.out.println("file.getFileName() = " + form.getFileName());
-        System.out.println("file.getFilePath() = " + form.getFilePath());
-
-        fileService.saveFile(file, multipartFile);
-
-        model.addAttribute("message","파일이 업로드되었습니다.");
-        model.addAttribute("searchUrl", "/1/6");
-
-        return "message";
-        
-    }
-
-    @PostMapping("/1/6/secure")
-    public String UploadFileForm_secure(HttpServletRequest request, Model model, MultipartFile file) {
-        return "/1/1.6";
-    }
 
     //7. 신뢰되지 않는 URL 주소로 자동접속 연결
     @GetMapping(value = {"/1/7", "/1/7/vuln", "/1/7/secure"})
@@ -454,7 +419,6 @@ public class CommandController {
         String url2 = request.getParameter("url2");
 
 
-
         return "/1/1.12";
     }
 
@@ -476,7 +440,6 @@ public class CommandController {
         return "/1/1.14.code";
     }
 
-    //14. 정수형 오버플로우
     @PostMapping("/1/14/vuln")
     public String IntegerBuffForm_vuln(HttpServletRequest request, HttpServletResponse response, Model model) throws NumberFormatException{
         String integer1 = request.getParameter("integer1");
@@ -519,11 +482,21 @@ public class CommandController {
         return "/1/1.14";
     }
 
+    //15. 보안기능 결정에 사용되는 부적절한 입력값
+    @GetMapping("/1/15/code")
+    public String deleteMemberForm_code(Model model) {
+        model.addAttribute("members", memberService.findMembers());
+
+        return "/1/1.15.code";
+    }
+
+    //16. 메모리 버퍼 오버플로우
     @GetMapping("/1/16")
     public String OverFlowForm_code() {
         return "/1/1.16";
     }
 
+    //17. 포맷 스트링 삽입
     @GetMapping("/1/17")
     public String FormatStringForm_code() {
         return "/1/1.17";
