@@ -26,6 +26,11 @@ public class AuthorityController {
 
     private static AuthorityService authorityService;
 
+    //1. 적절한 인증 없는 중요기능 허용
+    @GetMapping("/2/1/code")
+    public String MemberInfoUpdateForm_code() {
+        return "/2/2.1.code";
+    }
     //3. 중요한 자원에 대한 잘못된 권한 설정
     @GetMapping("/2/3")
     public String ResourceForm() {
