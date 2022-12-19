@@ -131,41 +131,31 @@ public class MemberController{
     public String updateMemberForm_id_vuln(@PathVariable("memberId") Long memberId,
                                     HttpServletRequest request, @ModelAttribute("form") MemberForm form) {
 
-        memberService.updateMemberInfo(memberId, form.getName(), form.getPassword());
+        memberService.updateMemberInfo_vuln(memberId, form.getName(), form.getPassword());
 
         return "/2/2.1";
     }
 
     @PostMapping("/mypage/info/{memberId}/secure")
     public String updateMemberForm_id_secure(@PathVariable("memberId") Long memberId,
-                                      HttpServletRequest request, @ModelAttribute("form") MemberForm form) {
+                                      HttpServletRequest request, @ModelAttribute("form") MemberForm form, Model model) {
 
         MemberInfo member = (MemberInfo) request.getSession().getAttribute("memberInfo");
         Member findMember = memberService.findByUsername(form.getUsername());
 
-        memberService.updateMemberInfo(memberId, form.getName(), form.getPassword());
+        memberService.validateUpdate(member.getId(), memberId);
 
-        return "/2/2.1";
-    }
+        memberService.updateMemberInfo_secure(memberId, form.getName(), form.getPassword());
 
-    /* 회원 정보 수정 */
-    @GetMapping(value = {"/2/1", "/2/1/vuln", "/2/1/secure"})
-    public String updateMemberForm(Long memberId, Model model) {
-        Member member = memberService.findOne(memberId);
+        model.addAttribute("message", "회원 정보가 수정되었습니다.");
+        model.addAttribute("searchUrl", "/");
 
-        MemberForm form = new MemberForm();
+        return "message";
 
-        form.setId(member.getId());
-        form.setName(member.getName());
-        form.setUsername(member.getUsername());
-
-        model.addAttribute("form", form);
-
-        return "/2/2.1";
     }
 
     /* 회원 탈퇴 */
-    @GetMapping("/mypage/delete/{memberId}")
+    @GetMapping(value = {"/mypage/delete/{memberId}", "/mypage/delete/{memberId}/vuln", "/mypage/delete/{memberId}/secure"})
     public String deleteMemberForm_id(@PathVariable("memberId") Long memberId, Model model) {
         Member member = memberService.findOne(memberId);
 
@@ -179,16 +169,13 @@ public class MemberController{
         return "/1/1.15";
     }
 
-    @PostMapping("/1/15/vuln")
+    @PostMapping("/mypage/delete/{memberId}/vuln")
     public String deleteMemberForm_vuln(@PathVariable("memberId") Long memberId, HttpServletRequest request, Model model) {
-        String id = request.getParameter("id");
 
-        if (id == null) {
-            return "/1/1.15";
-        }
-        Long memberid = Long.parseLong(id);
+        MemberInfo member = (MemberInfo) request.getSession().getAttribute("memberInfo");
+        memberService.validateUpdate(member.getId(), memberId);
 
-        memberService.deleteMember(memberid);
+        memberService.deleteMember(member.getId());
 
         model.addAttribute("message", "정말 탈퇴하시겠습니까?");
         model.addAttribute("searchUrl", "/");
@@ -196,29 +183,24 @@ public class MemberController{
         return "message";
     }
 
-    @PostMapping("/1/15/secure")
-    public String deleteMemberForm_secure(@PathVariable("memberId") Long memberId, HttpServletRequest request, Model model) {
-        String id = request.getParameter("id");
+    @PostMapping("/mypage/delete/{memberId}/secure")
+    public String deleteMemberForm_secure(@PathVariable("memberId") Long memberId, HttpServletRequest request, HttpSession session, Model model) {
 
-        if (id == null) {
-            return "/1/1.15";
-        }
-        Long memberid = Long.parseLong(id);
+        MemberInfo member = (MemberInfo) request.getSession().getAttribute("memberInfo");
 
-        memberService.deleteMember(memberid);
+        memberService.validateUpdate(member.getId(), memberId);
+
+        memberService.deleteMember(memberId);
+
+        request.getSession().removeAttribute("memberInfo");
+        session.invalidate();
 
         model.addAttribute("message", "정말 탈퇴하시겠습니까?");
         model.addAttribute("searchUrl", "/");
 
         return "message";
+
     }
-
-
-    @GetMapping(value = {"/1/15", "/1/15/vuln", "/1/15/secure"})
-    public String deleteMember(HttpServletRequest request, Model model) {
-        return "";
-    }
-
 
 
     /* 로그아웃 */
