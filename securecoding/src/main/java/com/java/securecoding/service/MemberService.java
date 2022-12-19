@@ -5,6 +5,7 @@ import com.java.securecoding.domain.member.Member;
 import com.java.securecoding.repository.MemberRepository;
 import exception.NotJoinException;
 import exception.PermissionException;
+import exception.UpdateInfoException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mindrot.jbcrypt.BCrypt;
@@ -102,15 +103,19 @@ public class MemberService {
         }
     }
 
-
     /* 회원 정보 수정 */
     @Transactional
     public void updateMemberInfo(Long memberId, String name, String password) {
         Member findMemberInfo = memberRepository.findAllById(memberId);
 
-        findMemberInfo.setName(name);
+        findMemberInfo.updateMemberInfo(name, password);
 
-        memberRepository.save(findMemberInfo);
+        if(!passwordValidate(password)) {
+            throw new UpdateInfoException("비밀번호 규칙성이 맞지 않습니다.");
+        } else {
+            HashPassword(password);
+            memberRepository.save(findMemberInfo);
+        }
     }
 
     /* 회원 탈퇴 */
