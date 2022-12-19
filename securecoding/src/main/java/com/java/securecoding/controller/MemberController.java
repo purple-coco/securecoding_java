@@ -4,6 +4,7 @@ package com.java.securecoding.controller;
 import com.java.securecoding.domain.form.MemberForm;
 import com.java.securecoding.domain.form.MemberForm2;
 import com.java.securecoding.domain.member.Member;
+import com.java.securecoding.domain.session.MemberInfo;
 import com.java.securecoding.service.CommandService;
 import com.java.securecoding.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -111,7 +112,7 @@ public class MemberController{
     }
 
     /* 회원 정보 수정 */
-    @GetMapping("/mypage/info/{memberId}")
+    @GetMapping(value={"/mypage/info/{memberId}", "/mypage/info/{memberId}/vuln", "/mypage/info/{memberId}/secure"})
     public String updateMemberForm_id(@PathVariable("memberId") Long memberId, Model model) {
         Member member = memberService.findOne(memberId);
 
@@ -126,10 +127,23 @@ public class MemberController{
         return "/2/2.1";
     }
 
-    @PostMapping("/mypage/info/{memberId}")
-    public String updateMemberForm_id(@PathVariable("memberId") Long memberId,
+    @PostMapping("/mypage/info/{memberId}/vuln")
+    public String updateMemberForm_id_vuln(@PathVariable("memberId") Long memberId,
                                     HttpServletRequest request, @ModelAttribute("form") MemberForm form) {
 
+        memberService.updateMemberInfo(memberId, form.getName(), form.getPassword());
+
+        return "/2/2.1";
+    }
+
+    @PostMapping("/mypage/info/{memberId}/secure")
+    public String updateMemberForm_id_secure(@PathVariable("memberId") Long memberId,
+                                      HttpServletRequest request, @ModelAttribute("form") MemberForm form) {
+
+        MemberInfo member = (MemberInfo) request.getSession().getAttribute("memberInfo");
+        Member findMember = memberService.findByUsername(form.getUsername());
+
+        memberService.updateMemberInfo(memberId, form.getName(), form.getPassword());
 
         return "/2/2.1";
     }
