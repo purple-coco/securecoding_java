@@ -34,6 +34,12 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
         String lastLogin = request.getParameter("lastLogin");
 
+        Cookie cookie = new Cookie("cookie", "cookie" + lastLogin);
+        cookie.setMaxAge(1800);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+
         if (session.getAttribute("memberInfo") == null || cookie == null) {
             throw new PermissionException("정상적인 접근이 아닙니다.");
         }
@@ -72,6 +78,12 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         if(lastLogin != null) {
             lastLogin = lastLogin.replaceAll("[\\r\\n]", "");
         }
+
+        Cookie cookie = new Cookie("cookie", "cookie" + lastLogin);
+        cookie.setMaxAge(1800);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        response.addCookie(cookie);
 
         if (session.getAttribute("memberInfo") == null || cookie == null) {
             throw new PermissionException("정상적인 접근이 아닙니다.");
