@@ -6,6 +6,7 @@ import exception.UpdateInfoException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @ControllerAdvice
 public class ExceptionControllerAdvice {
@@ -20,16 +21,16 @@ public class ExceptionControllerAdvice {
 
     @ExceptionHandler(PermissionException.class)
     public String NotPermission(Model model) {
-        model.addAttribute("message", "권한이 없습니다.");
+        model.addAttribute("message", "잘못된 접근입니다.");
         model.addAttribute("searchUrl", "/");
 
         return "message";
     }
 
     @ExceptionHandler(UpdateInfoException.class)
-    public String UpdateMemberInfo(Model model) {
+    public String UpdateMemberInfo(@PathVariable Long memberId, Model model) {
         model.addAttribute("message", "비밀번호는 최소 8자 이상, 영어 대·소문자, 숫자, 특수문자가 혼용되어야 합니다.");
-        model.addAttribute("searchUrl", "/");
+        model.addAttribute("searchUrl", "/mypage/info/" + memberId);
 
         return "message";
     }
