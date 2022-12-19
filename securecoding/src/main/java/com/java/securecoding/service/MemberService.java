@@ -108,11 +108,10 @@ public class MemberService {
     public void updateMemberInfo_vuln(Long memberId, String name, String password) {
         Member findMemberInfo = memberRepository.findAllById(memberId);
 
-        findMemberInfo.updateMemberInfo(name, password);
-
         if(!passwordValidate(password)) {
-            throw new UpdateInfoException(memberId);
+            throw new UpdateInfoException("입력한 비밀번호가 규칙에 맞지 않습니다.");
         } else {
+            findMemberInfo.updateMemberInfo(name, password);
             memberRepository.save(findMemberInfo);
         }
     }
@@ -122,12 +121,10 @@ public class MemberService {
     public void updateMemberInfo_secure(Long memberId, String name, String password) {
         Member findMemberInfo = memberRepository.findAllById(memberId);
 
-        findMemberInfo.updateMemberInfo(name, password);
-
         if(!passwordValidate(password)) {
-            throw new UpdateInfoException(memberId);
+            throw new UpdateInfoException("입력한 비밀번호가 규칙에 맞지 않습니다.");
         } else {
-            HashPassword(password);
+            findMemberInfo.updateMemberInfo(name, HashPassword(password));
             memberRepository.save(findMemberInfo);
         }
     }
