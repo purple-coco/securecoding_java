@@ -103,15 +103,29 @@ public class MemberService {
         }
     }
 
-    /* 회원 정보 수정 */
+    /* 회원 정보 수정 (비밀번호 평문 저장) */
     @Transactional
-    public void updateMemberInfo(Long memberId, String name, String password) {
+    public void updateMemberInfo_vuln(Long memberId, String name, String password) {
         Member findMemberInfo = memberRepository.findAllById(memberId);
 
         findMemberInfo.updateMemberInfo(name, password);
 
         if(!passwordValidate(password)) {
-            throw new UpdateInfoException("비밀번호 규칙성이 맞지 않습니다.");
+            throw new UpdateInfoException(memberId);
+        } else {
+            memberRepository.save(findMemberInfo);
+        }
+    }
+
+    /* 회원 정보 수정 (비밀번호 암호화 저장) */
+    @Transactional
+    public void updateMemberInfo_secure(Long memberId, String name, String password) {
+        Member findMemberInfo = memberRepository.findAllById(memberId);
+
+        findMemberInfo.updateMemberInfo(name, password);
+
+        if(!passwordValidate(password)) {
+            throw new UpdateInfoException(memberId);
         } else {
             HashPassword(password);
             memberRepository.save(findMemberInfo);
@@ -121,8 +135,5 @@ public class MemberService {
     /* 회원 탈퇴 */
     @Transactional
     public void deleteMember(Long memberId) { memberRepository.deleteById(memberId); }
-
-
-
 
 }
