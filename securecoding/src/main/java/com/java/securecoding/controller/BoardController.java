@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 @Slf4j
 @Controller
@@ -25,7 +26,7 @@ public class BoardController {
     private final MemberService memberService;
     private final BoardService boardService;
 
-    @GetMapping(value = {"/board/new", "/1/6", "/1/6/vuln", "/1/6/secure"})
+    @GetMapping(value = {"/board/new", "/1/6/vuln", "/1/6/secure"})
     public String CreateBoardForm(Model model) {
 
         BoardForm form = new BoardForm();
@@ -37,7 +38,8 @@ public class BoardController {
     }
 
     @PostMapping("/1/6/vuln")
-    public String CreateBoardForm_vuln(BoardForm form, Model model, MultipartHttpServletRequest request, MultipartFile file) {
+    public String CreateBoardForm_vuln(BoardForm form, Model model,
+                                       MultipartHttpServletRequest request, MultipartFile file) throws IOException  {
 
         HttpSession session = request.getSession();
 
@@ -51,13 +53,48 @@ public class BoardController {
                 form.getFileName(),
                 form.getFilePath());
 
+        System.out.println("board = " + board);
+        System.out.println("board.getContent() = " + board.getContent());
+        System.out.println("board.getSubject() = " + board.getSubject());
+        System.out.println("board.getFileName() = " + board.getFileName());
 
-        return "/1/1.6";
+        System.out.println("board.getFilePath() = " + board.getFilePath());
+
+        boardService.saveBoard(board, file);
+
+        model.addAttribute("message", "글 등록이 완료되었습니다.");
+        model.addAttribute("searchUrl", "/");
+
+        return "message";
     }
 
     @PostMapping("/1/6/secure")
-    public String CreateBoardForm_secure() {
+    public String CreateBoardForm_secure(BoardForm form, Model model,
+                                         MultipartHttpServletRequest request, MultipartFile file) throws IOException {
+        HttpSession session = request.getSession();
 
-        return "/1/1.6";
+        MemberInfo memberInfo = (MemberInfo) session.getAttribute("memberInfo");
+        Member member = memberService.findOne(memberInfo.getId());
+
+        Board board = Board.createBoard(
+                member,
+                form.getSubject(),
+                form.getContent(),
+                form.getFileName(),
+                form.getFilePath());
+
+        System.out.println("board.getContent() = " + board.getContent());
+        System.out.println("board.getSubject() = " + board.getSubject());
+        System.out.println("board.getFileName() = " + board.getFileName());
+
+        System.out.println("board.getFilePath() = " + board.getFilePath());
+
+
+        boardService.saveBoard_secure(board, file);
+
+        model.addAttribute("message", "글 등록이 완료되었습니다.");
+        model.addAttribute("searchUrl", "/");
+
+        return "message";
     }
 }
