@@ -54,9 +54,6 @@ public class MemberController{
         member.setName(form.getName());
         member.setUsername(form.getUsername());
 
-        log.info("{}", form.getName());
-        log.info("{}", form.getUsername());
-        log.info("{}", form.getPassword());
 
         if(!memberService.passwordValidate(form.getPassword())) {
 
