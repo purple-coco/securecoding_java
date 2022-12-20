@@ -170,12 +170,20 @@ public class MemberController{
     }
 
     @PostMapping("/mypage/delete/{memberId}/vuln")
-    public String deleteMemberForm_vuln(@PathVariable("memberId") Long memberId, HttpServletRequest request, Model model) {
+    public String deleteMemberForm_vuln(@PathVariable("memberId") Long memberId, HttpServletRequest request, Model model, HttpSession session) {
 
-        MemberInfo member = (MemberInfo) request.getSession().getAttribute("memberInfo");
-        memberService.validateUpdate(member.getId(), memberId);
+        String id = request.getParameter("id");
 
-        memberService.deleteMember(member.getId());
+        if (id == null) {
+            return "/1/1.15";
+        }
+
+        Long memberid = Long.parseLong(id);
+
+        memberService.deleteMember(memberid);
+
+        request.getSession().removeAttribute("memberInfo");
+        session.invalidate();
 
         model.addAttribute("message", "정말 탈퇴하시겠습니까?");
         model.addAttribute("searchUrl", "/");
