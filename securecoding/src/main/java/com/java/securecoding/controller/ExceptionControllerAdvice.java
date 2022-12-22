@@ -1,9 +1,6 @@
 package com.java.securecoding.controller;
 
-import exception.NotAllowExtException;
-import exception.NotJoinException;
-import exception.PermissionException;
-import exception.UpdateInfoException;
+import exception.*;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -36,9 +33,17 @@ public class ExceptionControllerAdvice {
         return "message";
     }
 
-    @ExceptionHandler(NotAllowExtException.class)
-    public String NotAllowExt(Model model) {
-        model.addAttribute("message", "허용되지 않는 파일 확장자입니다.");
+    @ExceptionHandler(NotAllowExtException1.class)
+    public String NotAllowExt1(Model model) {
+        model.addAttribute("message", "파일 이름에 허용하지 않는 문자열이 포함되었습니다.");
+        model.addAttribute("searchUrl", "/board/new");
+
+        return "message";
+    }
+
+    @ExceptionHandler(NotAllowExtException2.class)
+    public String NotAllowExt2(Model model) {
+        model.addAttribute("message", "업로드 허용되는 파일 확장자가 아닙니다.");
         model.addAttribute("searchUrl", "/board/new");
 
         return "message";
