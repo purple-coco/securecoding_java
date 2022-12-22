@@ -33,7 +33,7 @@ public class AuthorityController {
     }
     //3. 중요한 자원에 대한 잘못된 권한 설정
     @GetMapping("/2/3")
-    public String ResourceForm() {
+    public String ResourceForm_code() {
         return "/2/2.3";
     }
 
