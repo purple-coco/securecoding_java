@@ -10,63 +10,66 @@
 <!-- Section-->
 <section class="py-5">
   <div class="container px-4 px-lg-5 mt-5">
-    <h4 class="fw-bolder" style="text-align: center">3. 중요한 자원에 대한 잘못된 권한 설정</h4>
-    <p style="text-align: center">제2절 보안기능</p>
+      <h4 class="fw-bolder" style="text-align: center">3. 중요한 자원에 대한 잘못된 권한 설정</h4>
+      <p style="text-align: center">제2절 보안기능</p>
     <br />
     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-      <div class="col mb-5" style="width: 60%">
+        <!-- Vulnerable code -->
+        <div class="col mb-5" style="width: 60%">
         <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
-        <hr />
-          <form action="#" method="get">
+            <hr />
+            <form action="#" method="get">
+                <div class="wrapper" style="width: 100%">
+                    <div class="tabs">
+                        <div class="tab">
+                            <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+                            <label for="tab-1" class="tab-label">AuthorityController.java</label>
+                            <div class="tab-content">
+                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">@GetMapping("/2/3/vuln")
+public String ResourceNotPermission() {
+
+    File file = new File("./resources/application.yml");
+
+    // 모든 사용자에게 읽기, 쓰기, 실행 권한 허용
+    file.setExecutable(true);
+    file.setReadable(true);
+    file.setWritable(true);
+    ....
+}</textarea></code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             <br />
-            <div class="card h-100">
-              <!-- Vulnerable code -->
-<!--                <pre class="line-numbers" style="height: 30%;">-->
-                <code class="code-area" style="height: 15em"><textarea readonly class="area" style="height: 15em">@GetMapping("/authority/33")
-    public String ResourcePermission(Model model) throws IOException {
-
-        File file = new File("./resources/application.properties");
-
-        file.setExecutable(true, false);
-        file.setReadable(true, false);
-        file.setWritable(true, false);
-
-        if (file.createNewFile()) {
-            model.addAttribute("line","파일이 성공적으로 생성되었습니다.");
-        } else {
-            model.addAttribute("line","이미 존재하는 파일입니다.");
-        }
-
-        return "authority/FilePermission";
-    }
-              </textarea>
-                </code>
-<!--                </pre>-->
-            </div>
+           <hr />
           </form>
-          <br />
-          <hr />
       </div>
-      <div class="col mb-5" style="width: 60%">
+        <!-- Secure Code -->
+        <div class="col mb-5" style="width: 60%">
         <h4 class="fw-bolder" style="text-align: center">Secure</h4>
-        <hr />
+          <hr />
           <form action="#" method="get">
-            <br />
-            <div class="card h-100">
-              <!-- Secure Code -->
-                <code class="code-area" style="height: 15em"><textarea readonly class="area" style="height: 15em">@GetMapping("/2/3/secure")
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-3" checked class="tab-switch">
+                          <label for="tab-3" class="tab-label">AuthorityController.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@GetMapping("/2/3/secure")
 public String ResourceNotPermission(Model model) {
 
-        File file = new File("./resources/application.yml");
+    File file = new File("./resources/application.yml");
 
-        file.setExecutable(false);
-        file.setReadable(true);
-        file.setWritable(false);
-        ...
-}
-                </textarea>
-                </code>
-            </div>
+    // 파일 소유자에 한해 읽기 권한만 허용
+    file.setExecutable(false);
+    file.setReadable(true);
+    file.setWritable(false);
+    ....
+}</textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
           </form>
           <br />
           <hr />
