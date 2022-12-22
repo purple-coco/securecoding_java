@@ -10,12 +10,12 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="navbarDropdown2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">제1절 입력데이터 검증 및 표현</a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#!">1. SQL 삽입</a></li>
+              <li><a class="dropdown-item" th:href="@{/1/1}">1. SQL 삽입</a></li>
               <li><a class="dropdown-item" th:href="@{/1/2}">2. 코드 삽입</a></li>
               <li><a class="dropdown-item" th:href="@{/1/3}">3. 경로 조작 및 자원 삽입</a></li>
               <li><a class="dropdown-item" th:href="@{/1/4}">4. 크로스사이트 스크립트</a></li>
               <li><a class="dropdown-item" th:href="@{/1/5}">5. 운영체제 명령어 삽입</a></li>
-              <li><a class="dropdown-item" th:if="${session.memberInfo != null}" th:href="@{/1/6}">6. 위험한 형식 파일 업로드</a></li>
+              <li><a class="dropdown-item" th:if="${session.memberInfo != null}" th:href="@{/board/new}">6. 위험한 형식 파일 업로드</a></li>
               <li><a class="dropdown-item" th:href="@{/1/7}">7. 신뢰되지 않는 URL 주소로 자동접속 연결</a></li>
               <li><a class="dropdown-item" th:href="@{/1/8}">8. 부적절한 XML 외부개체 참조</a></li>
               <li><a class="dropdown-item" th:href="@{/1/9}">9. XML 삽입</a></li>
