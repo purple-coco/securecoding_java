@@ -19,7 +19,7 @@ spring:
         format_sql: true
 
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
 
 
  # 파일 업로드 크기 설정
