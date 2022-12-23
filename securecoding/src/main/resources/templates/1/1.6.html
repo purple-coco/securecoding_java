@@ -28,11 +28,12 @@
             <label th:for="content" style="margin-top: 3%; margin-bottom: 2%; color: #2E2E2E">내용</label>
             <textarea th:field="*{content}" class="area" style="height: 250px; margin-bottom: 2%; border-color: #D8D8D8; background-color: #FFF"/>
           </div>
-          <div class="filebox">
-            <input class="upload-name" value="첨부파일" placeholder="첨부파일" style="margin-bottom: 2%">
-            <label th:for="fileName" style="margin-bottom: 2%; color: #2E2E2E; text-align: center;">파일 찾기</label><br />
-            <input id="fileName" type="file" style="margin-bottom: 2%; margin-top: 2%; float: left"/>
-          </div>
+            <input type="file" id="file" >
+<!--          <div class="filebox">-->
+<!--            <input class="upload-name" value="첨부파일" placeholder="첨부파일" style="margin-bottom: 2%">-->
+<!--            <label th:for="fileName" style="margin-bottom: 2%; color: #2E2E2E; text-align: center;">파일 찾기</label><br />-->
+<!--            <input id="fileName" type="file" style="margin-bottom: 2%; margin-top: 2%; float: left"/>-->
+<!--          </div>-->
           <button type="submit" class="btn" style="background-color: #ffe74a; width: 100%; height: 50px">등록</button>
           <br />
           <br />
@@ -53,11 +54,12 @@
                 <label th:for="content" style="margin-top: 3%; margin-bottom: 2%; color: #2E2E2E">내용</label>
                 <textarea th:field="*{content}" class="area" style="height: 250px; margin-bottom: 2%; border-color: #D8D8D8; background-color: #FFF"/>
             </div>
-            <div class="filebox">
-                <input class="upload-name" value="첨부파일" placeholder="첨부파일" style="margin-bottom: 2%;">
-                <label th:for="fileName2" style="margin-bottom: 2%; color: #2E2E2E">파일 찾기</label><br />
-                <input id="fileName2" type="file" style="margin-bottom: 2%; float: left;"/>
-            </div>
+            <input type="file" id="file2">
+<!--            <div class="filebox">-->
+<!--                <input class="upload-name" value="첨부파일" placeholder="첨부파일" style="margin-bottom: 2%;">-->
+<!--                <label th:for="fileName2" style="margin-bottom: 2%; color: #2E2E2E">파일 찾기</label><br />-->
+<!--                <input id="fileName2" type="file" style="margin-bottom: 2%; float: left;"/>-->
+<!--            </div>-->
             <button type="submit" class="btn" style="background-color: #ffe74a; width: 100%; height: 50px">등록</button>
             <br />
             <br />
