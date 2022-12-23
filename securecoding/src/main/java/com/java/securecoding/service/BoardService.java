@@ -78,7 +78,6 @@ public class BoardService {
                 throw new NotAllowExtException2("업로드 허용되는 파일 확장자가 아닙니다.");
             }
         }
-
         boardRepository.save(board);
 
         return board.getId();
