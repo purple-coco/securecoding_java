@@ -397,7 +397,6 @@ select:disabled {
 .filebox label {
     height: 45px;
     width: 20%;
-    margin-top: 2%;
     vertical-align: middle;
     text-align: center;
     background-color: #999999;
