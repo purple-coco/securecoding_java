@@ -23,22 +23,26 @@
                     <div class="tabs">
                         <div class="tab">
                             <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
-                            <label for="tab-1" class="tab-label">Test2.java</label>
+                            <label for="tab-1" class="tab-label">class Test2</label>
                             <div class="tab-content">
-                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">@PostMapping("/2/9/vuln")
-public String PasswordForm_vuln(HttpServletRequest request, Model model) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">public class Test2 {
 
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+    private String[] stringarray = new String[3];
 
-        if(username == null || password == null) {
-            return "/2/2.9";
-        }
+    public Test2() {
+        stringarray[0] = "abc";
+        stringarray[1] = "def";
+        stringarray[2] = "ghi";
+    }
 
-        model.addAttribute("message", "회원가입이 완료되었습니다.");
-        model.addAttribute("searchUrl", "/2/9");
+    public String[] getStringArray() {
+        return stringarray;
+    }
 
-        return "message";
+    public void setStringArray(String[] stringarray) {
+        this.stringarray = stringarray;
+    }
+
 }</textarea></code>
                             </div>
                         </div>
@@ -48,18 +52,29 @@ public String PasswordForm_vuln(HttpServletRequest request, Model model) throws 
                             <div class="tab-content">
                                 <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">public class Test {
 
-public static void main(String[] args) {
-    Test2 test2 = new Test2();
-
-    String[] inputStringArray = {"qwe", "asd", "zxc"};
-    System.out.println("\n[-] test2.getStringArray[] : " + Arrays.deepToString(test2.getStringArray()));
-    test2.setStringArray(inputStringArray);
-    System.out.println("[-] test2 stringarray[] : " + Arrays.deepToString(test2.getStringArray()));
-    inputStringArray[0] = "iop";
-    System.out.println("[i] inputStringArray[0] = iop");
-    System.out.println("[-] test2 stringarray[] : " + Arrays.deepToString(test2.getStringArray()));
-}
+    public static void main(String[] args) {
+        Test2 test2 = new Test2();
+        String[] inputStringArray = {"qwe", "asd", "zxc"};
+        System.out.println("\n[-] test2.getStringArray[] : " + Arrays.deepToString(test2.getStringArray()));
+        System.out.println("[i] test2.setNewStringArray = inputStringArray[qwe,asd,zxc] ");
+        test2.setStringArray(inputStringArray);
+        System.out.println("[-] test2 stringarray[] : " + Arrays.deepToString(test2.getStringArray()));
+        inputStringArray[0] = "iop";
+        System.out.println("[i] inputStringArray[0] = iop");
+        System.out.println("[-] test2 stringarray[] : " + Arrays.deepToString(test2.getStringArray()));
+    }
 }</textarea></code>
+                            </div>
+                        </div>
+                        <div class="tab">
+                            <input type="radio" name="css-tabs" id="tab-3" class="tab-switch">
+                            <label for="tab-3" class="tab-label">실행 결과</label>
+                            <div class="tab-content">
+                                <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">[-] test2.getStringArray[] : [abc, def, ghi]
+[i] test2.setNewStringArray = inputStringArray[qwe,asd,zxc]
+[-] test2 stringarray[] : [qwe, asd, zxc]
+[i] inputStringArray[0] = iop
+[-] test2 stringarray[] : [iop, asd, zxc]</textarea></code>
                             </div>
                         </div>
                     </div>
@@ -76,52 +91,65 @@ public static void main(String[] args) {
               <div class="wrapper" style="width: 100%">
                   <div class="tabs">
                       <div class="tab">
-                          <input type="radio" name="css-tabs" id="tab-3" checked class="tab-switch">
-                          <label for="tab-3" class="tab-label">Test2.java</label>
+                          <input type="radio" name="css-tabs" id="tab-4" checked class="tab-switch">
+                          <label for="tab-4" class="tab-label">class Test2</label>
                           <div class="tab-content">
-                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Controller
-public class AuthorityController {
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">public class Test2 {
 
-    private static AuthorityService authorityService;
+    private String[] stringarray = new String[3];
 
-    @PostMapping("/2/9/secure")
-    public String PasswordForm_secure(HttpServletRequest request, Model model) throws Exception {
+    public Test2() {
+        stringarray[0] = "abc";
+        stringarray[1] = "def";
+        stringarray[2] = "ghi";
+    }
 
-            String username2 = request.getParameter("username2");
-            String password2 = request.getParameter("password2");
+    public String[] getStringArray() {
+        return stringarray;
+    }
 
-            if (username2 == null || password2 == null) {
-                return "/2/2.9";
-            }
-            if (authorityService.SecurePasswordService(password2)) {
-                model.addAttribute("message", "회원가입이 완료되었습니다.");
-            } else {
-                model.addAttribute("message", "최소 8자 이상, 숫자,문자,특수문자가 혼용되어야 합니다.");
-            }
-            model.addAttribute("searchUrl", "/2/9");
-            return "message";
+    public void setStringArray(String[] stringarray) {
+        this.stringarray = stringarray;
+    }
+
+    public void setNewStringArray(String[] stringarray) {
+        this.stringarray = new String[stringarray.length];
+        for (int i = 0; i < stringarray.length; i++) {
+            this.stringarray[i] = stringarray[i];
+        }
     }
 }</textarea></code>
                           </div>
                       </div>
                       <div class="tab">
-                          <input type="radio" name="css-tabs" id="tab-4" class="tab-switch">
-                          <label for="tab-4" class="tab-label">Test2_Security.java</label>
+                          <input type="radio" name="css-tabs" id="tab-5" class="tab-switch">
+                          <label for="tab-5" class="tab-label">Test.java</label>
                           <div class="tab-content">
-                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Service
-@RequiredArgsConstructor
-public class AuthorityService {
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">public class Test {
 
-    public static boolean SecurePasswordService(String password) {
-
-        String passwordPolicy = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$";
-
-        Pattern pattern = Pattern.compile(passwordPolicy);
-        Matcher matcher = pattern.matcher(password);
-
-        return matcher.matches();
+    public static void main(String[] args) {
+        Test2 test2 = new Test2();
+        String[] inputStringArray = {"qwe", "asd", "zxc"};
+        System.out.println("\n[-] test2.getStringArray[] : " + Arrays.deepToString(test2.getStringArray()));
+        System.out.println("[i] test2.setNewStringArray = inputStringArray[qwe,asd,zxc] ");
+        test2.setNewStringArray(inputStringArray);
+        System.out.println("[-] test2 stringarray[] : " + Arrays.deepToString(test2.getStringArray()));
+        inputStringArray[0] = "iop";
+        System.out.println("[i] inputStringArray[0] = iop");
+        System.out.println("[-] test2 stringarray[] : " + Arrays.deepToString(test2.getStringArray()));
     }
 }</textarea></code>
+                          </div>
+                      </div>
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-6" class="tab-switch">
+                          <label for="tab-6" class="tab-label">실행 결과</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">[-] test2.getStringArray[] : [abc, def, ghi]
+[i] test2.setNewStringArray = inputStringArray[qwe,asd,zxc]
+[-] test2 stringarray[] : [qwe, asd, zxc]
+[i] inputStringArray[0] = iop
+[-] test2 stringarray[] : [qwe, asd, zxc]</textarea></code>
                           </div>
                       </div>
                   </div>
@@ -131,9 +159,6 @@ public class AuthorityService {
           <hr />
       </div>
     </div>
-      <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-          <div class="text-center"><a class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/1/5}">실습 하기</a></div>
-      </div>
   </div>
 </section>
 <br />
