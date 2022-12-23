@@ -38,6 +38,10 @@ public class CommandController {
     private final MemberService memberService;
 
 
+    @GetMapping("/1/1")
+    public String SQLInjectionForm_code() {
+        return "/1/1.1.code";
+    }
 
     //2. 코드 삽입
     @GetMapping(value = {"/1/2", "/1/2/vuln", "/1/2/secure"})
@@ -354,6 +358,7 @@ public class CommandController {
         return "/1/1.9";
     }
 
+    //10. LDAP 삽입
     @GetMapping("/1/10")
     public String LDAPInjection_code() {
         return "/1/1.10";
