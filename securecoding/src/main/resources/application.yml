@@ -15,15 +15,17 @@ spring:
     properties:
       hibernate:
         # 서버 시작 시마다 DB 초기화
-        ddl-auto: create
         show-sql: true
         format_sql: true
+
+    hibernate:
+      ddl-auto: update
 
 
  # 파일 업로드 크기 설정
   servlet:
     multipart:
-      max-file-size: 1000MB
+      max-file-size: 10000MB
 
 logging:
   level:
