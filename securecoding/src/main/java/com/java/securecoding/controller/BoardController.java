@@ -28,7 +28,7 @@ public class BoardController {
     private final MemberService memberService;
     private final BoardService boardService;
 
-    @GetMapping(value = {"/board", "/1/1"})
+    @GetMapping(value = {"/board"})
     public String BoardListForm(Model model) {
 
         List<Board> board = boardService.findAll();
