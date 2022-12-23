@@ -22,7 +22,7 @@
             <div align="right">
                 <form th:action="@{/board}" method="get">
                     <button class="btn" style="float:right; background-color: #F5Df4D; float: right" type="submit">찾기</button>
-                    <input type="text" name="keyword" class="form-control" style="width: 200px; "/>
+                    <input type="text" name="keyword" class="form-control" style="width: 200px"/>
                 </form>
             </div>
             <br />
@@ -48,38 +48,55 @@
                 <tfoot>
                 </tfoot>
             </table>
-
+            <br />
             <a href="#" th:if="${session.memberInfo != null}" th:href="@{/boards/new}" class="btn" style="text-align: left; background-color: #F5Df4D;">글쓰기</a>
-
+            <br />
+            <br />
             <div class="card h-100">
           </div>
         </form>
       </div>
         <!-- Secure code -->
         <div class="col mb-5" style="width: 40%; height: 200%">
-        <h4 class="fw-bolder" style="text-align: center">Secure</h4>
-        <hr />
-        <form action="/1/6/secure" method="post" th:object="${form}" enctype="multipart/form-data">
-            <div class="form-group">
-                <label th:for="subject" style="margin-bottom: 2%; color: #2E2E2E">제목</label>
-                <input type="text" th:field="*{subject}" class="form-control" style="margin-bottom: 2%; height: 45px" />
+            <h4 class="fw-bolder" style="text-align: center">Secure</h4>
+            <hr />
+            <div align="right">
+                <form th:action="@{/board}" method="get">
+                    <button class="btn" style="float:right; background-color: #F5Df4D; float: right" type="submit">찾기</button>
+                    <input type="text" name="keyword" class="form-control" style="width: 200px"/>
+                </form>
             </div>
-            <div class="form-group">
-                <label th:for="content" style="margin-top: 3%; margin-bottom: 2%; color: #2E2E2E">내용</label>
-                <textarea th:field="*{content}" class="area" style="height: 250px; margin-bottom: 2%; border-color: #D8D8D8; background-color: #FFF"/>
-            </div>
-            <div class="filebox">
-                <input class="upload-name" value="첨부파일" placeholder="첨부파일" style="margin-bottom: 2%;">
-                <label th:for="fileName2" style="margin-bottom: 2%; color: #2E2E2E">파일 찾기</label><br />
-                <input id="fileName2" type="file" style="margin-bottom: 2%; float: left;"/>
-            </div>
-            <button type="submit" class="btn" style="background-color: #ffe74a; width: 100%; height: 50px">등록</button>
+            <br />
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>작성일</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="board : ${boards}" th:if="${board.isDelete() == false}" >
+                    <td th:text="${board.id}"></td>
+                    <td>
+                        <a style="color: black" th:text="${board.subject}" th:href="@{/board/{id} (id=${board.id})}"></a>
+                    </td>
+                    <td th:text="${board.member.name}"></td>
+                    <td th:text="${board.createDate}"></td>
+                </tr>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+            <br />
+            <a href="#" th:if="${session.memberInfo != null}" th:href="@{/boards/new}" class="btn" style="text-align: left; background-color: #F5Df4D;">글쓰기</a>
             <br />
             <br />
             <div class="card h-100">
             </div>
-        </form>
-      </div>
+            </form>
+        </div>
     </div>
     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
       <div class="text-center"><a class="btn btn-outline-dark mt-auto" style="margin-left: 75%; margin-bottom: 10%" th:href="@{/1/6/code}">코드 보기</a></div>
