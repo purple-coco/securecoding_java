@@ -35,17 +35,16 @@ public class BoardService {
         String originalFilename = "";
         String filePath = "";
 
-        if (!file.isEmpty()) {
+        if (file.isEmpty()) {
+            board.setFileName(originalFilename);
+            board.setFilePath(filePath);
+
+        } else {
             originalFilename = file.getOriginalFilename();
             filePath = fileDir + originalFilename;
 
-            log.info("파일 저장 {}", filePath);
             file.transferTo(new File(filePath));
-            log.info("저장 완료");
-
-    }
-            board.setFileName(originalFilename);
-            board.setFilePath(filePath);
+        }
 
         boardRepository.save(board);
 
