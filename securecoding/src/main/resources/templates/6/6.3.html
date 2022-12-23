@@ -25,24 +25,7 @@
                             <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
                             <label for="tab-1" class="tab-label">class Test2</label>
                             <div class="tab-content">
-                                <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">public class Test {
-
-    public static void main(String[] args) {
-        Test2 test2 = new Test2();
-        String[] test2StringArray = test2.getStringArray();
-        System.out.println("[-] test2 stringarray[] : " + Arrays.deepToString(test2StringArray));
-        test2StringArray[0] = "xyz";
-        System.out.println("[i] test2 stringarray[] = xyz ");
-        System.out.println("[-] test2 stringarray[] : " + Arrays.deepToString(test2StringArray));
-    }
-}</textarea></code>
-                            </div>
-                        </div>
-                        <div class="tab">
-                            <input type="radio" name="css-tabs" id="tab-2" class="tab-switch">
-                            <label for="tab-2" class="tab-label">Test.java</label>
-                            <div class="tab-content">
-                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">public class Test2 {
+                                <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">public class Test2 {
 
     private String[] stringarray = new String[3];
     private String string;
@@ -56,6 +39,24 @@
     public String[] getStringArray() {
         return stringarray;
     }
+}</textarea></code>
+                            </div>
+                        </div>
+                        <div class="tab">
+                            <input type="radio" name="css-tabs" id="tab-2" class="tab-switch">
+                            <label for="tab-2" class="tab-label">Test.java</label>
+                            <div class="tab-content">
+                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">public class Test {
+
+    public static void main(String[] args) {
+        Test2 test2 = new Test2();
+        String[] test2StringArray = test2.getStringArray();
+        System.out.println("[-] test2 stringarray[] : " + Arrays.deepToString(test2StringArray));
+        test2StringArray[0] = "xyz";
+        System.out.println("[i] test2 stringarray[] = xyz ");
+        System.out.println("[-] test2 stringarray[] : " + Arrays.deepToString(test2StringArray));
+    }
+
 }</textarea></code>
                           </div>
                       </div>
@@ -83,38 +84,50 @@
                     <div class="tabs">
                         <div class="tab">
                             <input type="radio" name="css-tabs" id="tab-4" checked class="tab-switch">
-                            <label for="tab-4" class="tab-label">Test.java</label>
+                            <label for="tab-4" class="tab-label">class Test2</label>
                             <div class="tab-content">
-                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">public class Test {
+                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">public class Test2 {
 
-    public static void main(String[] args) {
-        Test2 test2 = new Test2();
-        String[] test2StringArray = test2.getStringArray();
-        System.out.println("[-] test2 stringarray[] : " + Arrays.deepToString(test2StringArray));
-        test2StringArray[0] = "xyz";
-        System.out.println("[i] test2 stringarray[] = xyz ");
-        System.out.println("[-] test2 stringarray[] : " + Arrays.deepToString(test2StringArray));
-        System.out.println("[-] test2.getStringArray[] : " + test2.getStringArray());
-                                    }
-                                    }</textarea></code>
+    private String[] stringarray = new String[3];
+
+    public Test2() {
+        stringarray[0] = "abc";
+        stringarray[1] = "def";
+        stringarray[2] = "ghi";
+    }
+
+    public String[] getStringArray() {
+        return stringarray;
+    }
+
+    public String[] getNewArray() {
+        String[] returnArray = null;
+        if(this.stringarray != null) {
+            returnArray = new String[stringarray.length];
+
+            for (int i = 0; i < stringarray.length; i++) {
+                returnArray[i] = this.stringarray[i];
+            }
+        }
+        return returnArray;
+    }
+}</textarea></code>
                             </div>
                         </div>
                         <div class="tab">
                             <input type="radio" name="css-tabs" id="tab-5" class="tab-switch">
-                            <label for="tab-5" class="tab-label">class Test2</label>
+                            <label for="tab-5" class="tab-label">Test.java</label>
                             <div class="tab-content">
-                                <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Service
-@RequiredArgsConstructor
-public class AuthorityService {
+                                <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">public class Test {
 
-    public static boolean SecurePasswordService(String password) {
-
-        String passwordPolicy = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$";
-
-        Pattern pattern = Pattern.compile(passwordPolicy);
-        Matcher matcher = pattern.matcher(password);
-
-        return matcher.matches();
+    public static void main(String[] args) {
+        Test2 test2 = new Test2();
+        String[] test2StringArray = test2.getNewArray();
+        System.out.println("[-] test2 stringarray[] : " + Arrays.deepToString(test2StringArray));
+        test2StringArray[0] = "xyz";
+        System.out.println("[i] test2 stringarray[] = xyz ");
+        System.out.println("[-] test2 stringarray[] : " + Arrays.deepToString(test2StringArray));
+        System.out.println("[-] test2 stringarray[] : " + Arrays.deepToString(test2.getStringArray()));
     }
 }</textarea></code>
                             </div>
@@ -123,20 +136,10 @@ public class AuthorityService {
                             <input type="radio" name="css-tabs" id="tab-6" class="tab-switch">
                             <label for="tab-6" class="tab-label">실행 결과</label>
                             <div class="tab-content">
-                                <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Service
-@RequiredArgsConstructor
-public class AuthorityService {
-
-    public static boolean SecurePasswordService(String password) {
-
-        String passwordPolicy = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$";
-
-        Pattern pattern = Pattern.compile(passwordPolicy);
-        Matcher matcher = pattern.matcher(password);
-
-        return matcher.matches();
-    }
-}</textarea></code>
+                                <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">[-] test2 stringarray[] : [abc, def, ghi]
+[i] test2 stringarray[] = xyz
+[-] test2 stringarray[] : [xyz, def, ghi]
+[-] test2 stringarray[] : [abc, def, ghi]</textarea></code>
                             </div>
                         </div>
                     </div>
