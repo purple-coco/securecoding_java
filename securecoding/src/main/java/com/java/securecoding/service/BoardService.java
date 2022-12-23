@@ -56,8 +56,12 @@ public class BoardService {
         String originalFilename = " ";
         String filePath = " ";
 
-        if(!file.isEmpty()) {
 
+        if (file.isEmpty()) {
+            board.setFileName(originalFilename);
+            board.setFilePath(filePath);
+
+        } else {
             String originalFileExt = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")+1);
 
             if (!file.getOriginalFilename().matches("[\\.\\%\\;\\/\\/]*")) {
@@ -74,9 +78,6 @@ public class BoardService {
                 throw new NotAllowExtException1("업로드 허용되는 파일 확장자가 아닙니다.");
             }
         }
-
-        board.setFileName(originalFilename);
-        board.setFilePath(filePath);
 
         boardRepository.save(board);
 
