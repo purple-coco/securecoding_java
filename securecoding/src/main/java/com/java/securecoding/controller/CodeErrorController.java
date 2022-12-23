@@ -97,4 +97,10 @@ public class CodeErrorController {
     public String UninitializedVariableForm() {
         return "/5/5.4";
     }
+
+    //5. 신뢰할 수 없는 데이터의 역직렬화
+    @GetMapping("/5/5")
+    public String DeserializationForm_code() {
+        return "/5/5.5";
+    }
 }
