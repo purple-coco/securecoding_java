@@ -17,7 +17,7 @@
       <div class="col mb-5" style="width: 40%; height: 200%">
         <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
         <hr />
-          <form th:action="@{/2/1/vuln}" th:object="${form}" method="post">
+          <form th:action="@{/mypage/info/{memberId}/vuln (memberId=${memberId})}" th:object="${form}" method="post">
             <label th:for="name" style="margin-top: 2%; margin-left: 10%; margin-bottom: 2%">이름</label>
             <input type="text" id="name" name="name" th:field="*{name}" class="form-control" style="width: 80%; margin-left: 10%; margin-bottom: 4%; height: 50px" />
             <label th:for="username" style="margin-left: 10%; margin-bottom: 2%">아이디</label>
@@ -34,7 +34,7 @@
       <div class="col mb-5" style="width: 40%; height: 200%">
         <h4 class="fw-bolder" style="text-align: center">Secure</h4>
         <hr />
-          <form th:action="@{/2/1/secure}" th:object="${form}" method="post">
+          <form th:action="@{/mypage/info/{memberId}/secure (memberId=${memberId})}" th:object="${form}" method="post">
             <label th:for="name" style="margin-top: 2%; margin-left: 10%; margin-bottom: 2%">이름</label>
             <input type="text" id="name2" name="name" th:field="*{name}" class="form-control" style="width: 80%; margin-left: 10%; margin-bottom: 4%; height: 50px" />
             <label th:for="username" style="margin-left: 10%; margin-bottom: 2%">아이디</label>
@@ -50,7 +50,7 @@
       </div>
     </div>
     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-      <div class="text-center"><a class="btn btn-outline-dark mt-auto" style="margin-left: 75%" th:href="@{/2/5/code}">코드 보기</a></div>
+      <div class="text-center"><a class="btn btn-outline-dark mt-auto" style="margin-left: 75%" th:href="@{/2/1/code}">코드 보기</a></div>
     </div>
   </div>
 </section>
