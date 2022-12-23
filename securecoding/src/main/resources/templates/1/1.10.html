@@ -13,89 +13,93 @@
     <h4 class="fw-bolder" style="text-align: center">10. LDAP 삽입</h4>
     <p style="text-align: center">제1절 입력데이터 검증 및 표현</p>
     <br />
-    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" style="min-height: 400px">
-      <div class="col mb-5" style="width: 60%">
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        <!-- Vulnerable code -->
+        <div class="col mb-5" style="width: 60%">
         <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
-        <hr />
-          <form action="#" method="get">
-              <div class="wrapper" style="width: 100%">
-                  <div class="tabs">
-                      <div class="tab">
-                          <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
-                          <label for="tab-1" class="tab-label">LdapInjection.java</label>
-                          <div class="tab-content">
-                              <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">private void searchRecord(String userSN, String userPassword) throws NamingException {
-	Hashtable<String, String> env = new Hashtable<String, String>();
-	env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
+            <hr />
+            <form action="#" method="get">
+                <div class="wrapper" style="width: 100%">
+                    <div class="tabs">
+                        <div class="tab">
+                            <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+                            <label for="tab-1" class="tab-label">LDAPInjection.java</label>
+                            <div class="tab-content">
+                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">private void searchRecord(String userSN, String userPassword) throws NamingException {
+   Hashtable<String, String> env = new Hashtable<String, String>();
+   env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
 
-	try {
-		DirContext dctx = new InitialDirContext(env);
-		SearchControls sc = new SearchControls();
-		String[] attributeFilter = { "cn", "mail" };
-		sc.setReturningAttributes(attributeFilter);
-		sc.setSearchScope(SearchControls.SUBTREE_SCOPE);
+   try {
+     DirContext dctx = new InitialDirContext(env);
+     SearchControls sc = new SearchControls();
+     String[] attributeFilter = { "cn", "mail" };
+     sc.setReturningAttributes(attributeFilter);
+     sc.setSearchScope(SearchControls.SUBTREE_SCOPE);
 
-		String base = "dc=example,dc=com";
-		String filter = "(&(sn=" + userSN + ")(userPassword=" + userPassword + "))";
+     String base = "dc=example,dc=com";
+     String filter = "(&(sn=" + userSN + ")(userPassword=" + userPassword + "))";
 
-		NamingEnumeration<?> results = dctx.search(base, filter, sc);
-		while (results.hasMore()) {
-			SearchResult sr = (SearchResult) results.next();
-			Attributes attrs = sr.getAttributes();
-			Attribute attr = attrs.get("cn");
-			.....
-		}
+     NamingEnumeration<?> results = dctx.search(base, filter, sc);
+     while (results.hasMore()) {
+        SearchResult sr = (SearchResult) results.next();
+        Attributes attrs = sr.getAttributes();
+        Attribute attr = attrs.get("cn");
+        .....
+     }
 
-	dctx.close();
+     dctx.close();
 
-	} catch (NamingException e) { ... }
+   } catch (NamingException e) { ... }
 }</textarea></code>
-                          </div>
-                      </div>
-                  </div>
-              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <br />
+           <hr />
           </form>
-          <br />
-          <hr />
       </div>
-      <div class="col mb-5" style="width: 60%">
+        <!-- Secure Code -->
+        <div class="col mb-5" style="width: 60%">
         <h4 class="fw-bolder" style="text-align: center">Secure</h4>
-        <hr />
+          <hr />
           <form action="#" method="get">
               <div class="wrapper" style="width: 100%">
                   <div class="tabs">
                       <div class="tab">
                           <input type="radio" name="css-tabs" id="tab-2" checked class="tab-switch">
-                          <label for="tab-2" class="tab-label">LdapInjection.java</label>
+                          <label for="tab-2" class="tab-label">LDAPInjection.java</label>
                           <div class="tab-content">
-                              <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">private void searchRecord(String userSN, String userPassword) throws NamingException {
-	Hashtable<String, String> env = new Hashtable<String, String>();
-	env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">private void searchRecord(String userSN, String userPassword) throws NamingException {
+   Hashtable<String, String> env = new Hashtable<String, String>();
+   env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
 
-	try {
-		DirContext dctx = new InitialDirContext(env);
-		SearchControls sc = new SearchControls();
-		String[] attributeFilter = {"cn", "mail" };
-		sc.setReturningAttributes(attributeFilter);
-		sc.setSearchScope(SearchControls.SUBTREE_SCOPE);
+   try {
+     DirContext dctx = new InitialDirContext(env);
+     SearchControls sc = new SearchControls();
+     String[] attributeFilter = { "cn", "mail" };
+     sc.setReturningAttributes(attributeFilter);
+     sc.setSearchScope(SearchControls.SUBTREE_SCOPE);
 
-		String base = "dc=example,dc=com";
+     String base = "dc=example,dc=com";
 
-		if (!userSN.matches("[₩₩w₩₩s]*") || !userPassword.matches("[₩₩w]*")) {
-			throw new IllegalArgumentException("Invalid input");
-		}
-		String filter = "(&(sn=" + userSN + ")(userPassword=" + userPassword + "))";
+     if (!userSN.matches("[₩₩W]*") || !userPassword.matches("[₩₩W]*")) {
+	    throw new IllegalArgumentException("Invalid input");
+     }
 
-		NamingEnumeration<?> results = dctx.search(base, filter, sc);
-		while (results.hasMore()) {
-			SearchResult sr = (SearchResult) results.next();
-			Attributes attrs = sr.getAttributes(); Attribute attr = attrs.get("cn");
-			......
-		}
+     String filter = "(&(sn=" + userSN + ")(userPassword=" + userPassword + "))";
 
-	dctx.close();
+     NamingEnumeration<?> results = dctx.search(base, filter, sc);
+     while (results.hasMore()) {
+        SearchResult sr = (SearchResult) results.next();
+        Attributes attrs = sr.getAttributes();
+        Attribute attr = attrs.get("cn");
+        .....
+     }
 
-	} catch (NamingException e) { ... }
+     dctx.close();
+
+    } catch (NamingException e) { ... }
 }</textarea></code>
                           </div>
                       </div>
