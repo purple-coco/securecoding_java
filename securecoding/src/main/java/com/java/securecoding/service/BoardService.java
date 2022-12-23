@@ -3,6 +3,7 @@ package com.java.securecoding.service;
 import com.java.securecoding.domain.board.Board;
 import com.java.securecoding.repository.BoardRepository;
 import exception.NotAllowExtException1;
+import exception.NotAllowExtException2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,7 +61,6 @@ public class BoardService {
         if (file.isEmpty()) {
             board.setFileName(originalFilename);
             board.setFilePath(filePath);
-
         } else {
             String originalFileExt = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")+1);
 
@@ -75,7 +75,7 @@ public class BoardService {
 
                 file.transferTo(new File(filePath));
             } else {
-                throw new NotAllowExtException1("업로드 허용되는 파일 확장자가 아닙니다.");
+                throw new NotAllowExtException2("업로드 허용되는 파일 확장자가 아닙니다.");
             }
         }
 
