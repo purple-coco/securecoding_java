@@ -8,7 +8,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdown2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">제1절 입력데이터 검증 및 표현</a>
+            <a class="nav-link dropdown-toggle" id="navbarDropdown2" style="font-weight: 500" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">제1절 입력데이터 검증 및 표현</a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li><a class="dropdown-item" th:href="@{/1/1}">1. SQL 삽입</a></li>
               <li><a class="dropdown-item" th:href="@{/1/2}">2. 코드 삽입</a></li>
@@ -30,7 +30,7 @@
             </ul>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdown3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" >제2절 보안기능</a>
+            <a class="nav-link dropdown-toggle" id="navbarDropdown3" style="font-weight: 500" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" >제2절 보안기능</a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li><a class="dropdown-item" th:if="${session.memberInfo != null}" th:href="@{/mypage/info/{memberId} (memberId=${session.memberInfo.id})}">1. 적절한 인증 없는 중요기능 허용</a></li>
               <li><a class="dropdown-item" th:if="${session.memberInfo != null}" href="#!">2. 부적절한 인가</a></li>
@@ -51,14 +51,14 @@
             </ul>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdown4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">제3절 시간 및 상태</a>
+            <a class="nav-link dropdown-toggle" id="navbarDropdown4" style="font-weight: 500" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">제3절 시간 및 상태</a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li><a class="dropdown-item" th:href="@{/3/1}">1. 경쟁조건: 검사시점과 사용시점(TOCTOU)</a></li>
               <li><a class="dropdown-item" th:href="@{/3/2}">2. 종료되지 않는 반복문 또는 재귀함수</a></li>
             </ul>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdown5" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">제4절 에러처리</a>
+            <a class="nav-link dropdown-toggle" id="navbarDropdown5" style="font-weight: 500" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">제4절 에러처리</a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li><a class="dropdown-item" th:href="@{/4/1}">1. 오류 메시지 정보노출</a></li>
               <li><a class="dropdown-item" th:href="@{/4/2}">2. 오류 상황 대응 부재</a></li>
@@ -66,7 +66,7 @@
             </ul>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdown6" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">제5절 코드오류</a>
+            <a class="nav-link dropdown-toggle" id="navbarDropdown6" style="font-weight: 500" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">제5절 코드오류</a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li><a class="dropdown-item" th:href="@{/5/1}">1. Null Pointer 역참조</a></li>
               <li><a class="dropdown-item" th:href="@{/5/2}">2. 부적절한 자원 해제</a></li>
@@ -76,7 +76,7 @@
             </ul>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdown7" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">제6절 캡슐화</a>
+            <a class="nav-link dropdown-toggle" id="navbarDropdown7" style="font-weight: 500" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">제6절 캡슐화</a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li><a class="dropdown-item" th:href="@{/6/1}">1. 잘못된 세션에 의한 데이터 정보노출</a></li>
               <li><a class="dropdown-item" th:href="@{/6/2}">2. 제거되지 않고 남은 디버그 코드</a></li>
@@ -85,7 +85,7 @@
             </ul>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdown8" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">제7절 API 오용</a>
+            <a class="nav-link dropdown-toggle" id="navbarDropdown8" style="font-weight: 500" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">제7절 API 오용</a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li><a class="dropdown-item" th:href="@{/7/1}">1. DNS lookup에 의존한 보안결정</a></li>
               <li><a class="dropdown-item" th:href="@{/7/2}">2. 취약한 API 사용</a></li>
@@ -93,7 +93,7 @@
           </li>
         </ul>
         <form class="d-flex" th:if="${session.memberInfo == null}">
-          <a class="btn btn-outline-dark" th:href="@{/member/login}">
+          <a class="btn btn-outline-dark" style="font-weight: 500" th:href="@{/member/login}">
             <i class="bi bi-person-circle"></i>
             LOGIN
           </a>
