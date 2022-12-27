@@ -30,6 +30,7 @@ public class BoardController {
     private final MemberService memberService;
     private final BoardService boardService;
 
+    /* 게시글 목록 */
     @GetMapping(value = {"/board"})
     public String BoardListForm(Model model) {
 
@@ -40,6 +41,7 @@ public class BoardController {
         return "/1/1.1";
     }
 
+    /* 게시글 생성 */
     @GetMapping(value = {"/board/new", "/1/6/vuln", "/1/6/secure"})
     public String CreateBoardForm(Model model) {
 
@@ -98,6 +100,7 @@ public class BoardController {
         return "message";
     }
 
+    /* 게시글 조회 */
     @GetMapping("/board/{boardId}/vuln")
     public String getBoardForm_vuln(@PathVariable("boardId") Long boardId, Model model) {
         Board board = boardService.findBoard(boardId);
@@ -116,6 +119,7 @@ public class BoardController {
         return "/board/getBoardForm_vuln";
     }
 
+    /* 게시글 삭제 */
     @GetMapping("/board/delete/{boardId}/vuln")
     public String deleteBoard_vuln(@PathVariable("boardId") Long boardId, BoardForm form, HttpServletRequest request, Model model) {
 
