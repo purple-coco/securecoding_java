@@ -19,6 +19,7 @@
         <div class="col mb-5" style="width: 40%; height: 200%">
         <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
         <hr />
+            <br />
             <div align="right">
                 <form th:action="@{/board}" method="get">
                     <button class="btn" style="float:right; background-color: #F5Df4D; float: right" type="submit">찾기</button>
@@ -26,7 +27,7 @@
                 </form>
             </div>
             <br />
-            <table class="table table-striped">
+            <table class="table table-striped" style="margin-top: 2%">
                 <thead>
                 <tr>
                     <th>번호</th>
@@ -39,7 +40,7 @@
                 <tr th:each="board : ${boards}" th:if="${board.isDelete() == false}" >
                     <td th:text="${board.id}"></td>
                     <td>
-                        <a style="color: black" th:text="${board.subject}" th:href="@{/board/{id} (id=${board.id})}"></a>
+                        <a style="color: black; text-decoration-line: none" th:text="${board.subject}" th:href="@{/board/{id} (id=${board.id})}"></a>
                     </td>
                     <td th:text="${board.member.name}"></td>
                     <td th:text="${board.createDate}"></td>
@@ -60,6 +61,7 @@
         <div class="col mb-5" style="width: 40%; height: 200%">
             <h4 class="fw-bolder" style="text-align: center">Secure</h4>
             <hr />
+            <br />
             <div align="right">
                 <form th:action="@{/board}" method="get">
                     <button class="btn" style="float:right; background-color: #F5Df4D; float: right" type="submit">찾기</button>
@@ -67,7 +69,7 @@
                 </form>
             </div>
             <br />
-            <table class="table table-striped">
+            <table class="table table-striped" style="margin-top: 2%">
                 <thead>
                 <tr>
                     <th>번호</th>
@@ -80,7 +82,7 @@
                 <tr th:each="board : ${boards}" th:if="${board.isDelete() == false}" >
                     <td th:text="${board.id}"></td>
                     <td>
-                        <a style="color: black" th:text="${board.subject}" th:href="@{/board/{id} (id=${board.id})}"></a>
+                        <a style="color: black; text-decoration-line: none" th:text="${board.subject}" th:href="@{/board/{id} (id=${board.id})}"></a>
                     </td>
                     <td th:text="${board.member.name}"></td>
                     <td th:text="${board.createDate}"></td>
