@@ -12,10 +12,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
@@ -95,4 +97,45 @@ public class BoardController {
 
         return "message";
     }
+
+    @GetMapping("/board/{boardId}/vuln")
+    public String getBoardForm_vuln(@PathVariable("boardId") Long boardId, Model model) {
+        Board board = boardService.findBoard(boardId);
+
+        model.addAttribute("form", board);
+
+        return "/board/getBoardForm_vuln";
+    }
+
+    @GetMapping("/board/delete/{boardId}/vuln")
+    public String deleteBoard_vuln(@PathVariable("boardId") Long boardId, BoardForm form, HttpServletRequest request, Model model) {
+
+        //게시물 삭제 시 사용자 검증 없이 삭제 가능
+        //2절 보안기능 2.부적절한 인가 --> 세션정보 통해 사용자 검증
+        MemberInfo member = (MemberInfo) request.getSession().getAttribute("memberInfo");
+        boardService.validateUpdate(member.getId(), boardId);
+
+        model.addAttribute("message", "삭제하시겠습니까?");
+        model.addAttribute("searchUrl", "/boards");
+
+        boardService.deleteBoard(boardId);
+
+        return "message";
+
+    }
+
+    @GetMapping("/board/delete/{boardId}/secure")
+    public String deleteBoard_secure(@PathVariable("boardId") Long boardId, BoardForm form, HttpServletRequest request, Model model) {
+
+        model.addAttribute("message", "삭제하시겠습니까?");
+        boardService.deleteBoard(boardId);
+
+        model.addAttribute("searchUrl", "/boards");
+
+
+        return "message";
+
+    }
+
+
 }
