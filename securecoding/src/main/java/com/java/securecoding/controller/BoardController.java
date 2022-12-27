@@ -119,6 +119,69 @@ public class BoardController {
         return "/board/getBoardForm_vuln";
     }
 
+    /* 게시글 수정 */
+    @GetMapping("/boards/update/{boardId}/vuln")
+    public String updateForm(HttpServletRequest request,
+                             @PathVariable("boardId") Long boardId, Model model) {
+
+        Board board = boardService.findBoard(boardId);
+        BoardForm boardForm = new BoardForm();
+
+        boardForm.setId(board.getId());
+        boardForm.setSubject(board.getSubject());
+        boardForm.setContent(board.getContent());
+        boardForm.setFileName(board.getFileName());
+        boardForm.setFilePath(board.getFilePath());
+        boardForm.setMember(board.getMember());
+
+        model.addAttribute("form", boardForm);
+
+        return "/boards/updateBoardForm_vuln";
+
+    }
+
+    @PostMapping("/boards/update/{boardId}/vuln")
+    public String updateForm_vuln(HttpServletRequest request,
+                                  @PathVariable("boardId") Long boardId, BoardForm form, Model model) {
+
+        boardService.updateBoard(boardId,
+                form.getSubject(),
+                form.getContent(),
+                form.getFileName(),
+                form.getFilePath());
+
+        model.addAttribute("message", "글 수정이 완료되었습니다.");
+        model.addAttribute("searchUrl", "/boards");
+
+        return "message";
+
+    }
+
+    @GetMapping("/boards/update/{boardId}/secure")
+    public String updateForm_secure(HttpServletRequest request,
+                             @PathVariable("boardId") Long boardId, Model model) {
+
+
+        //게시물 수정 시 사용자 검증
+        MemberInfo member = (MemberInfo) request.getSession().getAttribute("memberInfo");
+        boardService.validateUpdate(member.getId(), boardId);
+
+        Board board = boardService.findBoard(boardId);
+        BoardForm boardForm = new BoardForm();
+
+        boardForm.setId(board.getId());
+        boardForm.setSubject(board.getSubject());
+        boardForm.setContent(board.getContent());
+        boardForm.setFileName(board.getFileName());
+        boardForm.setFilePath(board.getFilePath());
+        boardForm.setMember(board.getMember());
+
+        model.addAttribute("form", boardForm);
+
+        return "/board/updateBoardForm_secure";
+
+    }
+
     /* 게시글 삭제 */
     @GetMapping("/board/delete/{boardId}/vuln")
     public String deleteBoard_vuln(@PathVariable("boardId") Long boardId, BoardForm form, HttpServletRequest request, Model model) {
