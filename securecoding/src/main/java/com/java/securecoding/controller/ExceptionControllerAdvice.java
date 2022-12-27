@@ -48,4 +48,12 @@ public class ExceptionControllerAdvice {
 
         return "message";
     }
+
+    @ExceptionHandler(BoardException.class)
+    public String UpdateBoard(Model model) {
+        model.addAttribute("message", "자신이 작성한 게시물만 수정 및 삭제가 가능합니다.");
+        model.addAttribute("searchUrl", "/board");
+
+        return "message";
+    }
 }
