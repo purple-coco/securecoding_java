@@ -140,7 +140,7 @@ public class MemberService {
       </div>
     </div>
       <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-          <div class="text-center" th:if="${member.id == session.memberInfo.id}"><a class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/mypage/info/{memberId} (memberId=${member.id})}">실습 하기</a></div>
+          <div class="text-center" th:each="member: ${members}"><a th:if="${member.id == session.memberInfo.id}" class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/mypage/info/{memberId} (memberId=${member.id})}">실습 하기</a></div>
       </div>
   </div>
 </section>
