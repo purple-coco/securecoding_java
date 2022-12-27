@@ -22,8 +22,8 @@
             <br />
             <div align="right">
                 <form th:action="@{/board}" method="get">
-                    <button class="btn" style="float:right; background-color: #F5Df4D; float: right" type="submit">찾기</button>
-                    <input type="text" name="keyword" class="form-control" style="width: 200px"/>
+                    <button class="btn" style="float:right; background-color: #ffe74a; float: right" type="submit">찾기</button>
+                    <input type="text" name="keyword" class="form-control" style="width: 200px; margin-left: 2%"/>
                 </form>
             </div>
             <br />
@@ -50,7 +50,8 @@
                 </tfoot>
             </table>
             <br />
-            <a href="#" th:if="${session.memberInfo != null}" th:href="@{/boards/new}" class="btn" style="text-align: left; background-color: #F5Df4D;">글쓰기</a>
+            <a href="#" th:if="${session.memberInfo != null}" th:href="@{/board/new}" class="btn" style="text-align: left; background-color: #ffe74a;">글쓰기</a>
+            <br />
             <br />
             <br />
             <div class="card h-100">
@@ -64,8 +65,8 @@
             <br />
             <div align="right">
                 <form th:action="@{/board}" method="get">
-                    <button class="btn" style="float:right; background-color: #F5Df4D; float: right" type="submit">찾기</button>
-                    <input type="text" name="keyword" class="form-control" style="width: 200px"/>
+                    <button class="btn" style="float:right; background-color: #ffe74a; float: right" type="submit">찾기</button>
+                    <input type="text" name="keyword" class="form-control" style="width: 200px; margin-left: 2%"/>
                 </form>
             </div>
             <br />
@@ -92,7 +93,8 @@
                 </tfoot>
             </table>
             <br />
-            <a href="#" th:if="${session.memberInfo != null}" th:href="@{/boards/new}" class="btn" style="text-align: left; background-color: #F5Df4D;">글쓰기</a>
+            <a href="#" th:if="${session.memberInfo != null}" th:href="@{/board/new}" class="btn" style="text-align: left; background-color: #ffe74a;">글쓰기</a>
+            <br />
             <br />
             <br />
             <div class="card h-100">
