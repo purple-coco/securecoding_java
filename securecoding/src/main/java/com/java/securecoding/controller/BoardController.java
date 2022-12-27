@@ -123,11 +123,6 @@ public class BoardController {
     @GetMapping("/board/delete/{boardId}/vuln")
     public String deleteBoard_vuln(@PathVariable("boardId") Long boardId, BoardForm form, HttpServletRequest request, Model model) {
 
-        //게시물 삭제 시 사용자 검증 없이 삭제 가능
-        //2절 보안기능 2.부적절한 인가 --> 세션정보 통해 사용자 검증
-        MemberInfo member = (MemberInfo) request.getSession().getAttribute("memberInfo");
-        boardService.validateUpdate(member.getId(), boardId);
-
         model.addAttribute("message", "삭제하시겠습니까?");
         model.addAttribute("searchUrl", "/boards");
 
@@ -139,6 +134,10 @@ public class BoardController {
 
     @GetMapping("/board/delete/{boardId}/secure")
     public String deleteBoard_secure(@PathVariable("boardId") Long boardId, BoardForm form, HttpServletRequest request, Model model) {
+
+        MemberInfo member = (MemberInfo) request.getSession().getAttribute("memberInfo");
+        boardService.validateUpdate(member.getId(), boardId);
+
 
         model.addAttribute("message", "삭제하시겠습니까?");
         boardService.deleteBoard(boardId);
