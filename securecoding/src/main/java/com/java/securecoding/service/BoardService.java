@@ -99,8 +99,21 @@ public class BoardService {
 
     }
 
+    /* 게시물 수정 */
+    @Transactional
+    public void updateBoard(Long boardId, String subject, String content, String fileName, String filePath) {
+        Board findItem = boardRepository.findAllById(boardId);
+
+        findItem.change(subject, content, fileName, filePath);
+    }
+
+
     /* 게시물 삭제 */
     @Transactional
-    public void deleteBoard(Long id) { boardRepository.deleteById(id); }
+    public void deleteBoard(Long id) {
+
+        boardRepository.deleteById(id);
+
+    }
 
 }
