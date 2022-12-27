@@ -27,8 +27,8 @@
                 </form>
             </div>
             <br />
-            <table class="table table-striped" style="margin-top: 2%">
-                <thead>
+            <table class="table" style="margin-top: 2%">
+                <thead class="thead-dark">
                 <tr>
                     <th>번호</th>
                     <th>제목</th>
@@ -40,7 +40,7 @@
                 <tr th:each="board : ${boards}" th:if="${board.isDelete() == false}" >
                     <td th:text="${board.id}"></td>
                     <td>
-                        <a style="color: black; text-decoration-line: none" th:text="${board.subject}" th:href="@{/board/{id} (id=${board.id})}"></a>
+                        <a style="color: black; text-decoration-line: none" th:text="${board.subject}" th:href="@{/board/{id}/vuln (id=${board.id})}"></a>
                     </td>
                     <td th:text="${board.member.name}"></td>
                     <td th:text="${board.createDate}"></td>
@@ -70,8 +70,8 @@
                 </form>
             </div>
             <br />
-            <table class="table table-striped" style="margin-top: 2%">
-                <thead>
+            <table class="table" style="margin-top: 2%">
+                <thead class="thead-dark">
                 <tr>
                     <th>번호</th>
                     <th>제목</th>
@@ -83,7 +83,7 @@
                 <tr th:each="board : ${boards}" th:if="${board.isDelete() == false}" >
                     <td th:text="${board.id}"></td>
                     <td>
-                        <a style="color: black; text-decoration-line: none" th:text="${board.subject}" th:href="@{/board/{id} (id=${board.id})}"></a>
+                        <a style="color: black; text-decoration-line: none" th:text="${board.subject}" th:href="@{/board/{id}/secure (id=${board.id})}"></a>
                     </td>
                     <td th:text="${board.member.name}"></td>
                     <td th:text="${board.createDate}"></td>
