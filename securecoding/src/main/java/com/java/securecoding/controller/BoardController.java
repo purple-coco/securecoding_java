@@ -107,6 +107,15 @@ public class BoardController {
         return "/board/getBoardForm_vuln";
     }
 
+    @GetMapping("/board/{boardId}/secure")
+    public String getBoardForm_secure(@PathVariable("boardId") Long boardId, Model model) {
+        Board board = boardService.findBoard(boardId);
+
+        model.addAttribute("form", board);
+
+        return "/board/getBoardForm_vuln";
+    }
+
     @GetMapping("/board/delete/{boardId}/vuln")
     public String deleteBoard_vuln(@PathVariable("boardId") Long boardId, BoardForm form, HttpServletRequest request, Model model) {
 
