@@ -47,4 +47,15 @@ public class Board {
         return board;
     }
 
+    public void change(String subject, String content, String fileName, String filePath) {
+        this.subject = subject;
+        this.content = content;
+        this.fileName = fileName;
+        this.filePath = filePath;
+    }
+
+//    public void delete() {
+//        setDelete(true);
+//    }
+
 }
