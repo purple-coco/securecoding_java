@@ -1,7 +1,9 @@
 package com.java.securecoding.service;
 
 import com.java.securecoding.domain.board.Board;
+import com.java.securecoding.domain.member.Member;
 import com.java.securecoding.repository.BoardRepository;
+import exception.BoardException;
 import exception.NotAllowExtException1;
 import exception.NotAllowExtException2;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,10 @@ public class BoardService {
     public List<Board> findAll() {
         return boardRepository.findAll();
     }
+
+    /* 게시판 조회 */
+    @Transactional
+    public Board findBoard(Long boardId) { return boardRepository.findAllById(boardId);}
 
     @Transactional
     public Long saveBoard(Board board, MultipartFile file) throws IOException {
@@ -82,5 +88,19 @@ public class BoardService {
 
         return board.getId();
     }
+
+    /* 게시물 수정, 삭제 권한 검증 */
+    public void validateUpdate(Long memberId, Long boardId) {
+        Board findItem = boardRepository.findAllById(boardId);
+
+        if(!findItem.getMember().getId().equals(memberId)) {
+            throw new BoardException("자신이 작성한 게시물만 수정 및 삭제가 가능합니다.");
+        }
+
+    }
+
+    /* 게시물 삭제 */
+    @Transactional
+    public void deleteBoard(Long id) { boardRepository.deleteById(id); }
 
 }
