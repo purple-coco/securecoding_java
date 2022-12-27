@@ -1,6 +1,7 @@
 package com.java.securecoding.controller;
 
 import com.java.securecoding.service.AuthorityService;
+import com.java.securecoding.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -24,13 +25,17 @@ import java.util.Random;
 @Controller
 public class AuthorityController {
 
+    private final MemberService memberService;
     private static AuthorityService authorityService;
 
     //1. 적절한 인증 없는 중요기능 허용
     @GetMapping("/2/1/code")
-    public String MemberInfoUpdateForm_code() {
+    public String MemberInfoUpdateForm_code(Model model) {
+        model.addAttribute("members", memberService.findMembers());
+
         return "/2/2.1.code";
     }
+
     //3. 중요한 자원에 대한 잘못된 권한 설정
     @GetMapping("/2/3")
     public String ResourceForm_code() {
