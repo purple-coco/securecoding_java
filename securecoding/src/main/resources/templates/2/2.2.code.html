@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Head -->
+<head th:replace="fragments/head :: head"></head>
+<body>
+<!-- Navigation-->
+<nav th:replace="fragments/nav :: nav"></nav>
+<!-- Header-->
+<head th:replace="fragments/header :: header"></head>
+<!-- Section-->
+<section class="py-5">
+  <div class="container px-4 px-lg-5 mt-5">
+    <h4 class="fw-bolder" style="text-align: center">2. 부적절한 인가emberController.java</label>
+                            <div class="tab-content">
+                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">@PostMapping("/mypage/info/{memberId}/vuln")
+public String updateMemberForm_id_vuln(@PathVariable("memberId") Long memberId,
+                                    HttpServletRequest request, @</h4>
+    <p style="text-align: center">제2절 보안기능</p>
+    <br />
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        <!-- Vulnerable code -->
+        <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
+            <hr />
+            <form action="#" method="get">
+                <div class="wrapper" style="width: 100%">
+                    <div class="tabs">
+                        <div class="tab">
+                            <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+                            <label for="tab-1" class="tab-label">MModelAttribute("form") MemberForm form) {
+
+    memberService.updateMemberInfo_vuln(memberId, form.getName(), form.getPassword());
+
+    return "/2/2.1";
+}</textarea></code>
+                            </div>
+                        </div>
+                        <div class="tab">
+                            <input type="radio" name="css-tabs" id="tab-2" class="tab-switch">
+                            <label for="tab-2" class="tab-label">MemberService.java</label>
+                            <div class="tab-content">
+                                <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Service
+@Transactional
+@RequiredArgsConstructor
+public class MemberService {
+
+    private final MemberRepository memberRepository;
+
+    /* 회원 정보 수정 */
+    @Transactional
+    public void updateMemberInfo_vuln(Long memberId, String name, String password) {
+        Member findMemberInfo = memberRepository.findAllById(memberId);
+
+        if(!passwordValidate(password)) {
+            throw new UpdateInfoException("입력한 비밀번호가 규칙에 맞지 않습니다.");
+        } else {
+            findMemberInfo.updateMemberInfo(name, password);
+            memberRepository.save(findMemberInfo);
+        }
+    }
+    ...
+}</textarea></code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <br />
+           <hr />
+          </form>
+      </div>
+        <!-- Secure Code -->
+        <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Secure</h4>
+          <hr />
+          <form action="#" method="get">
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-4" checked class="tab-switch">
+                          <label for="tab-4" class="tab-label">MemberController.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/mypage/info/{memberId}/secure")
+public String updateMemberForm_id_secure(@PathVariable("memberId") Long memberId,
+                                      HttpServletRequest request, @ModelAttribute("form") MemberForm form, Model model) {
+
+    MemberInfo member = (MemberInfo) request.getSession().getAttribute("memberInfo");
+    Member findMember = memberService.findByUsername(form.getUsername());
+
+    memberService.validateUpdate(member.getId(), memberId);
+
+    memberService.updateMemberInfo_secure(memberId, form.getName(), form.getPassword());
+
+    model.addAttribute("message", "회원 정보가 수정되었습니다.");
+    model.addAttribute("searchUrl", "/");
+
+    return "message";
+
+}</textarea></code>
+                          </div>
+                      </div>
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-5" class="tab-switch">
+                          <label for="tab-5" class="tab-label">MemberService.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Service
+@Transactional
+@RequiredArgsConstructor
+public class MemberService {
+
+    private final MemberRepository memberRepository;
+
+    /* 회원 검증 */
+    public void validateUpdate(Long id, Long memberId) {
+        if(!id.equals(memberId)) {
+            throw new PermissionException("권한이 없습니다.");
+        }
+    }
+
+    /* 회원 정보 수정 */
+    @Transactional
+    public void updateMemberInfo_secure(Long memberId, String name, String password) {
+        Member findMemberInfo = memberRepository.findAllById(memberId);
+
+        if(!passwordValidate(password)) {
+            throw new UpdateInfoException("입력한 비밀번호가 규칙에 맞지 않습니다.");
+        } else {
+            findMemberInfo.updateMemberInfo(name, HashPassword(password));
+            memberRepository.save(findMemberInfo);
+        }
+    }
+    ....
+}</textarea></code>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </form>
+          <br />
+          <hr />
+      </div>
+    </div>
+      <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+          <div class="text-center" th:each="member: ${members}"><a th:if="${member.id == session.memberInfo.id}" class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/mypage/info/{memberId} (memberId=${member.id})}">실습 하기</a></div>
+      </div>
+  </div>
+</section>
+<br />
+<!-- Footer-->
+<footer th:replace="fragments/footer :: footer"></footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>
