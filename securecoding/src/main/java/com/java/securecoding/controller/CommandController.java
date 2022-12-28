@@ -399,6 +399,11 @@ public class CommandController {
         return "/1/1.12";
     }
 
+    @GetMapping("/1/12/code")
+    public String SSRFForm_code() {
+        return "/1/1.12.code";
+    }
+
     //12. 서버사이드 요청 위조
     @PostMapping("/1/12/vuln")
     public String SSRFForm_vuln(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
