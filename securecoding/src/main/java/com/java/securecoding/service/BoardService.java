@@ -25,7 +25,7 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
-    @Value(("${file.dir"))
+    @Value("${file.dir}")
     private String fileDir;
 
     /* 게시판 목록 */
@@ -42,16 +42,19 @@ public class BoardService {
         String originalFilename = "";
         String filePath = "";
 
-        if (file.isEmpty()) {
-            board.setFileName(originalFilename);
-            board.setFilePath(filePath);
-
-        } else {
+        if (!file.isEmpty()) {
             originalFilename = file.getOriginalFilename();
             filePath = fileDir + originalFilename;
 
             file.transferTo(new File(filePath));
+
+            board.setFileName(originalFilename);
+            board.setFilePath(filePath);
+
         }
+
+        board.setFileName(originalFilename);
+        board.setFilePath(filePath);
 
         boardRepository.save(board);
 
@@ -64,10 +67,7 @@ public class BoardService {
         String filePath = " ";
 
 
-        if (file.isEmpty()) {
-            board.setFileName(originalFilename);
-            board.setFilePath(filePath);
-        } else {
+        if (!file.isEmpty()) {
             String originalFileExt = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")+1);
 
             if (file.getOriginalFilename().matches("[\\.\\%\\;\\/\\/]*")) {
@@ -83,7 +83,14 @@ public class BoardService {
             } else {
                 throw new NotAllowExtException2("업로드 허용되는 파일 확장자가 아닙니다.");
             }
+
+            board.setFileName(originalFilename);
+            board.setFilePath(filePath);
+
         }
+        board.setFileName(originalFilename);
+        board.setFilePath(filePath);
+
         boardRepository.save(board);
 
         return board.getId();
