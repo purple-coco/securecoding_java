@@ -70,7 +70,7 @@ public class BoardService {
         } else {
             String originalFileExt = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")+1);
 
-            if (!file.getOriginalFilename().matches("[\\.\\%\\;\\/\\/]*")) {
+            if (file.getOriginalFilename().matches("[\\.\\%\\;\\/\\/]*")) {
                 throw new NotAllowExtException1("파일 이름에 허용하지 않는 문자열이 포함되었습니다.");
             }
             if (originalFileExt.equals("jpg") || originalFileExt.equals("png")
