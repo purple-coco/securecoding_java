@@ -2,6 +2,7 @@ package com.java.securecoding.controller;
 
 import com.java.securecoding.service.CommandService;
 import com.java.securecoding.service.MemberService;
+import exception.PermissionException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -27,7 +28,9 @@ import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -36,6 +39,16 @@ public class CommandController {
 
     private static CommandService commandService;
     private final MemberService memberService;
+
+    private static Map<Integer, String> URLMAP;
+
+
+    static {
+        URLMAP = new HashMap<>();
+        URLMAP.put(1, "http://localhost:8089/");
+        URLMAP.put(2,"http://localhost:8089/board/new");
+        URLMAP.put(3,"http://localhost:8080/2/8");
+    }
 
 
     @GetMapping("/1/1")
@@ -432,8 +445,65 @@ public class CommandController {
 
         String url2 = request.getParameter("url2");
 
+        if(url2 == null) {
+            return "/1/1.12";
+        }
+        try {
+            if (!isValidUrl(url2) && !isResponseCodeOk(url2)) {
+                System.out.println("유효하지 않은 URL");
+                model.addAttribute("message", "허용하지 않는 URL 입니다.");
+                model.addAttribute("searchUrl", "/1/1.12");
 
-        return "/1/1.12";
+                return "message";
+            }
+
+            // 성공 로직
+            return getView(url2);
+        } catch (NumberFormatException e) {
+            model.addAttribute("message", "허용하지 않는 URL 입니다.");
+            model.addAttribute("searchUrl", "/1/1.12");
+
+            return "message";
+        }
+
+    }
+
+    private boolean isValidUrl(String url) {
+
+        return URLMAP.keySet().stream()
+                .filter(key -> url.equals(String.valueOf(key)))
+                .findAny().isPresent();
+    }
+
+    private boolean isResponseCodeOk(String url) {
+        return getResponseCode(url) == HttpURLConnection.HTTP_OK;
+    }
+
+    private int getResponseCode(String url) {
+        HttpURLConnection httpURLConnection = null;
+        try {
+            URL inputUrl = new URL(URLMAP.get(Integer.parseInt(url)));
+            httpURLConnection = (HttpURLConnection) inputUrl.openConnection();
+            httpURLConnection.setConnectTimeout(10000);
+            httpURLConnection.setRequestMethod("GET");
+            return httpURLConnection.getResponseCode();
+
+        } catch (IOException e) {
+            System.out.println("error");
+            throw new PermissionException("접근 권한이 없습니다.");
+        }
+    }
+
+    private String getView(String url) {
+        if (url.equals("1")) {
+            return "redirect:/";
+        }
+
+        if (url.equals("2")) {
+            return "/1/1.6";
+        }
+
+        return "/2/2.8";
     }
 
     //13. HTTP 응답분할
