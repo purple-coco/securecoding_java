@@ -42,7 +42,7 @@ public class BoardController {
     }
 
     /* 게시글 생성 */
-    @GetMapping(value = {"/board/new", "/1/6/vuln", "/1/6/secure"})
+    @GetMapping(value = {"/board/new", "/1/6/vuln", "/1/6/secure", "/1/11", "/1/11/vuln", "/1/11/secure"})
     public String CreateBoardForm(Model model) {
 
         BoardForm form = new BoardForm();
@@ -93,6 +93,54 @@ public class BoardController {
                 form.getFilePath());
 
         boardService.saveBoard_secure(board, file);
+
+        model.addAttribute("message", "글 등록이 완료되었습니다.");
+        model.addAttribute("searchUrl", "/");
+
+        return "message";
+    }
+
+    @PostMapping("/1/11/vuln")
+    public String CSRFForm_vuln(BoardForm form, Model model,
+                                       MultipartHttpServletRequest request, MultipartFile file) throws IOException  {
+
+        HttpSession session = request.getSession();
+
+        MemberInfo memberInfo = (MemberInfo) session.getAttribute("memberInfo");
+        Member member = memberService.findOne(memberInfo.getId());
+
+        Board board = Board.createBoard(
+                member,
+                form.getSubject(),
+                form.getContent(),
+                form.getFileName(),
+                form.getFilePath());
+
+        boardService.saveBoard(board, file);
+
+        model.addAttribute("message", "글 등록이 완료되었습니다.");
+        model.addAttribute("searchUrl", "/");
+
+        return "message";
+    }
+
+    @PostMapping("/1/11/secure")
+    public String CSRFForm_secure(BoardForm2 form, Model model,
+                                MultipartHttpServletRequest request, MultipartFile file) throws IOException  {
+
+        HttpSession session = request.getSession();
+
+        MemberInfo memberInfo = (MemberInfo) session.getAttribute("memberInfo");
+        Member member = memberService.findOne(memberInfo.getId());
+
+        Board board = Board.createBoard(
+                member,
+                form.getSubject(),
+                form.getContent(),
+                form.getFileName(),
+                form.getFilePath());
+
+        boardService.saveBoard(board, file);
 
         model.addAttribute("message", "글 등록이 완료되었습니다.");
         model.addAttribute("searchUrl", "/");
