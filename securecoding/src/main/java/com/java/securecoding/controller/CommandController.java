@@ -231,7 +231,10 @@ public class CommandController {
     }
 
     //6. 위험한 형식 파일 업로드
-
+    @GetMapping("/1/6/code")
+    public String FileUpload_code() {
+        return "/1/1.6.code";
+    }
 
     //7. 신뢰되지 않는 URL 주소로 자동접속 연결
     @GetMapping(value = {"/1/7", "/1/7/vuln", "/1/7/secure"})
@@ -243,6 +246,7 @@ public class CommandController {
     public String URLConnected_code() {
         return "/1/1.7.code";
     }
+
     //7. 신뢰되지 않는 URL 주소로 자동접속 연결
     @PostMapping("/1/7/vuln")
     public String URLConnected_vuln(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
