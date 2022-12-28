@@ -324,7 +324,7 @@ public class CommandController {
 
         model.addAttribute("line", result);
 
-        return "command/XXEInjection";
+        return "/1/1.8";
     }
 
     //8. 부적절한 XML 외부 개체 참조
@@ -342,7 +342,7 @@ public class CommandController {
 
         model.addAttribute("line2", result);
 
-        return "command/XXEInjection";
+        return "/1/1.8";
     }
 
     //9. XML 삽입
