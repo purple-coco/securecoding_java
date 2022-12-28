@@ -150,7 +150,7 @@ public class BoardController {
                 form.getFilePath());
 
         model.addAttribute("message", "글 수정이 완료되었습니다.");
-        model.addAttribute("searchUrl", "/boards");
+        model.addAttribute("searchUrl", "/board");
 
         return "message";
 
@@ -159,7 +159,6 @@ public class BoardController {
     @GetMapping("/board/update/{boardId}/secure")
     public String updateForm_secure(HttpServletRequest request,
                              @PathVariable("boardId") Long boardId, Model model) {
-
 
         //게시물 수정 시 사용자 검증
         MemberInfo member = (MemberInfo) request.getSession().getAttribute("memberInfo");
