@@ -120,9 +120,8 @@ public class BoardController {
     }
 
     /* 게시글 수정 */
-    @GetMapping("/boards/update/{boardId}/vuln")
-    public String updateForm(HttpServletRequest request,
-                             @PathVariable("boardId") Long boardId, Model model) {
+    @GetMapping("/board/update/{boardId}/vuln")
+    public String updateForm(@PathVariable("boardId") Long boardId, Model model) {
 
         Board board = boardService.findBoard(boardId);
         BoardForm boardForm = new BoardForm();
@@ -136,11 +135,11 @@ public class BoardController {
 
         model.addAttribute("form", boardForm);
 
-        return "/boards/updateBoardForm_vuln";
+        return "/board/updateBoardForm_vuln";
 
     }
 
-    @PostMapping("/boards/update/{boardId}/vuln")
+    @PostMapping("/board/update/{boardId}/vuln")
     public String updateForm_vuln(HttpServletRequest request,
                                   @PathVariable("boardId") Long boardId, BoardForm form, Model model) {
 
@@ -157,7 +156,7 @@ public class BoardController {
 
     }
 
-    @GetMapping("/boards/update/{boardId}/secure")
+    @GetMapping("/board/update/{boardId}/secure")
     public String updateForm_secure(HttpServletRequest request,
                              @PathVariable("boardId") Long boardId, Model model) {
 
@@ -183,19 +182,19 @@ public class BoardController {
     }
 
     /* 게시글 삭제 */
-    @GetMapping("/board/delete/{boardId}/vuln")
+    @PostMapping("/board/delete/{boardId}/vuln")
     public String deleteBoard_vuln(@PathVariable("boardId") Long boardId, BoardForm form, HttpServletRequest request, Model model) {
 
         model.addAttribute("message", "삭제하시겠습니까?");
-        model.addAttribute("searchUrl", "/boards");
-
         boardService.deleteBoard(boardId);
+
+        model.addAttribute("searchUrl", "/boards");
 
         return "message";
 
     }
 
-    @GetMapping("/board/delete/{boardId}/secure")
+    @PostMapping("/board/delete/{boardId}/secure")
     public String deleteBoard_secure(@PathVariable("boardId") Long boardId, BoardForm form, HttpServletRequest request, Model model) {
 
         MemberInfo member = (MemberInfo) request.getSession().getAttribute("memberInfo");
