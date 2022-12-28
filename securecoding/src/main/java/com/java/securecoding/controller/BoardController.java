@@ -188,7 +188,7 @@ public class BoardController {
         model.addAttribute("message", "삭제하시겠습니까?");
         boardService.deleteBoard(boardId);
 
-        model.addAttribute("searchUrl", "/boards");
+        model.addAttribute("searchUrl", "/board");
 
         return "message";
 
@@ -204,7 +204,7 @@ public class BoardController {
         model.addAttribute("message", "삭제하시겠습니까?");
         boardService.deleteBoard(boardId);
 
-        model.addAttribute("searchUrl", "/boards");
+        model.addAttribute("searchUrl", "/board");
 
 
         return "message";
