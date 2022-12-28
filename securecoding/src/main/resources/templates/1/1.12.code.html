@@ -24,27 +24,25 @@
                           <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
                           <label for="tab-1" class="tab-label">CommandController.java</label>
                           <div class="tab-content">
-                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/1/14/vuln")
-public String IntegerBuffForm_vuln(HttpServletRequest request, HttpServletResponse response, Model model) throws NumberFormatException{
-        String integer1 = request.getParameter("integer1");
-        String integer2 = request.getParameter("integer2");
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/1/12/vuln")
+public String SSRFForm_vuln(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
 
-        if(integer1 == null || integer2 == null) {
-            return "/1/1.14";
+    String url = request.getParameter("url");
+
+    if (url == null) {
+        return "/1/1.12";
+    } else {
+        URL input_url = new URL(url);
+
+        HttpURLConnection httpURLConnection = (HttpURLConnection) input_url.openConnection();
+        httpURLConnection.setRequestMethod("GET");
+
+        if (httpURLConnection.getResponseCode() == 200) {
+            return "/admin";
         }
-
-        try {
-            Integer int_integer1 = Integer.parseInt(integer1);
-            Integer int_integer2 = Integer.parseInt(integer2);
-
-            Integer int_total = int_integer1 * int_integer2;
-
-            model.addAttribute("value", int_total);
-
-        } catch (NumberFormatException e) {
-            model.addAttribute("value", "Error");
-        }
-        return "/1/1.14";
+        model.addAttribute("url", url);
+    }
+    return "/1/1.12";
 }</textarea></code>
                           </div>
                       </div>
@@ -64,23 +62,84 @@ public String IntegerBuffForm_vuln(HttpServletRequest request, HttpServletRespon
                           <input type="radio" name="css-tabs" id="tab-2" checked class="tab-switch">
                           <label for="tab-2" class="tab-label">CommandController.java</label>
                           <div class="tab-content">
-                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/1/14/secure")
-public String IntegerBuffForm_secure(HttpServletRequest request, HttpServletResponse response, Model model) {
-        String integer3 = request.getParameter("integer3");
-        String integer4 = request.getParameter("integer4");
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@RequiredArgsConstructor
+@Controller
+public class CommandController {
 
-        if(integer3 == null || integer4 == null) {
-            return "/1/1.14";
+    private static Map<Integer, String> URLMAP;
+
+    static {
+        URLMAP = new HashMap<>();
+        URLMAP.put(1, "http://localhost:8089/");
+        URLMAP.put(2, "http://localhost:8089/board/new");
+        URLMAP.put(3, "http://localhost:8080/2/8");
+    }
+
+    @PostMapping("/1/12/secure")
+    public String SSRFForm_secure(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
+
+        String url2 = request.getParameter("url2");
+
+        if(url2 == null) {
+            return "/1/1.12";
+        }
+        try {
+            if (!isValidUrl(url2) && !isResponseCodeOk(url2)) {
+                System.out.println("유효하지 않은 URL");
+                model.addAttribute("message", "허용하지 않는 URL 입니다.");
+                model.addAttribute("searchUrl", "/1/1.12");
+
+                return "message";
+            }
+
+            // 성공 로직
+            return getView(url2);
+        } catch (NumberFormatException e) {
+            model.addAttribute("message", "허용하지 않는 URL 입니다.");
+            model.addAttribute("searchUrl", "/1/1.12");
+
+            return "message";
         }
 
-        BigInteger big_integer1 = new BigInteger(integer3);
-        BigInteger big_integer2 = new BigInteger(integer4);
+    }
 
-        BigInteger total = big_integer1.multiply(big_integer2);
+    private boolean isValidUrl(String url) {
 
-        model.addAttribute("value2", total);
+        return URLMAP.keySet().stream()
+                .filter(key -> url.equals(String.valueOf(key)))
+                .findAny().isPresent();
+    }
 
-        return "/1/1.14";
+    private boolean isResponseCodeOk(String url) {
+        return getResponseCode(url) == HttpURLConnection.HTTP_OK;
+    }
+
+    private int getResponseCode(String url) {
+        HttpURLConnection httpURLConnection = null;
+        try {
+            URL inputUrl = new URL(URLMAP.get(Integer.parseInt(url)));
+            httpURLConnection = (HttpURLConnection) inputUrl.openConnection();
+            httpURLConnection.setConnectTimeout(10000);
+            httpURLConnection.setRequestMethod("GET");
+            return httpURLConnection.getResponseCode();
+
+        } catch (IOException e) {
+            System.out.println("error");
+            throw new PermissionException("접근 권한이 없습니다.");
+        }
+    }
+
+    private String getView(String url) {
+        if (url.equals("1")) {
+            return "redirect:/";
+        }
+
+        if (url.equals("2")) {
+            return "/1/1.6";
+        }
+
+        return "/2/2.8";
+    }
 }</textarea></code>
                           </div>
                       </div>
@@ -92,7 +151,7 @@ public String IntegerBuffForm_secure(HttpServletRequest request, HttpServletResp
       </div>
     </div>
       <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-          <div class="text-center"><a class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/1/14}">실습 하기</a></div>
+          <div class="text-center"><a class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/1/12}">실습 하기</a></div>
       </div>
   </div>
 </section>
