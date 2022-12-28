@@ -10,11 +10,7 @@
 <!-- Section-->
 <section class="py-5">
   <div class="container px-4 px-lg-5 mt-5">
-    <h4 class="fw-bolder" style="text-align: center">2. 부적절한 인가emberController.java</label>
-                            <div class="tab-content">
-                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">@PostMapping("/mypage/info/{memberId}/vuln")
-public String updateMemberForm_id_vuln(@PathVariable("memberId") Long memberId,
-                                    HttpServletRequest request, @</h4>
+    <h4 class="fw-bolder" style="text-align: center">2. 부적절한 인가</h4>
     <p style="text-align: center">제2절 보안기능</p>
     <br />
     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
@@ -27,7 +23,11 @@ public String updateMemberForm_id_vuln(@PathVariable("memberId") Long memberId,
                     <div class="tabs">
                         <div class="tab">
                             <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
-                            <label for="tab-1" class="tab-label">MModelAttribute("form") MemberForm form) {
+                            <label for="tab-1" class="tab-label">BoardController.java</label>
+                            <div class="tab-content">
+                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">@PostMapping("/mypage/info/{memberId}/vuln")
+public String updateMemberForm_id_vuln(@PathVariable("memberId") Long memberId,
+                                    HttpServletRequest request, @ModelAttribute("form") MemberForm form) {
 
     memberService.updateMemberInfo_vuln(memberId, form.getName(), form.getPassword());
 
@@ -37,7 +37,7 @@ public String updateMemberForm_id_vuln(@PathVariable("memberId") Long memberId,
                         </div>
                         <div class="tab">
                             <input type="radio" name="css-tabs" id="tab-2" class="tab-switch">
-                            <label for="tab-2" class="tab-label">MemberService.java</label>
+                            <label for="tab-2" class="tab-label">BoardService.java</label>
                             <div class="tab-content">
                                 <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Service
 @Transactional
@@ -77,7 +77,7 @@ public class MemberService {
                   <div class="tabs">
                       <div class="tab">
                           <input type="radio" name="css-tabs" id="tab-4" checked class="tab-switch">
-                          <label for="tab-4" class="tab-label">MemberController.java</label>
+                          <label for="tab-4" class="tab-label">BoardController.java</label>
                           <div class="tab-content">
                               <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/mypage/info/{memberId}/secure")
 public String updateMemberForm_id_secure(@PathVariable("memberId") Long memberId,
@@ -100,7 +100,7 @@ public String updateMemberForm_id_secure(@PathVariable("memberId") Long memberId
                       </div>
                       <div class="tab">
                           <input type="radio" name="css-tabs" id="tab-5" class="tab-switch">
-                          <label for="tab-5" class="tab-label">MemberService.java</label>
+                          <label for="tab-5" class="tab-label">BoardService.java</label>
                           <div class="tab-content">
                               <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Service
 @Transactional
@@ -140,7 +140,7 @@ public class MemberService {
       </div>
     </div>
       <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-          <div class="text-center" th:each="member: ${members}"><a th:if="${member.id == session.memberInfo.id}" class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/mypage/info/{memberId} (memberId=${member.id})}">실습 하기</a></div>
+          <div class="text-center"><a class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/board}">실습 하기</a></div>
       </div>
   </div>
 </section>
