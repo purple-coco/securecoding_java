@@ -26,17 +26,9 @@
       <a th:text="*{fileName}" th:href="|/download/${form.id}|" class="form-control" style="color:black; margin-bottom: 3%"/>
     </div>
 
-    <div th:if="${form.member.id != session.memberInfo.id}">
-      <a th:href="@{/board}" class="btn" style="background-color: #ffe74a;" role="button">목록</a>
-    </div>
-
-    <div th:if="${form.member.id == session.memberInfo.id}">
-      <a th:href="@{/board}" class="btn" style="background-color: #ffe74a;" role="button">목록</a>
-      <a th:href="@{/board/update/{id}/vuln (id=${boardId})}" class="btn" style="background-color: #ffe74a;" role="button">수정</a>
-      <a th:href="@{/board/delete/{id}/vuln (id=${boardId})}" class="btn" style="background-color: #ffe74a;" role="button">삭제</a>
-    </div>
-
-    <br/> <br/>
+    <button type="submit" class="btn" style="background-color: #F5Df4D">수정</button>
+    <br/>
+    <br/>
 
   </form>
 
