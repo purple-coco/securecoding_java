@@ -41,6 +41,16 @@ public class BoardController {
         return "/1/1.1";
     }
 
+    @GetMapping("/2/2")
+    public String BoardListForm_(Model model) {
+
+        List<Board> board = boardService.findAll();
+
+        model.addAttribute("boards", board);
+
+        return "/2/2.2";
+    }
+
     /* 게시글 생성 */
     @GetMapping(value = {"/board/new", "/1/6/vuln", "/1/6/secure"})
     public String CreateBoardForm(Model model) {
