@@ -42,7 +42,7 @@ public class BoardController {
     }
 
     /* 게시글 생성 */
-    @GetMapping(value = {"/board/new", "/1/6/vuln", "/1/6/secure", "/1/11", "/1/11/vuln", "/1/11/secure"})
+    @GetMapping(value = {"/board/new", "/1/6/vuln", "/1/6/secure"})
     public String CreateBoardForm(Model model) {
 
         BoardForm form = new BoardForm();
@@ -52,6 +52,19 @@ public class BoardController {
         return "/1/1.6";
 
     }
+
+    @GetMapping(value = {"/1/11", "/1/11/vuln", "/1/11/secure"})
+    public String CreateBoardForm_CSRF(Model model) {
+
+        BoardForm form = new BoardForm();
+
+        model.addAttribute("form", form);
+
+        return "/1/1.6";
+
+    }
+
+
 
     @PostMapping("/1/6/vuln")
     public String CreateBoardForm_vuln(BoardForm form, Model model,
