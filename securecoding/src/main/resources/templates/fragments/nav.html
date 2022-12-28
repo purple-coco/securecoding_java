@@ -33,7 +33,7 @@
             <a class="nav-link dropdown-toggle" id="navbarDropdown3" style="font-weight: 500" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" >제2절 보안기능</a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li><a class="dropdown-item" th:if="${session.memberInfo != null}" th:href="@{/mypage/info/{memberId} (memberId=${session.memberInfo.id})}">1. 적절한 인증 없는 중요기능 허용</a></li>
-              <li><a class="dropdown-item" th:if="${session.memberInfo != null}" href="#!">2. 부적절한 인가</a></li>
+              <li><a class="dropdown-item" th:if="${session.memberInfo != null}" th:href="@{/2/2}">2. 부적절한 인가</a></li>
               <li><a class="dropdown-item" th:href="@{/2/3}">3. 중요한 자원에 대한 잘못된 권한 설정</a></li>
               <li><a class="dropdown-item" th:href="@{/2/4}">4. 취약한 암호화 알고리즘 사용</a></li>
               <li><a class="dropdown-item" th:href="@{/2/5}">5. 암호화되지 않은 중요정보</a></li>
