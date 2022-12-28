@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<script type="text/javascript" th:src="@{/js/cssandjs/action.js}"></script>
+<!-- Head -->
+<head th:replace="fragments/head :: head"></head>
+<body>
+<!-- Navigation -->
+<nav th:replace="fragments/nav :: nav"></nav>
+<!-- Header-->
+<head th:replace="fragments/header :: header"></head>
+<!-- Section -->
+<section class="py-5">
+  <div class="container px-4 px-lg-5 mt-5">
+    <h4 class="fw-bolder" style="text-align: center">11. 크로스사이트 요청 위조</h4>
+    <p style="text-align: center">제1절 입력데이터 검증 및 표현</p>
+    <br />
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        <!-- Vulnerable code -->
+        <div class="col mb-5" style="width: 40%; height: 200%">
+        <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
+        <hr />
+        <form action="/1/11/vuln" method="post" th:object="${form}" enctype="multipart/form-data">
+          <div class="form-group">
+            <label th:for="subject" style="margin-bottom: 2%; color: #2E2E2E;">제목</label>
+            <input type="text" th:field="*{subject}" class="form-control" style="margin-bottom: 2%; height: 45px" />
+          </div>
+          <div class="form-group">
+            <label th:for="content" style="margin-top: 3%; margin-bottom: 2%; color: #2E2E2E">내용</label>
+            <textarea th:field="*{content}" class="area" style="height: 250px; margin-bottom: 2%; border-color: #D8D8D8; background-color: #FFF"/>
+          </div>
+          <div class="filebox">
+            <input class="upload-name" value="첨부파일" placeholder="첨부파일" style="margin-bottom: 2%">
+            <label th:for="file" style="margin-bottom: 2%; color: #2E2E2E; line-height: 45px; color: #fff;">파일 찾기</label>
+            <input id="file" name="file" type="file" style="margin-bottom: 2%; float: left"/>
+            <script>
+            $("#file").on('change',function(){
+                var fileName = $("#file").val();
+                $(".upload-name").val(fileName);
+            });
+            </script>
+          </div>
+          <button type="submit" class="btn" style="background-color: #ffe74a; width: 100%; height: 50px">등록</button>
+          <br />
+          <br />
+          <div class="card h-100">
+          </div>
+        </form>
+      </div>
+        <!-- Secure code -->
+        <div class="col mb-5" style="width: 40%; height: 200%">
+        <h4 class="fw-bolder" style="text-align: center">Secure</h4>
+        <hr />
+        <form action="/1/11/secure" method="post" th:object="${form}" enctype="multipart/form-data">
+            <div class="form-group">
+                <label th:for="subject" style="margin-bottom: 2%; color: #2E2E2E">제목</label>
+                <input type="text" th:field="*{subject}" class="form-control" style="margin-bottom: 2%; height: 45px" />
+            </div>
+            <div class="form-group">
+                <label th:for="content" style="margin-top: 3%; margin-bottom: 2%; color: #2E2E2E">내용</label>
+                <textarea th:field="*{content}" class="area" style="height: 250px; margin-bottom: 2%; border-color: #D8D8D8; background-color: #FFF"/>
+            </div>
+            <div class="filebox">
+                <input class="upload-name" value="첨부파일" placeholder="첨부파일" style="margin-bottom: 2%;">
+                <label th:for="file2" style="margin-bottom: 2%; color: #2E2E2E; line-height: 45px; color: #fff">파일 찾기</label>
+                <input id="file2" name="file" type="file" style="margin-bottom: 2%; float: left;"/>
+            </div>
+            <script>
+            $("#file2").on('change',function(){
+                var fileName = $("#file2").val();
+                $(".upload-name").val(fileName);
+            });
+            </script>
+            <button type="submit" class="btn" style="background-color: #ffe74a; width: 100%; height: 50px">등록</button>
+            <br />
+            <br />
+            <div class="card h-100">
+            </div>
+        </form>
+      </div>
+    </div>
+    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+      <div class="text-center"><a class="btn btn-outline-dark mt-auto" style="margin-left: 75%; margin-bottom: 10%" th:href="@{/1/6/code}">코드 보기</a></div>
+    </div>
+  </div>
+</section>
+<br />
+<!-- Footer-->
+<footer th:replace="fragments/footer :: footer"></footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>
