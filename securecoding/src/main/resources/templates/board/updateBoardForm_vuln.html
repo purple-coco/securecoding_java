@@ -10,23 +10,23 @@
 <head th:replace="fragments/header :: header"></head>
 <!-- Section -->
 <div class="container" style="width: 50%; margin: 0 auto">
-  <h5 style="font-weight: 500; text-align: center; margin-top: 5%">게시글 수정</h5>
+  <h5 style="font-weight: 500; text-align: center; margin-top: 5%">게시글 수정하기</h5>
   <form th:object="${form}" style="margin-top: 5%">
     <div class="form-group" style="margin-bottom: 2%">
       <label th:for="subject" style="margin-bottom: 2%">제목</label>
-      <span th:utext="*{subject}" class="form-control"/>
+      <input type="text" th:field="*{subject}" class="form-control"/>
     </div>
     <div class="form-group" style="margin-bottom: 2%">
       <label th:for="content" style="margin-bottom: 2%">내용</label>
-      <p th:utext="*{content}" class="form-control" style="height:350px"/>
+      <textarea th:field="*{content}" class="form-control" style="height:350px"/>
     </div>
 
     <div class="form-group" style="margin-bottom: 2%">
       <label th:for="fileName" style="margin-bottom: 2%">파일</label>
-      <a th:text="*{fileName}" th:href="|/download/${form.id}|" class="form-control" style="color:black; margin-bottom: 3%"/>
+      <a th:text="*{fileName}" class="form-control" style="color:black; margin-bottom: 3%"/>
     </div>
 
-    <button type="submit" class="btn" style="background-color: #F5Df4D">수정</button>
+    <button type="submit" class="btn" style="background-color: #ffe74a">수정</button>
     <br/>
     <br/>
 
