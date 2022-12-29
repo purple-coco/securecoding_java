@@ -70,7 +70,7 @@ public class BoardController {
 
         model.addAttribute("form", form);
 
-        return "/1/1.6";
+        return "/1/1.11";
 
     }
 
@@ -118,7 +118,7 @@ public class BoardController {
         boardService.saveBoard_secure(board, file);
 
         model.addAttribute("message", "글 등록이 완료되었습니다.");
-        model.addAttribute("searchUrl", "/");
+        model.addAttribute("searchUrl", "/board");
 
         return "message";
     }
@@ -142,7 +142,7 @@ public class BoardController {
         boardService.saveBoard(board, file);
 
         model.addAttribute("message", "글 등록이 완료되었습니다.");
-        model.addAttribute("searchUrl", "/");
+        model.addAttribute("searchUrl", "/board");
 
         return "message";
     }
@@ -166,7 +166,7 @@ public class BoardController {
         boardService.saveBoard(board, file);
 
         model.addAttribute("message", "글 등록이 완료되었습니다.");
-        model.addAttribute("searchUrl", "/");
+        model.addAttribute("searchUrl", "/board");
 
         return "message";
     }
