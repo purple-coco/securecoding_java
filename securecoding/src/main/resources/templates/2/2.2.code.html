@@ -25,13 +25,48 @@
                             <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
                             <label for="tab-1" class="tab-label">BoardController.java</label>
                             <div class="tab-content">
-                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">@PostMapping("/mypage/info/{memberId}/vuln")
-public String updateMemberForm_id_vuln(@PathVariable("memberId") Long memberId,
-                                    HttpServletRequest request, @ModelAttribute("form") MemberForm form) {
+                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">@Controller
+@RequiredArgsConstructor
+public class BoardController {
 
-    memberService.updateMemberInfo_vuln(memberId, form.getName(), form.getPassword());
+    private final MemberService memberService;
+    private final BoardService boardService;
 
-    return "/2/2.1";
+    @GetMapping("/board/update/{boardId}/vuln")
+    public String updateForm(@PathVariable("boardId") Long boardId, Model model) {
+
+        Board board = boardService.findBoard(boardId);
+        BoardForm boardForm = new BoardForm();
+
+        boardForm.setId(board.getId());
+        boardForm.setSubject(board.getSubject());
+        boardForm.setContent(board.getContent());
+        boardForm.setFileName(board.getFileName());
+        boardForm.setFilePath(board.getFilePath());
+        boardForm.setMember(board.getMember());
+
+        model.addAttribute("form", boardForm);
+
+        return "/board/updateBoardForm_vuln";
+
+    }
+
+    @PostMapping("/board/update/{boardId}/vuln")
+    public String updateForm_vuln(HttpServletRequest request,
+                                  @PathVariable("boardId") Long boardId, BoardForm form, Model model) {
+
+        boardService.updateBoard(boardId,
+                form.getSubject(),
+                form.getContent(),
+                form.getFileName(),
+                form.getFilePath());
+
+        model.addAttribute("message", "글 수정이 완료되었습니다.");
+        model.addAttribute("searchUrl", "/board");
+
+        return "message";
+
+    }
 }</textarea></code>
                             </div>
                         </div>
@@ -40,25 +75,21 @@ public String updateMemberForm_id_vuln(@PathVariable("memberId") Long memberId,
                             <label for="tab-2" class="tab-label">BoardService.java</label>
                             <div class="tab-content">
                                 <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Service
-@Transactional
 @RequiredArgsConstructor
-public class MemberService {
+public class BoardService {
 
-    private final MemberRepository memberRepository;
+    private final BoardRepository boardRepository;
 
-    /* 회원 정보 수정 */
+    /* 게시판 조회 */
     @Transactional
-    public void updateMemberInfo_vuln(Long memberId, String name, String password) {
-        Member findMemberInfo = memberRepository.findAllById(memberId);
+    public Board findBoard(Long boardId) { return boardRepository.findAllById(boardId); }
 
-        if(!passwordValidate(password)) {
-            throw new UpdateInfoException("입력한 비밀번호가 규칙에 맞지 않습니다.");
-        } else {
-            findMemberInfo.updateMemberInfo(name, password);
-            memberRepository.save(findMemberInfo);
-        }
+    @Transactional
+    public void updateBoard(Long boardId, String subject, String content, String fileName, String filePath) {
+        Board findItem = boardRepository.findAllById(boardId);
+
+        findItem.change(subject, content, fileName, filePath);
     }
-    ...
 }</textarea></code>
                             </div>
                         </div>
