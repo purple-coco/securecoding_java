@@ -93,6 +93,25 @@ public class BoardService {
 }</textarea></code>
                             </div>
                         </div>
+                        <div class="tab">
+                            <input type="radio" name="css-tabs" id="tab-3" class="tab-switch">
+                            <label for="tab-3" class="tab-label">Board.java</label>
+                            <div class="tab-content">
+                                <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Entity
+@Getter
+@Setter
+public class Board {
+    ....
+
+    public void change(String subject, String content, String fileName, String filePath) {
+        this.subject = subject;
+        this.content = content;
+        this.fileName = fileName;
+        this.filePath = filePath;
+    }
+}</textarea></code>
+                            </div>
+                        </div>
                     </div>
                 </div>
             <br />
@@ -110,22 +129,55 @@ public class BoardService {
                           <input type="radio" name="css-tabs" id="tab-4" checked class="tab-switch">
                           <label for="tab-4" class="tab-label">BoardController.java</label>
                           <div class="tab-content">
-                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/mypage/info/{memberId}/secure")
-public String updateMemberForm_id_secure(@PathVariable("memberId") Long memberId,
-                                      HttpServletRequest request, @ModelAttribute("form") MemberForm form, Model model) {
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Controller
+@RequiredArgsConstructor
+public class BoardController {
 
-    MemberInfo member = (MemberInfo) request.getSession().getAttribute("memberInfo");
-    Member findMember = memberService.findByUsername(form.getUsername());
+    private final MemberService memberService;
+    private final BoardService boardService;
 
-    memberService.validateUpdate(member.getId(), memberId);
+    @GetMapping("/board/update/{boardId}/secure")
+    public String updateForm_secure(HttpServletRequest request,
+                             @PathVariable("boardId") Long boardId, Model model) {
 
-    memberService.updateMemberInfo_secure(memberId, form.getName(), form.getPassword());
+        MemberInfo member = (MemberInfo) request.getSession().getAttribute("memberInfo");
+        boardService.validateUpdate(member.getId(), boardId);
 
-    model.addAttribute("message", "회원 정보가 수정되었습니다.");
-    model.addAttribute("searchUrl", "/");
+        Board board = boardService.findBoard(boardId);
+        BoardForm boardForm = new BoardForm();
 
-    return "message";
+        boardForm.setId(board.getId());
+        boardForm.setSubject(board.getSubject());
+        boardForm.setContent(board.getContent());
+        boardForm.setFileName(board.getFileName());
+        boardForm.setFilePath(board.getFilePath());
+        boardForm.setMember(board.getMember());
 
+        model.addAttribute("form", boardForm);
+
+        return "/board/updateBoardForm_secure";
+
+    }
+
+    @PostMapping("/board/update/{boardId}/secure")
+    public String updateBoard_secure(HttpServletRequest request,
+                              @PathVariable("boardId") Long boardId, BoardForm form, Model model) {
+
+        MemberInfo member = (MemberInfo) request.getSession().getAttribute("memberInfo");
+        boardService.validateUpdate(member.getId(), boardId);
+
+        boardService.updateBoard(boardId,
+                form.getSubject(),
+                form.getContent(),
+                form.getFileName(),
+                form.getFilePath());
+
+        model.addAttribute("message", "글 수정이 완료되었습니다.");
+        model.addAttribute("searchUrl", "/boards");
+
+        return "message";
+
+    }
 }</textarea></code>
                           </div>
                       </div>
@@ -134,30 +186,26 @@ public String updateMemberForm_id_secure(@PathVariable("memberId") Long memberId
                           <label for="tab-5" class="tab-label">BoardService.java</label>
                           <div class="tab-content">
                               <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Service
-@Transactional
 @RequiredArgsConstructor
-public class MemberService {
+public class BoardService {
 
-    private final MemberRepository memberRepository;
+    private final BoardRepository boardRepository;
 
-    /* 회원 검증 */
-    public void validateUpdate(Long id, Long memberId) {
-        if(!id.equals(memberId)) {
-            throw new PermissionException("권한이 없습니다.");
+    public void validateUpdate(Long memberId, Long boardId) {
+        Board findItem = boardRepository.findAllById(boardId);
+
+        if(!findItem.getMember().getId().equals(memberId)) {
+            throw new BoardException("자신이 작성한 게시물만 수정 및 삭제가 가능합니다.");
         }
+
     }
 
-    /* 회원 정보 수정 */
+    /* 게시물 수정 */
     @Transactional
-    public void updateMemberInfo_secure(Long memberId, String name, String password) {
-        Member findMemberInfo = memberRepository.findAllById(memberId);
+    public void updateBoard(Long boardId, String subject, String content, String fileName, String filePath) {
+        Board findItem = boardRepository.findAllById(boardId);
 
-        if(!passwordValidate(password)) {
-            throw new UpdateInfoException("입력한 비밀번호가 규칙에 맞지 않습니다.");
-        } else {
-            findMemberInfo.updateMemberInfo(name, HashPassword(password));
-            memberRepository.save(findMemberInfo);
-        }
+        findItem.change(subject, content, fileName, filePath);
     }
     ....
 }</textarea></code>
