@@ -211,8 +211,7 @@ public class BoardController {
     }
 
     @PostMapping("/board/update/{boardId}/vuln")
-    public String updateForm_vuln(HttpServletRequest request,
-                                  @PathVariable("boardId") Long boardId, BoardForm form, Model model) {
+    public String updateForm(@PathVariable("boardId") Long boardId, BoardForm form, Model model) {
 
         boardService.updateBoard(boardId,
                 form.getSubject(),
@@ -252,7 +251,7 @@ public class BoardController {
     }
 
     @PostMapping("/board/update/{boardId}/secure")
-    public String updateBoard(HttpServletRequest request,
+    public String updateBoard_secure(HttpServletRequest request,
                               @PathVariable("boardId") Long boardId, BoardForm form, Model model) {
 
         //게시물 수정 시 사용자 검증
@@ -273,7 +272,7 @@ public class BoardController {
     }
 
     /* 게시글 삭제 */
-    @PostMapping("/board/delete/{boardId}/vuln")
+    @GetMapping("/board/delete/{boardId}/vuln")
     public String deleteBoard_vuln(@PathVariable("boardId") Long boardId, BoardForm form, HttpServletRequest request, Model model) {
 
         model.addAttribute("message", "삭제하시겠습니까?");
@@ -285,7 +284,7 @@ public class BoardController {
 
     }
 
-    @PostMapping("/board/delete/{boardId}/secure")
+    @GetMapping("/board/delete/{boardId}/secure")
     public String deleteBoard_secure(@PathVariable("boardId") Long boardId, BoardForm form, HttpServletRequest request, Model model) {
 
         MemberInfo member = (MemberInfo) request.getSession().getAttribute("memberInfo");
