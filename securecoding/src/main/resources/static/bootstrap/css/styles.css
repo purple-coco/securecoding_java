@@ -398,6 +398,7 @@ select:disabled {
     height: 45px;
     width: 20%;
     line-height: 45px;
+    text-weight: 400;
     text-align: center;
     background-color: #999999;
     border-radius: 0.25rem;
