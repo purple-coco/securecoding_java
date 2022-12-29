@@ -54,14 +54,15 @@
 
     public static void main(String[] args) {
         Test2 test2 = new Test2();
-        String[] inputStringArray = {"qwe", "asd", "zxc"};
+
+        String[] inputStringArray = test2.getStringArray();
         System.out.println("\n[-] test2.getStringArray[] : " + Arrays.deepToString(test2.getStringArray()));
-        System.out.println("[i] test2.setNewStringArray = inputStringArray[qwe,asd,zxc] ");
-        test2.setStringArray(inputStringArray);
+        test2.setStringArray(test2.getStringArray());//inputStringArray
         System.out.println("[-] test2 stringarray[] : " + Arrays.deepToString(test2.getStringArray()));
         inputStringArray[0] = "iop";
         System.out.println("[i] inputStringArray[0] = iop");
         System.out.println("[-] test2 stringarray[] : " + Arrays.deepToString(test2.getStringArray()));
+
     }
 }</textarea></code>
                             </div>
@@ -71,10 +72,9 @@
                             <label for="tab-3" class="tab-label">실행 결과</label>
                             <div class="tab-content">
                                 <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">[-] test2.getStringArray[] : [abc, def, ghi]
-[i] test2.setNewStringArray = inputStringArray[qwe,asd,zxc]
-[-] test2 stringarray[] : [qwe, asd, zxc]
+[-] test2 stringarray[] : [abc, def, ghi]
 [i] inputStringArray[0] = iop
-[-] test2 stringarray[] : [iop, asd, zxc]</textarea></code>
+[-] test2 stringarray[] : [iop, def, ghi]</textarea></code>
                             </div>
                         </div>
                     </div>
@@ -129,10 +129,10 @@
 
     public static void main(String[] args) {
         Test2 test2 = new Test2();
-        String[] inputStringArray = {"qwe", "asd", "zxc"};
+
+        String[] inputStringArray = test2.getStringArray();
         System.out.println("\n[-] test2.getStringArray[] : " + Arrays.deepToString(test2.getStringArray()));
-        System.out.println("[i] test2.setNewStringArray = inputStringArray[qwe,asd,zxc] ");
-        test2.setNewStringArray(inputStringArray);
+        test2.setNewStringArray(test2.getStringArray());
         System.out.println("[-] test2 stringarray[] : " + Arrays.deepToString(test2.getStringArray()));
         inputStringArray[0] = "iop";
         System.out.println("[i] inputStringArray[0] = iop");
@@ -146,10 +146,9 @@
                           <label for="tab-6" class="tab-label">실행 결과</label>
                           <div class="tab-content">
                               <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">[-] test2.getStringArray[] : [abc, def, ghi]
-[i] test2.setNewStringArray = inputStringArray[qwe,asd,zxc]
-[-] test2 stringarray[] : [qwe, asd, zxc]
+[-] test2 stringarray[] : [abc, def, ghi]
 [i] inputStringArray[0] = iop
-[-] test2 stringarray[] : [qwe, asd, zxc]</textarea></code>
+[-] test2 stringarray[] : [abc, def, ghi]</textarea></code>
                           </div>
                       </div>
                   </div>
