@@ -251,6 +251,27 @@ public class BoardController {
 
     }
 
+    @PostMapping("/board/update/{boardId}/secure")
+    public String updateBoard(HttpServletRequest request,
+                              @PathVariable("boardId") Long boardId, BoardForm form, Model model) {
+
+        //게시물 수정 시 사용자 검증
+        MemberInfo member = (MemberInfo) request.getSession().getAttribute("memberInfo");
+        boardService.validateUpdate(member.getId(), boardId);
+
+        boardService.updateBoard(boardId,
+                form.getSubject(),
+                form.getContent(),
+                form.getFileName(),
+                form.getFilePath());
+
+        model.addAttribute("message", "글 수정이 완료되었습니다.");
+        model.addAttribute("searchUrl", "/boards");
+
+        return "message";
+
+    }
+
     /* 게시글 삭제 */
     @PostMapping("/board/delete/{boardId}/vuln")
     public String deleteBoard_vuln(@PathVariable("boardId") Long boardId, BoardForm form, HttpServletRequest request, Model model) {
