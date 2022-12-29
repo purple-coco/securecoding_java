@@ -22,18 +22,89 @@
                   <div class="tabs">
                       <div class="tab">
                           <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
-                          <label for="tab-1" class="tab-label">CodeErrorController.java</label>
+                          <label for="tab-1" class="tab-label">class Dog</label>
                           <div class="tab-content">
-                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/5/1/vuln")
-public String NullForm_vuln(HttpServletRequest request, Model model) throws IOException {
-      String cmd = request.getParameter("cmd");
-      String result;
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">public static class Dog implements Serializable {
+    String name;
+    int age;
 
-      result = commandService.OSCommandService(cmd);
-      model.addAttribute("result", result);
+    public Dog(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
 
-      return "/5/5.1";
+    public String toString() {
+        return name + " " + age;
+    }
 }</textarea></code>
+                          </div>
+                      </div>
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-2" class="tab-switch">
+                          <label for="tab-2" class="tab-label">BasicSerialize.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">public class BasicSerialize {
+
+    public static void main(String [] args) {
+
+        try {
+            System.out.println("====직렬화====");
+            Dog dog = new Dog("비숑 프리제", 5);
+            String filename = "./dogdata.ser";
+            System.out.println("\nObject is");
+            System.out.println("Dog");
+
+            //객체 직렬화
+            FileOutputStream fileOutputStream = new FileOutputStream(filename);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            System.out.println("\nSerialization Happening here...");
+            objectOutputStream.writeObject(dog);
+            objectOutputStream.close();
+            fileOutputStream.close();
+            System.out.println("\nThe object was written to " + filename);
+
+            FileInputStream fileInputStream = new FileInputStream(filename);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+
+            System.out.println("objectInputStream = " + objectInputStream);
+                byte[] bytes = objectInputStream.readAllBytes();
+                for (byte b : bytes) {
+                    System.out.println("b = " + b);
+                }
+
+                System.out.println("\nDeserialization Happening here...");
+                Dog Dog = (Dog) objectInputStream.readObject();
+                objectInputStream.close();
+                fileInputStream.close();
+                System.out.println("\nThe object was read from " + filename + ":");
+                System.out.println(Dog);
+                System.out.println();
+            } catch (Exception e) {
+            System.out.println(e.getMessage());
+            }
+    }
+}</textarea></code>
+                          </div>
+                      </div>
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-3" class="tab-switch">
+                          <label for="tab-3" class="tab-label">실행 결과</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">====직렬화====
+Object is
+Dog
+
+Serialization Happening here...
+
+The object was written to ./dogdata.ser
+
+====역직렬화====
+objectInputStream = java.io.ObjectInputStream@7ea9e1e2
+
+Deserialization Happening here...
+
+The object was read from ./dogdata.ser:
+비숑 프리제 5</textarea></code>
                           </div>
                       </div>
                   </div>
@@ -49,38 +120,88 @@ public String NullForm_vuln(HttpServletRequest request, Model model) throws IOEx
               <div class="wrapper" style="width: 100%">
                   <div class="tabs">
                       <div class="tab">
-                          <input type="radio" name="css-tabs" id="tab-3" checked class="tab-switch">
-                          <label for="tab-3" class="tab-label">CodeErrorController.java</label>
+                          <input type="radio" name="css-tabs" id="tab-4" checked class="tab-switch">
+                          <label for="tab-4" class="tab-label">BasicSerialize.java</label>
                           <div class="tab-content">
-                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/5/1/secure")
-public String NullForm_secure(HttpServletRequest request, Model model) throws IOException {
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">public class BasicSerialize {
 
-        String cmd2 = request.getParameter("cmd2");
-        String result2;
+    public static void main(String [] args) {
 
-        List<String> allowedCommands = new ArrayList<String>();
-        allowedCommands.add("cal");
+        try {
+            System.out.println("====직렬화====");
+            Dog dog = new Dog("비숑 프리제", 5);
+            String filename = "./dogdata.ser";
+            System.out.println("\nObject is");
+            System.out.println("Dog");
 
-        if (cmd2 == null) {
-            model.addAttribute("result2", "명령어를 입력하세요");
+            //객체 직렬화
+            FileOutputStream fileOutputStream = new FileOutputStream(filename);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            System.out.println("\nSerialization Happening here...");
+            objectOutputStream.writeObject(dog);
+            objectOutputStream.close();
+            fileOutputStream.close();
+            System.out.println("\nThe object was written to " + filename);
 
-        } else if (cmd2.matches("[|;&:>-]*")) {
-            model.addAttribute("message", "허용하지 않는 명령어입니다.");
-            model.addAttribute("searchUrl", "/5/1");
+            // 파일 해시 값 구하기
+            System.out.println("====파일 해시====");
+            MyHash hash = new MyHash(filename);
+            System.out.println("hash 값 = " + hash.getHashString());
+            String serialHash = hash.getHashString().toString();
 
-            return "message";
-        } else if (!allowedCommands.contains(cmd2)) {
-            model.addAttribute("message", "허용하지 않는 명령어입니다.");
-            model.addAttribute("searchUrl", "/5/1");
 
-            return "message";
-        } else {
-            result2 = commandService.OSCommandService(cmd2);
-            model.addAttribute("result2", result2);
+            System.out.println("====역직렬화====");
+
+            FileInputStream fileInputStream = new FileInputStream(filename);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+
+            if(serialHash.equals(hash.getHashString())) {
+                System.out.println("objectInputStream = " + objectInputStream);
+                byte[] bytes = objectInputStream.readAllBytes();
+                for (byte b : bytes) {
+                    System.out.println("b = " + b);
+                }
+
+                System.out.println("\nDeserialization Happening here...");
+                Dog Dog = (Dog) objectInputStream.readObject();
+                objectInputStream.close();
+                fileInputStream.close();
+                System.out.println("\nThe object was read from " + filename + ":");
+                System.out.println(Dog);
+                System.out.println();
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-
-        return "/5/5.1";
+    }
 }</textarea></code>
+                          </div>
+                      </div>
+
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-5" class="tab-switch">
+                          <label for="tab-5" class="tab-label">실행 결과</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">====직렬화====
+
+Object is
+Dog
+
+Serialization Happening here...
+
+The object was written to ./dogdata.ser
+
+====파일 해시====
+hash 값 = 01febc8bb4f68210303f7442813e9b214931b361afeaa8b7f092de845fa49b2a
+
+====역직렬화====
+objectInputStream = java.io.ObjectInputStream@7ea9e1e2
+
+Deserialization Happening here...
+
+The object was read from ./dogdata.ser:
+비숑 프리제 5</textarea></code>
                           </div>
                       </div>
                   </div>
@@ -90,9 +211,6 @@ public String NullForm_secure(HttpServletRequest request, Model model) throws IO
           <hr />
       </div>
     </div>
-      <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-          <div class="text-center"><a class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/5/1}">실습 하기</a></div>
-      </div>
   </div>
 </section>
 <br />
