@@ -396,7 +396,7 @@ public class CommandController {
     //9. XML 삽입
     @PostMapping("/1/9/secure")
     public String XPathForm_secure(HttpServletRequest request, Model model) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
-        String word2 = request.getParameter("word");
+        String word2 = request.getParameter("word2");
 
         if(word2 == null) {
             return "/1/1.9";
@@ -404,7 +404,7 @@ public class CommandController {
 
         if (!word2.matches("[\\w]*")) {
             model.addAttribute("message", "허용하지 않는 문자열입니다.");
-            model.addAttribute("searchUrl", "9");
+            model.addAttribute("searchUrl", "/1/9");
 
             return "message";
         }
