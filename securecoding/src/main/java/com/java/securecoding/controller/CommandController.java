@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.script.ScriptException;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.*;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -351,13 +353,49 @@ public class CommandController {
         return "/1/1.9";
     }
 
+    @GetMapping("/1/9/code")
+    public String XPathForm_code(@RequestParam(required = false) String word) {
+        return "/1/1.9.code";
+    }
+
     //9. XML 삽입
     @PostMapping("/1/9/vuln")
-    public String XPathForm_vuln(HttpServletRequest request, Model model) {
+    public String XPathForm_vuln(HttpServletRequest request, Model model) throws ParserConfigurationException, IOException, SAXException, XPathExpressionException {
         String word = request.getParameter("word");
 
         if(word == null) {
             return "/1/1.9";
+        }
+
+//        if (!word.matches("[\\w]*")) {
+//            model.addAttribute("message", "허용하지 않는 문자열입니다.");
+//            model.addAttribute("searchUrl", "9");
+//
+//            return "message";
+//        }
+
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document document = documentBuilder.parse(new File("./tmp/user.xml"));
+
+        XPathFactory xPathFactory = XPathFactory.newInstance();
+        XPath xPath = xPathFactory.newXPath();
+
+        XPathExpression expr = xPath.compile("//user[@name='"+ word + "']");//모든 user 요소
+
+        Object result = expr.evaluate(document, XPathConstants.NODESET);
+
+        NodeList nodes = (NodeList)result;
+        String values = "";
+
+        String[] value = new String[nodes.getLength()];
+        for (int i = 0; i < nodes.getLength(); i++) {
+
+            value[i] = nodes.item(i).getTextContent();
+            values += "\n" + value[i];
+
+            model.addAttribute("value", values);
+
         }
 
         return "/1/1.9";
