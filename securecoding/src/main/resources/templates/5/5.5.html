@@ -54,7 +54,7 @@
             System.out.println("\nObject is");
             System.out.println("Dog");
 
-            //객체 직렬화
+            // 객체 직렬화
             FileOutputStream fileOutputStream = new FileOutputStream(filename);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
             System.out.println("\nSerialization Happening here...");
@@ -65,23 +65,24 @@
 
             FileInputStream fileInputStream = new FileInputStream(filename);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-
             System.out.println("objectInputStream = " + objectInputStream);
-                byte[] bytes = objectInputStream.readAllBytes();
-                for (byte b : bytes) {
-                    System.out.println("b = " + b);
-                }
 
-                System.out.println("\nDeserialization Happening here...");
-                Dog Dog = (Dog) objectInputStream.readObject();
-                objectInputStream.close();
-                fileInputStream.close();
-                System.out.println("\nThe object was read from " + filename + ":");
-                System.out.println(Dog);
-                System.out.println();
-            } catch (Exception e) {
-            System.out.println(e.getMessage());
+            byte[] bytes = objectInputStream.readAllBytes();
+            for (byte b : bytes) {
+                System.out.println("b = " + b);
             }
+
+            // 객체 역직렬화
+            System.out.println("\nDeserialization Happening here...");
+            Dog Dog = (Dog) objectInputStream.readObject();
+            objectInputStream.close();
+            fileInputStream.close();
+            System.out.println("\nThe object was read from " + filename + ":");
+            System.out.println(Dog);
+            System.out.println();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }</textarea></code>
                           </div>
@@ -134,7 +135,6 @@ The object was read from ./dogdata.ser:
             System.out.println("\nObject is");
             System.out.println("Dog");
 
-            //객체 직렬화
             FileOutputStream fileOutputStream = new FileOutputStream(filename);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
             System.out.println("\nSerialization Happening here...");
@@ -143,12 +143,8 @@ The object was read from ./dogdata.ser:
             fileOutputStream.close();
             System.out.println("\nThe object was written to " + filename);
 
-            // 파일 해시 값 구하기
-            System.out.println("====파일 해시====");
             MyHash hash = new MyHash(filename);
-            System.out.println("hash 값 = " + hash.getHashString());
             String serialHash = hash.getHashString().toString();
-
 
             System.out.println("====역직렬화====");
 
@@ -162,6 +158,7 @@ The object was read from ./dogdata.ser:
                     System.out.println("b = " + b);
                 }
 
+                // 객체 역직렬화
                 System.out.println("\nDeserialization Happening here...");
                 Dog Dog = (Dog) objectInputStream.readObject();
                 objectInputStream.close();
@@ -170,7 +167,6 @@ The object was read from ./dogdata.ser:
                 System.out.println(Dog);
                 System.out.println();
             }
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -191,9 +187,6 @@ Dog
 Serialization Happening here...
 
 The object was written to ./dogdata.ser
-
-====파일 해시====
-hash 값 = 01febc8bb4f68210303f7442813e9b214931b361afeaa8b7f092de845fa49b2a
 
 ====역직렬화====
 objectInputStream = java.io.ObjectInputStream@7ea9e1e2
