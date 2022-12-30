@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<class name="users">
+    <user name="u1">
+        <name>김태리</name>
+        <id>tary</id>
+        <password>1234</password>
+    </user>
+    <user name="u2">
+        <name>공유</name>
+        <id>you</id>
+        <password>1234</password>
+    </user>
+    <user name="u3">
+        <name>관리자</name>
+        <id>admin</id>
+        <password>1234</password>
+    </user>
+</class>
