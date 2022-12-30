@@ -39,7 +39,7 @@ public String XPathForm_vuln(HttpServletRequest request, Model model) throws Par
     XPathFactory xPathFactory = XPathFactory.newInstance();
     XPath xPath = xPathFactory.newXPath();
 
-    XPathExpression expr = xPath.compile("//user[@name='"+ word + "']");//모든 user 요소
+    XPathExpression expr = xPath.compile("//user[@name='"+ word + "']");
 
     Object result = expr.evaluate(document, XPathConstants.NODESET);
 
@@ -77,7 +77,7 @@ public String XPathForm_vuln(HttpServletRequest request, Model model) throws Par
                           <div class="tab-content">
                               <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/1/9/secure")
 public String XPathForm_secure(HttpServletRequest request, Model model) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
-    String word2 = request.getParameter("word");
+    String word2 = request.getParameter("word2");
 
     if(word2 == null) {
         return "/1/1.9";
@@ -85,7 +85,7 @@ public String XPathForm_secure(HttpServletRequest request, Model model) throws X
 
     if (!word2.matches("[\\w]*")) {
         model.addAttribute("message", "허용하지 않는 문자열입니다.");
-        model.addAttribute("searchUrl", "9");
+        model.addAttribute("searchUrl", "/1/9");
 
         return "message";
     }
@@ -97,7 +97,7 @@ public String XPathForm_secure(HttpServletRequest request, Model model) throws X
     XPathFactory xPathFactory = XPathFactory.newInstance();
     XPath xPath = xPathFactory.newXPath();
 
-    XPathExpression expr = xPath.compile("//user[@name='"+ word2 + "']");//모든 user 요소
+    XPathExpression expr = xPath.compile("//user[@name='"+ word2 + "']");
 
     Object result = expr.evaluate(document, XPathConstants.NODESET);
 
