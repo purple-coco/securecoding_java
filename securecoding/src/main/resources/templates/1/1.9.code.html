@@ -24,20 +24,39 @@
                           <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
                           <label for="tab-1" class="tab-label">CommandController.java</label>
                           <div class="tab-content">
-                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/1/7/vuln")
-public String URLConnected_vuln(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/1/9/vuln")
+public String XPathForm_vuln(HttpServletRequest request, Model model) throws ParserConfigurationException, IOException, SAXException, XPathExpressionException {
+    String word = request.getParameter("word");
 
-    String url = request.getParameter("url");
-
-    if (url == null) {
-         return "/1/1.7";
-    } else {
-         response.sendRedirect("http://" + url);
+    if(word == null) {
+        return "/1/1.9";
     }
 
-        return "/1/1.7";
-}
-              </textarea></code>
+    DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+    Document document = documentBuilder.parse(new File("./tmp/user.xml"));
+
+    XPathFactory xPathFactory = XPathFactory.newInstance();
+    XPath xPath = xPathFactory.newXPath();
+
+    XPathExpression expr = xPath.compile("//user[@name='"+ word + "']");//모든 user 요소
+
+    Object result = expr.evaluate(document, XPathConstants.NODESET);
+
+    NodeList nodes = (NodeList)result;
+    String values = "";
+
+    String[] value = new String[nodes.getLength()];
+    for (int i = 0; i < nodes.getLength(); i++) {
+
+        value[i] = nodes.item(i).getTextContent();
+        values += "\n" + value[i];
+
+        model.addAttribute("value", values);
+
+    }
+    return "/1/1.9";
+}</textarea></code>
                           </div>
                       </div>
                   </div>
@@ -56,27 +75,45 @@ public String URLConnected_vuln(HttpServletRequest request, HttpServletResponse 
                           <input type="radio" name="css-tabs" id="tab-2" checked class="tab-switch">
                           <label for="tab-2" class="tab-label">CommandController.java</label>
                           <div class="tab-content">
-                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/1/7/secure")
-public String URLConnected_secure(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/1/9/secure")
+public String XPathForm_secure(HttpServletRequest request, Model model) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
+    String word2 = request.getParameter("word");
 
-        String[] allowedUrl = {"/", "/1/vuln5"};
+    if(word2 == null) {
+        return "/1/1.9";
+    }
 
-        String url2 = request.getParameter("url2");
+    if (!word2.matches("[\\w]*")) {
+        model.addAttribute("message", "허용하지 않는 문자열입니다.");
+        model.addAttribute("searchUrl", "9");
 
-        if (url2 == null) {
-            return "/1/1.7";
-        }
-        try {
-            url2 = allowedUrl[Integer.parseInt(url2)];
-            response.sendRedirect(url2);
-        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-            model.addAttribute("message", "잘못된 접근입니다.");
-            model.addAttribute("searchUrl", "/1/7");
+        return "message";
+    }
 
-            return "message";
-        }
+    DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+    Document document = documentBuilder.parse(new File("./tmp/user.xml"));
 
-        return "/1/1.7";
+    XPathFactory xPathFactory = XPathFactory.newInstance();
+    XPath xPath = xPathFactory.newXPath();
+
+    XPathExpression expr = xPath.compile("//user[@name='"+ word2 + "']");//모든 user 요소
+
+    Object result = expr.evaluate(document, XPathConstants.NODESET);
+
+    NodeList nodes = (NodeList)result;
+    String values = "";
+
+    String[] value = new String[nodes.getLength()];
+    for (int i = 0; i < nodes.getLength(); i++) {
+
+        value[i] = nodes.item(i).getTextContent();
+        values += "\n" + value[i];
+
+        model.addAttribute("value", values);
+
+    }
+    return "/1/1.9";
 }</textarea></code>
                           </div>
                       </div>
@@ -88,7 +125,7 @@ public String URLConnected_secure(HttpServletRequest request, HttpServletRespons
       </div>
     </div>
       <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-          <div class="text-center"><a class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/1/7}">실습 하기</a></div>
+          <div class="text-center"><a class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/1/9}">실습 하기</a></div>
       </div>
   </div>
 </section>
