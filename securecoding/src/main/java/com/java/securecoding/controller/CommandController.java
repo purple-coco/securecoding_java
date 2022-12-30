@@ -429,7 +429,7 @@ public class CommandController {
             value[i] = nodes.item(i).getTextContent();
             values += "\n" + value[i];
 
-            model.addAttribute("value", values);
+            model.addAttribute("value2", values);
 
         }
 
