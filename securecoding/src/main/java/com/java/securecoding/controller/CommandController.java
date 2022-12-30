@@ -367,13 +367,6 @@ public class CommandController {
             return "/1/1.9";
         }
 
-//        if (!word.matches("[\\w]*")) {
-//            model.addAttribute("message", "허용하지 않는 문자열입니다.");
-//            model.addAttribute("searchUrl", "9");
-//
-//            return "message";
-//        }
-
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document document = documentBuilder.parse(new File("./tmp/user.xml"));
@@ -397,17 +390,47 @@ public class CommandController {
             model.addAttribute("value", values);
 
         }
-
         return "/1/1.9";
     }
 
     //9. XML 삽입
     @PostMapping("/1/9/secure")
-    public String XPathForm_secure(HttpServletRequest request, Model model) {
+    public String XPathForm_secure(HttpServletRequest request, Model model) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
         String word2 = request.getParameter("word");
 
         if(word2 == null) {
             return "/1/1.9";
+        }
+
+        if (!word2.matches("[\\w]*")) {
+            model.addAttribute("message", "허용하지 않는 문자열입니다.");
+            model.addAttribute("searchUrl", "9");
+
+            return "message";
+        }
+
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document document = documentBuilder.parse(new File("./tmp/user.xml"));
+
+        XPathFactory xPathFactory = XPathFactory.newInstance();
+        XPath xPath = xPathFactory.newXPath();
+
+        XPathExpression expr = xPath.compile("//user[@name='"+ word2 + "']");//모든 user 요소
+
+        Object result = expr.evaluate(document, XPathConstants.NODESET);
+
+        NodeList nodes = (NodeList)result;
+        String values = "";
+
+        String[] value = new String[nodes.getLength()];
+        for (int i = 0; i < nodes.getLength(); i++) {
+
+            value[i] = nodes.item(i).getTextContent();
+            values += "\n" + value[i];
+
+            model.addAttribute("value", values);
+
         }
 
         return "/1/1.9";
