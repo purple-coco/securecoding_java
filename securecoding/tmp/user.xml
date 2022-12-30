@@ -3,16 +3,21 @@
     <user name="u1">
         <name>김태리</name>
         <id>tary</id>
-        <password>1234</password>
+        <password>12xdklse34</password>
     </user>
     <user name="u2">
         <name>공유</name>
         <id>you</id>
-        <password>1234</password>
+        <password>hox49kjei</password>
     </user>
     <user name="u3">
+        <name>신민아</name>
+        <id>mina</id>
+        <password>skfjee50*</password>
+    </user>
+    <user name="u4">
         <name>관리자</name>
         <id>admin</id>
-        <password>1234</password>
+        <password>poskejfi325!$</password>
     </user>
 </class>
