@@ -6,7 +6,6 @@
 <!-- Navigation-->
 <nav th:replace="fragments/nav :: nav"></nav>
 <!-- Header-->
-<head th:replace="fragments/header :: header"></head>
 <!-- Section-->
 <section class="py-5">
   <div class="container px-4 px-lg-5 mt-5">
@@ -27,7 +26,7 @@
                               <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@GetMapping("/download/infome.zip")
 public ResponseEntity<Resource> downloadAttach() throws MalformedURLException {
 
-    String filePath = "http://www.skshieldus.com/download/infome.zip";
+    String filePath = "https://www.skshieldus.com/download/infome.zip";
 
     UrlResource resource = new UrlResource("file:" + filePath);
 
