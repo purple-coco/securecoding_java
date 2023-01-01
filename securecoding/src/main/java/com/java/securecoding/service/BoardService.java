@@ -1,11 +1,10 @@
 package com.java.securecoding.service;
 
 import com.java.securecoding.domain.board.Board;
-import com.java.securecoding.domain.member.Member;
 import com.java.securecoding.repository.BoardRepository;
-import exception.BoardException;
-import exception.NotAllowExtException1;
-import exception.NotAllowExtException2;
+import com.java.securecoding.exception.BoardException;
+import com.java.securecoding.exception.NotAllowExtException1;
+import com.java.securecoding.exception.NotAllowExtException2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
