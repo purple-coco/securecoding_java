@@ -9,7 +9,7 @@
 <!-- Section-->
 <section class="py-5">
   <div class="container px-4 px-lg-5 mt-5">
-    <h4 class="fw-bolder" style="text-align: center">15. 무결성 검사 없는 코드 다운로드</h4>
+    <h3 class="fw-bolder" style="text-align: center">15. 무결성 검사 없는 코드 다운로드</h3>
     <p style="text-align: center">제2절 보안기능</p>
     <br />
     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
@@ -55,32 +55,67 @@ public ResponseEntity<Resource> downloadAttach() throws MalformedURLException {
                           <input type="radio" name="css-tabs" id="tab-2" checked class="tab-switch">
                           <label for="tab-2" class="tab-label">AuthorityController.java</label>
                           <div class="tab-content">
-                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@RequiredArgsConstructor
-public class LoginCheckInterceptor implements HandlerInterceptor {
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@GetMapping("/download/infome.zip")
+public ResponseEntity<Resource> downloadAttach() throws MalformedURLException  {
 
-    @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        HttpSession session = request.getSession();
-        session.setMaxInactiveInterval(1800);
+    String filePath = "http://www.skshieldus.com/download/infome.zip";
 
-        String lastLogin = request.getParameter("lastLogin");
+    MyHash hash = new MyHash(dir+filePath);
+    String fileHash = hash.getHashString().toString();
 
-        if(lastLogin != null) {
-            lastLogin = lastLogin.replaceAll("[\\r\\n]", "");
-        }
+    // 파일에 대한 무결성 검사
+    if(fileHash.equals(hash.getHashString())) {
 
-        Cookie cookie = new Cookie("cookie", "cookie" + lastLogin);
-        cookie.setMaxAge(1800);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        response.addCookie(cookie);
+        UrlResource resource = new UrlResource("file:" + filePath);
 
-        if (session.getAttribute("memberInfo") == null || cookie == null) {
-            throw new PermissionException("정상적인 접근이 아닙니다.");
-        }
-        return true;
+        String contentDisposition = "attachment;";
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
+                .body(resource);
+    } else {
+        throw new PermissionException("권한이 없습니다.");
+    }
+}</textarea></code>
+                          </div>
+                      </div>
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-3" class="tab-switch">
+                          <label for="tab-3" class="tab-label">class MyHash</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">public static class MyHash {
+    private byte[] bytes;
+
+    public MyHash(String filePath) {
+        checksum(filePath);
     }
 
+    public String getHashString() {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : this.bytes) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    }
+
+    private void checksum(String filePath) {
+        MessageDigest messageDigest;
+
+        try {
+            messageDigest = MessageDigest.getInstance("SHA3-256");
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println("error");
+        }
+
+        try (InputStream is = new FileInputStream(filePath);
+             DigestInputStream dis = new DigestInputStream(is, messageDigest)) {
+            while (dis.read() != -1) ;
+            messageDigest = dis.getMessageDigest();
+        } catch (IOException e) {
+            System.out.println("error");
+        }
+        this.bytes = messageDigest.digest();
+    }
 }</textarea></code>
                           </div>
                       </div>
