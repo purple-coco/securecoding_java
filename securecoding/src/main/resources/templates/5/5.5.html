@@ -65,7 +65,6 @@
 
             FileInputStream fileInputStream = new FileInputStream(filename);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            System.out.println("objectInputStream = " + objectInputStream);
 
             byte[] bytes = objectInputStream.readAllBytes();
             for (byte b : bytes) {
@@ -100,8 +99,6 @@ Serialization Happening here...
 The object was written to ./dogdata.ser
 
 ====역직렬화====
-objectInputStream = java.io.ObjectInputStream@7ea9e1e2
-
 Deserialization Happening here...
 
 The object was read from ./dogdata.ser:
@@ -152,7 +149,6 @@ The object was read from ./dogdata.ser:
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
 
             if(serialHash.equals(hash.getHashString())) {
-                System.out.println("objectInputStream = " + objectInputStream);
                 byte[] bytes = objectInputStream.readAllBytes();
                 for (byte b : bytes) {
                     System.out.println("b = " + b);
@@ -189,8 +185,6 @@ Serialization Happening here...
 The object was written to ./dogdata.ser
 
 ====역직렬화====
-objectInputStream = java.io.ObjectInputStream@7ea9e1e2
-
 Deserialization Happening here...
 
 The object was read from ./dogdata.ser:
