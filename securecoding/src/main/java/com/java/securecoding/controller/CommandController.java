@@ -305,18 +305,21 @@ public class CommandController {
         return "/1/1.8";
     }
 
+    @GetMapping("/1/8/code")
+    public String XXEForm_code(@RequestParam(required = false) String filePath) {
+        return "/1/1.8.code";
+    }
+
 
     //8. 부적절한 XML 외부 개체 참조
     @PostMapping("/1/8/vuln")
     public String XXEForm_vuln(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException, SAXException, ParserConfigurationException {
 
-        response.setContentType("text/xml");
-
-        String filePath = request.getParameter("filePath");
+        String filepath = request.getParameter("filepath");
 
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document document = documentBuilder.parse(new File(filePath));
+        Document document = documentBuilder.parse(new File(filepath));
 
         Node node = document.getDocumentElement().getFirstChild();
         String result = node.getNodeValue();
@@ -330,15 +333,30 @@ public class CommandController {
     //8. 부적절한 XML 외부 개체 참조
     @PostMapping("/1/8/secure")
     public String XXEForm_secure(HttpServletRequest request, Model model) throws IOException, SAXException, ParserConfigurationException {
-        String filePath2 = request.getParameter("filePath2");
+        String filepath2 = request.getParameter("filepath2");
 
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+
+        // 외부 일반 엔티티를 포함하지 않도록 설정한다.
+        documentBuilderFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+        // 외부 파라미터도 포함하지 않도록 설정한다.
+        documentBuilderFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+        // 외부 DTD 비활성화한다.
+        documentBuilderFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+        // XIncude를 사용하지 않는다.
+        documentBuilderFactory.setXIncludeAware(false);
+        // 생성된 파서가 엔티티 참조 노드를 확장하지 않도록 한다.
+        documentBuilderFactory.setExpandEntityReferences(false);
+
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document document = documentBuilder.parse(new File(filePath2));
+        Document document = documentBuilder.parse(new File(filepath2));
 
         Node node = document.getDocumentElement().getFirstChild();
         String result = node.getNodeValue();
 
+        if (result == null) {
+            throw new PermissionException("접근할 수 없습니다.");
+        }
 
         model.addAttribute("line2", result);
 
