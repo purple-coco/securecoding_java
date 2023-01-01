@@ -36,7 +36,7 @@ public class AuthorityController {
         return "/2/2.1.code";
     }
 
-    //1. 적절한 인증 없는 중요기능 허용
+    //2. 부적절한 인가
     @GetMapping("/2/2/code")
     public String BoardUpdateForm_code() {
         return "/2/2.2.code";
@@ -271,6 +271,12 @@ public class AuthorityController {
             model.addAttribute("value2", result2);
         }
         return "/2/2.14";
+    }
+
+    //15. 무결성 검사 없는 코드 다운로드
+    @GetMapping("/2/15")
+    public String DownloadForm_code() {
+        return "/2/2.15";
     }
 
     //16. 반복된 인증시도 제한 기능 부재
