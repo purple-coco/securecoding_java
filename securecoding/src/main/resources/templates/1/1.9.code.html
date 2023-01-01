@@ -26,6 +26,7 @@
                           <div class="tab-content">
                               <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/1/9/vuln")
 public String XPathForm_vuln(HttpServletRequest request, Model model) throws ParserConfigurationException, IOException, SAXException, XPathExpressionException {
+
     String word = request.getParameter("word");
 
     if(word == null) {
@@ -39,6 +40,7 @@ public String XPathForm_vuln(HttpServletRequest request, Model model) throws Par
     XPathFactory xPathFactory = XPathFactory.newInstance();
     XPath xPath = xPathFactory.newXPath();
 
+    // XPath 삽입
     XPathExpression expr = xPath.compile("//user[@name='"+ word + "']");
 
     Object result = expr.evaluate(document, XPathConstants.NODESET);
@@ -55,6 +57,7 @@ public String XPathForm_vuln(HttpServletRequest request, Model model) throws Par
         model.addAttribute("value", values);
 
     }
+
     return "/1/1.9";
 }</textarea></code>
                           </div>
@@ -77,6 +80,7 @@ public String XPathForm_vuln(HttpServletRequest request, Model model) throws Par
                           <div class="tab-content">
                               <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@PostMapping("/1/9/secure")
 public String XPathForm_secure(HttpServletRequest request, Model model) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
+
     String word2 = request.getParameter("word2");
 
     if(word2 == null) {
@@ -113,6 +117,7 @@ public String XPathForm_secure(HttpServletRequest request, Model model) throws X
         model.addAttribute("value", values);
 
     }
+
     return "/1/1.9";
 }</textarea></code>
                           </div>
