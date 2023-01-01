@@ -1,6 +1,6 @@
 package com.java.securecoding.interceptor;
 
-import exception.PermissionException;
+import com.java.securecoding.exception.PermissionException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
