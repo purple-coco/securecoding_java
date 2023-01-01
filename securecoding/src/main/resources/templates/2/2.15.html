@@ -14,55 +14,41 @@
     <p style="text-align: center">제2절 보안기능</p>
     <br />
     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-        <!-- Vulnerable code -->
-        <div class="col mb-5" style="width: 60%">
+      <div class="col mb-5" style="width: 60%">
         <h4 class="fw-bolder" style="text-align: center">Vulnerable</h4>
-            <hr />
-            <form action="#" method="get">
-                <div class="wrapper" style="width: 100%">
-                    <div class="tabs">
-                        <div class="tab">
-                            <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
-                            <label for="tab-1" class="tab-label">AuthorityController.java</label>
-                            <div class="tab-content">
-                                <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">private void searchRecord(String userSN, String userPassword) throws NamingException {
-   Hashtable<String, String> env = new Hashtable<String, String>();
-   env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
+        <hr />
+          <form action="#" method="get">
+              <div class="wrapper" style="width: 100%">
+                  <div class="tabs">
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+                          <label for="tab-1" class="tab-label">AuthorityController.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@GetMapping("/download/infome.zip")
+public ResponseEntity<Resource> downloadAttach() throws MalformedURLException {
 
-   try {
-     DirContext dctx = new InitialDirContext(env);
-     SearchControls sc = new SearchControls();
-     String[] attributeFilter = { "cn", "mail" };
-     sc.setReturningAttributes(attributeFilter);
-     sc.setSearchScope(SearchControls.SUBTREE_SCOPE);
+    String filePath = "http://www.skshieldus.com/download/infome.zip";
 
-     String base = "dc=example,dc=com";
-     String filter = "(&(sn=" + userSN + ")(userPassword=" + userPassword + "))";
+    UrlResource resource = new UrlResource("file:" + filePath);
 
-     NamingEnumeration<?> results = dctx.search(base, filter, sc);
-     while (results.hasMore()) {
-        SearchResult sr = (SearchResult) results.next();
-        Attributes attrs = sr.getAttributes();
-        Attribute attr = attrs.get("cn");
-        .....
-     }
+    String contentDisposition = "attachment;";
 
-     dctx.close();
+    return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
+            .body(resource);
 
-   } catch (NamingException e) { ... }
 }</textarea></code>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <br />
-           <hr />
+                          </div>
+                      </div>
+                  </div>
+              </div>
           </form>
-      </div>
-        <!-- Secure Code -->
-        <div class="col mb-5" style="width: 60%">
-        <h4 class="fw-bolder" style="text-align: center">Secure</h4>
+          <br />
           <hr />
+      </div>
+      <div class="col mb-5" style="width: 60%">
+        <h4 class="fw-bolder" style="text-align: center">Secure</h4>
+        <hr />
           <form action="#" method="get">
               <div class="wrapper" style="width: 100%">
                   <div class="tabs">
@@ -70,36 +56,32 @@
                           <input type="radio" name="css-tabs" id="tab-2" checked class="tab-switch">
                           <label for="tab-2" class="tab-label">AuthorityController.java</label>
                           <div class="tab-content">
-                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">private void searchRecord(String userSN, String userPassword) throws NamingException {
-   Hashtable<String, String> env = new Hashtable<String, String>();
-   env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@RequiredArgsConstructor
+public class LoginCheckInterceptor implements HandlerInterceptor {
 
-   try {
-     DirContext dctx = new InitialDirContext(env);
-     SearchControls sc = new SearchControls();
-     String[] attributeFilter = { "cn", "mail" };
-     sc.setReturningAttributes(attributeFilter);
-     sc.setSearchScope(SearchControls.SUBTREE_SCOPE);
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        HttpSession session = request.getSession();
+        session.setMaxInactiveInterval(1800);
 
-     String base = "dc=example,dc=com";
+        String lastLogin = request.getParameter("lastLogin");
 
-     if (!userSN.matches("[₩₩W]*") || !userPassword.matches("[₩₩W]*")) {
-	    throw new IllegalArgumentException("Invalid input");
-     }
+        if(lastLogin != null) {
+            lastLogin = lastLogin.replaceAll("[\\r\\n]", "");
+        }
 
-     String filter = "(&(sn=" + userSN + ")(userPassword=" + userPassword + "))";
+        Cookie cookie = new Cookie("cookie", "cookie" + lastLogin);
+        cookie.setMaxAge(1800);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        response.addCookie(cookie);
 
-     NamingEnumeration<?> results = dctx.search(base, filter, sc);
-     while (results.hasMore()) {
-        SearchResult sr = (SearchResult) results.next();
-        Attributes attrs = sr.getAttributes();
-        Attribute attr = attrs.get("cn");
-        .....
-     }
+        if (session.getAttribute("memberInfo") == null || cookie == null) {
+            throw new PermissionException("정상적인 접근이 아닙니다.");
+        }
+        return true;
+    }
 
-     dctx.close();
-
-    } catch (NamingException e) { ... }
 }</textarea></code>
                           </div>
                       </div>
