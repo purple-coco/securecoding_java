@@ -1,7 +1,6 @@
 package com.java.securecoding.controller;
 
 import com.java.securecoding.exception.*;
-import exception.*;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
