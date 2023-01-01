@@ -3,9 +3,9 @@ package com.java.securecoding.service;
 
 import com.java.securecoding.domain.member.Member;
 import com.java.securecoding.repository.MemberRepository;
-import exception.NotJoinException;
-import exception.PermissionException;
-import exception.UpdateInfoException;
+import com.java.securecoding.exception.NotJoinException;
+import com.java.securecoding.exception.PermissionException;
+import com.java.securecoding.exception.UpdateInfoException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mindrot.jbcrypt.BCrypt;
