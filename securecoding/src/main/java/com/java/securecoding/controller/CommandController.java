@@ -50,8 +50,8 @@ public class CommandController {
         URLMAP.put(3,"http://localhost:8080/2/8");
     }
 
-
-    @GetMapping("/1/1")
+    //1. SQL 삽입
+    @GetMapping("/1/1/code")
     public String SQLInjectionForm_code() {
         return "/1/1.1.code";
     }
@@ -67,7 +67,6 @@ public class CommandController {
         return "/1/1.2.code";
     }
 
-    //2. 코드 삽입
     @PostMapping("/1/2/vuln")
     public String CommandForm_vuln(HttpServletRequest request, Model model) throws ScriptException {
         String src = request.getParameter("src");
@@ -82,7 +81,6 @@ public class CommandController {
         return "/1/1.2";
     }
 
-    //2. 코드 삽입
     @PostMapping("/1/2/secure")
     public String CommandForm_secure(HttpServletRequest request, Model model) throws ScriptException {
         String src2 = request.getParameter("src2");
