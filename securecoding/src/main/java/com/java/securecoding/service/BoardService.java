@@ -1,13 +1,17 @@
 package com.java.securecoding.service;
 
 import com.java.securecoding.domain.board.Board;
+import com.java.securecoding.domain.board.BoardSearch;
 import com.java.securecoding.repository.BoardRepository;
 import com.java.securecoding.exception.BoardException;
 import com.java.securecoding.exception.NotAllowExtException1;
 import com.java.securecoding.exception.NotAllowExtException2;
+import com.java.securecoding.repository.BoardsRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +27,7 @@ import java.util.List;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final BoardsRepository boardsRepository;
 
     @Value("${file.dir}")
     private String fileDir;
@@ -30,6 +35,22 @@ public class BoardService {
     /* 게시판 목록 */
     public List<Board> findAll() {
         return boardRepository.findAll();
+    }
+
+    public List<Board> findAll_vuln(BoardSearch boardSearch) {
+        return boardsRepository.findAll_vuln(boardSearch);
+    }
+
+    /* 게시판 페이징 기능 구현 */
+    @Transactional(readOnly = true)
+    public Page<Board> pageList(Pageable pageable) {
+        return boardRepository.findAll(pageable);
+    }
+
+    /* 게시판 제목 검색 기능 */
+    @Transactional
+    public Page<Board> searchList(String keyword, Pageable pageable) {
+        return boardRepository.findBySubjectContaining(keyword, pageable);
     }
 
     /* 게시판 조회 */
