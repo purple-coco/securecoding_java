@@ -5,12 +5,10 @@
 <body>
 <!-- Navigation-->
 <nav th:replace="fragments/nav :: nav"></nav>
-<!-- Header-->
-<head th:replace="fragments/header :: header"></head>
 <!-- Section-->
 <section class="py-5">
   <div class="container px-4 px-lg-5 mt-5">
-    <h4 class="fw-bolder" style="text-align: center">2. 코드 삽입</h4>
+    <h4 class="fw-bolder" style="text-align: center">1. SQL 삽입</h4>
     <p style="text-align: center">제1절 입력데이터 검증 및 표현</p>
     <br />
     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
@@ -23,44 +21,84 @@
                     <div class="tabs">
                         <div class="tab">
                             <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
-                            <label for="tab-1" class="tab-label">CommandController.java</label>
+                            <label for="tab-1" class="tab-label">BoardController.java</label>
                             <div class="tab-content">
                                 <code class="code-area" style="height: 15em"><textarea wrap="off" disabled class="area" style="height: 15em">@Controller
-public class CommandController {
+@RequiredArgsConstructor
+public class BoardController {
 
-    private static CommandService commandService;
+    private final BoardService boardService;
 
-    @PostMapping("/1/2/vuln")
-    public String CommandForm_vuln(HttpServletRequest request, Model model) throws ScriptException {
-        String src = request.getParameter("src");
+    /* 게시글 목록 */
+    @GetMapping(value = {"/board/vuln"})
+    public String BoardListForm_vuln(Model model,
+                                    @RequestParam(value = "keyword", required = false) String keyword,
+                                    @RequestParam(value = "page", required = false) Integer page) {
 
-        if (src == null) {
-            return "/1/1.2";
+        BoardSearch boardSearch = new BoardSearch();
+
+        if (page == null) {
+            page = 1;
         }
-        String retValue = (String) commandService.EvalService(src);
 
-        model.addAttribute("value", retValue);
+        if (keyword != null) {
+            page = 1;
+            boardSearch.setSubject(keyword);
+        }
 
-        return "/1/1.2";
-    }
+        boardSearch.setPage(page);
+
+        List<Board> boards = boardService.findAll_vuln(boardSearch);
+        int size = boardService.findAll().size();
+
+        model.addAttribute("boards", boards);
+        model.addAttribute("page", boardSearch.getPage());
+        model.addAttribute("size", size);
+
+        return "/1/1.1";
 }</textarea></code>
                             </div>
                         </div>
                         <div class="tab">
                             <input type="radio" name="css-tabs" id="tab-2" class="tab-switch">
-                            <label for="tab-2" class="tab-label">CommandService.java</label>
+                            <label for="tab-2" class="tab-label">BoardService.java</label>
                             <div class="tab-content">
                                 <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Service
 @RequiredArgsConstructor
-public class CommandService {
+@Transactional(readOnly = true)
+public class BoardService {
 
-    public static String EvalService(String src) throws ScriptException {
+    private final BoardsRepository boardsRepository;
 
-        ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
-        ScriptEngine scriptEngine = scriptEngineManager.getEngineByName("javascript");
+    public List<Board> findAll_vuln(BoardSearch boardSearch) {
+        return boardsRepository.findAll_vuln(boardSearch);
 
-        return (String)scriptEngine.eval(src);
+    ....
+}</textarea></code>
+                            </div>
+                        </div>
+                        <div class="tab">
+                            <input type="radio" name="css-tabs" id="tab-3" class="tab-switch">
+                            <label for="tab-3" class="tab-label">BoardsRepository.java</label>
+                            <div class="tab-content">
+                                <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Repository
+@RequiredArgsConstructor
+public class BoardsRepository {
 
+    private final EntityManager entityManager;
+
+    public List<Board> findAll_vuln(BoardSearch boardSearch) {
+
+        String query;
+        if (boardSearch.isSubjectNull()) {
+            query = "SELECT * FROM BOARD ORDER BY BOARD_ID DESC";
+        } else {
+            query = "SELECT * FROM BOARD WHERE SUBJECT LIKE '%" + boardSearch.getSubject() + "%'" + "ORDER BY BOARD_ID DESC";
+        }
+
+        List<Board> boards = entityManager.createNativeQuery(query, Board.class).setFirstResult((boardSearch.getPage()-1) * 10).setMaxResults(10).getResultList();
+
+        return boards;
     }
 }</textarea></code>
                             </div>
@@ -79,51 +117,66 @@ public class CommandService {
               <div class="wrapper" style="width: 100%">
                   <div class="tabs">
                       <div class="tab">
-                          <input type="radio" name="css-tabs" id="tab-3" checked class="tab-switch">
-                          <label for="tab-3" class="tab-label">CommandController.java</label>
+                          <input type="radio" name="css-tabs" id="tab-4" checked class="tab-switch">
+                          <label for="tab-4" class="tab-label">CommandController.java</label>
                           <div class="tab-content">
-                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Controller
-public class CommandController {
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@GetMapping(value = {"/board/secure"})
+public String BoardListForm_secure(Model model,
+                                  @RequestParam(value = "keyword", required = false) String keyword,
+                                  @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
-    private static CommandService commandService;
+    Page<Board> boardlist = boardService.pageList(pageable);
 
-    @PostMapping("/1/2/secure")
-    public String CommandForm_secure(HttpServletRequest request, Model model) throws ScriptException {
-        String src2 = request.getParameter("src2");
+    int nowPage = boardlist.getPageable().getPageNumber() + 1;
+    int startPage = Math.max(nowPage - 4, 1);
+    int endPage = Math.min(nowPage + 5, boardlist.getTotalPages());
 
-        if (src2 == null) {
-            return "/1/1.2";
-        }
-        if (!src2.matches("[\\w]*")) {
-            model.addAttribute("message", "허용하지 않는 문자열입니다.");
-            model.addAttribute("searchUrl", "/1/2");
-
-            return "message";
-        } else {
-            String retValue2 = (String) commandService.EvalService(src2);
-            model.addAttribute("value2", retValue2);
-        }
-        return "/1/1.2";
+    if (keyword == null) {
+        model.addAttribute("boards", boardService.pageList(pageable));
+        model.addAttribute("nowPage", nowPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+    } else {
+        model.addAttribute("boards", boardService.searchList(keyword, pageable));
     }
+
+    return "/1/1.1";
 }</textarea></code>
                           </div>
                       </div>
                       <div class="tab">
-                          <input type="radio" name="css-tabs" id="tab-4" class="tab-switch">
-                          <label for="tab-4" class="tab-label">CommandService.java</label>
+                          <input type="radio" name="css-tabs" id="tab-5" class="tab-switch">
+                          <label for="tab-5" class="tab-label">BoardService.java</label>
                           <div class="tab-content">
                               <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Service
 @RequiredArgsConstructor
-public class CommandService {
+@Transactional(readOnly = true)
+public class BoardService {
 
-    public static String EvalService(String src) throws ScriptException {
+    private final BoardRepository boardRepository;
 
-        ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
-        ScriptEngine scriptEngine = scriptEngineManager.getEngineByName("javascript");
+    ....
 
-        return (String)scriptEngine.eval(src);
-
+    /* 게시판 제목 검색 기능 */
+    @Transactional
+    public Page<Board> searchList(String keyword, Pageable pageable) {
+        return boardRepository.findBySubjectContaining(keyword, pageable);
     }
+
+    ....
+}</textarea></code>
+                          </div>
+                      </div>
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-6" class="tab-switch">
+                          <label for="tab-6" class="tab-label">BoardRepository.java</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">Repository
+public interface BoardRepository extends JpaRepository<Board, Long> {
+
+    /* 게시판 제목 검색 기능 */
+    Page<Board> findBySubjectContaining(@RequestParam("keyword") String keyword, Pageable pageable);
+
 }</textarea></code>
                           </div>
                       </div>
@@ -135,7 +188,7 @@ public class CommandService {
       </div>
     </div>
       <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-          <div class="text-center"><a class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/1/2}">실습 하기</a></div>
+          <div class="text-center"><a class="btn" style="margin-left: 55%; background-color: #ffe74a" th:href="@{/1/1}">실습 하기</a></div>
       </div>
   </div>
 </section>
