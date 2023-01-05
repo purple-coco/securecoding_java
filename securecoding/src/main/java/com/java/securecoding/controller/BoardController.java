@@ -1,19 +1,26 @@
 package com.java.securecoding.controller;
 
 import com.java.securecoding.domain.board.Board;
+import com.java.securecoding.domain.board.BoardSearch;
 import com.java.securecoding.domain.form.BoardForm;
 import com.java.securecoding.domain.form.BoardForm2;
 import com.java.securecoding.domain.member.Member;
 import com.java.securecoding.domain.session.MemberInfo;
+import com.java.securecoding.exception.PermissionException;
 import com.java.securecoding.service.BoardService;
 import com.java.securecoding.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -31,22 +38,70 @@ public class BoardController {
     private final BoardService boardService;
 
     /* 게시글 목록 */
-    @GetMapping(value = {"/board"})
-    public String BoardListForm(Model model) {
+    @GetMapping(value = {"/board/vuln"})
+    public String BoardListForm_vuln(Model model, @RequestParam(value = "keyword", required = false) String keyword,
+                                @RequestParam(value = "page", required = false) Integer page) {
 
-        List<Board> board = boardService.findAll();
+        BoardSearch boardSearch = new BoardSearch();
 
-        model.addAttribute("boards", board);
+        if (page == null) {
+            page = 1;
+        }
+
+        if (keyword != null) {
+            page = 1;
+            boardSearch.setSubject(keyword);
+        }
+
+        boardSearch.setPage(page);
+
+        List<Board> boards = boardService.findAll_vuln(boardSearch);
+        int size = boardService.findAll().size();
+
+        model.addAttribute("boards", boards);
+        model.addAttribute("page", boardSearch.getPage());
+        model.addAttribute("size", size);
+
+        return "/1/1.1";
+    }
+
+
+    /* 게시글 목록 */
+    @GetMapping(value = {"/board/secure"})
+    public String BoardListForm_secure(Model model, @RequestParam(value = "keyword", required = false) String keyword,
+                                @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        Page<Board> boardlist = boardService.pageList(pageable);
+
+        int nowPage = boardlist.getPageable().getPageNumber() + 1;
+        int startPage = Math.max(nowPage - 4, 1);
+        int endPage = Math.min(nowPage + 5, boardlist.getTotalPages());
+
+
+        if (keyword == null) {
+            model.addAttribute("boards", boardService.pageList(pageable));
+            model.addAttribute("nowPage", nowPage);
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("endPage", endPage);
+        } else {
+            model.addAttribute("boards", boardService.searchList(keyword, pageable));
+        }
+
+        return "/1/1.1";
+    }
+
+    @GetMapping("/board")
+    public String BoardListForm(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        model.addAttribute("boards", boardService.pageList(pageable));
 
         return "/1/1.1";
     }
 
     @GetMapping("/2/2")
-    public String BoardListForm_(Model model) {
+    public String BoardListForm_(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        List<Board> board = boardService.findAll();
-
-        model.addAttribute("boards", board);
+        model.addAttribute("boards", boardService.pageList(pageable));
 
         return "/2/2.2";
     }
@@ -105,22 +160,29 @@ public class BoardController {
                                          MultipartHttpServletRequest request, MultipartFile file) throws IOException {
         HttpSession session = request.getSession();
 
-        MemberInfo memberInfo = (MemberInfo) session.getAttribute("memberInfo");
-        Member member = memberService.findOne(memberInfo.getId());
+        String param = request.getParameter("_csrf");
 
-        Board board = Board.createBoard(
-                member,
-                form.getSubject(),
-                form.getContent(),
-                form.getFileName(),
-                form.getFilePath());
+        if (request.getSession().getAttribute("CSRF_TOKEN").equals(param)) {
 
-        boardService.saveBoard_secure(board, file);
+            MemberInfo memberInfo = (MemberInfo) session.getAttribute("memberInfo");
+            Member member = memberService.findOne(memberInfo.getId());
 
-        model.addAttribute("message", "글 등록이 완료되었습니다.");
-        model.addAttribute("searchUrl", "/board");
+            Board board = Board.createBoard(
+                    member,
+                    form.getSubject(),
+                    form.getContent(),
+                    form.getFileName(),
+                    form.getFilePath());
 
-        return "message";
+            boardService.saveBoard_secure(board, file);
+
+            model.addAttribute("message", "글 등록이 완료되었습니다.");
+            model.addAttribute("searchUrl", "/board");
+
+            return "message";
+        } else {
+            throw new PermissionException("권한이 없습니다.");
+        }
     }
 
     @PostMapping("/1/11/vuln")
@@ -153,22 +215,29 @@ public class BoardController {
 
         HttpSession session = request.getSession();
 
-        MemberInfo memberInfo = (MemberInfo) session.getAttribute("memberInfo");
-        Member member = memberService.findOne(memberInfo.getId());
+        String param = request.getParameter("_csrf");
 
-        Board board = Board.createBoard(
-                member,
-                form.getSubject(),
-                form.getContent(),
-                form.getFileName(),
-                form.getFilePath());
+        if (request.getSession().getAttribute("CSRF_TOKEN").equals(param)) {
 
-        boardService.saveBoard(board, file);
+            MemberInfo memberInfo = (MemberInfo) session.getAttribute("memberInfo");
+            Member member = memberService.findOne(memberInfo.getId());
 
-        model.addAttribute("message", "글 등록이 완료되었습니다.");
-        model.addAttribute("searchUrl", "/board");
+            Board board = Board.createBoard(
+                    member,
+                    form.getSubject(),
+                    form.getContent(),
+                    form.getFileName(),
+                    form.getFilePath());
 
-        return "message";
+            boardService.saveBoard(board, file);
+
+            model.addAttribute("message", "글 등록이 완료되었습니다.");
+            model.addAttribute("searchUrl", "/board");
+
+            return "message";
+        } else {
+            throw new PermissionException("권한이 없습니다.");
+        }
     }
 
     /* 게시글 조회 */
@@ -187,7 +256,7 @@ public class BoardController {
 
         model.addAttribute("form", board);
 
-        return "/board/getBoardForm_vuln";
+        return "/board/getBoardForm_secure";
     }
 
     /* 게시글 수정 */
@@ -254,20 +323,27 @@ public class BoardController {
     public String updateBoard_secure(HttpServletRequest request,
                               @PathVariable("boardId") Long boardId, BoardForm form, Model model) {
 
-        //게시물 수정 시 사용자 검증
-        MemberInfo member = (MemberInfo) request.getSession().getAttribute("memberInfo");
-        boardService.validateUpdate(member.getId(), boardId);
+        String param = request.getParameter("_csrf");
 
-        boardService.updateBoard(boardId,
-                form.getSubject(),
-                form.getContent(),
-                form.getFileName(),
-                form.getFilePath());
+        if (request.getSession().getAttribute("CSRF_TOKEN").equals(param)) {
 
-        model.addAttribute("message", "글 수정이 완료되었습니다.");
-        model.addAttribute("searchUrl", "/boards");
+            //게시물 수정 시 사용자 검증
+            MemberInfo member = (MemberInfo) request.getSession().getAttribute("memberInfo");
+            boardService.validateUpdate(member.getId(), boardId);
 
-        return "message";
+            boardService.updateBoard(boardId,
+                    form.getSubject(),
+                    form.getContent(),
+                    form.getFileName(),
+                    form.getFilePath());
+
+            model.addAttribute("message", "글 수정이 완료되었습니다.");
+            model.addAttribute("searchUrl", "/boards");
+
+            return "message";
+        } else {
+            throw new PermissionException("권한이 없습니다.");
+        }
 
     }
 
