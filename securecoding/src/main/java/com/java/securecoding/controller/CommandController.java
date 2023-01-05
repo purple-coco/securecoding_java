@@ -456,6 +456,12 @@ public class CommandController {
         return "/1/1.10";
     }
 
+    //11. 크로스사이트 요청 위조
+    @GetMapping("/1/11/code")
+    public String CSRFForm_code() {
+        return "/1/1.11.code";
+    }
+
     //12. 서버사이드 요청 위조 - admin 페이지
     @GetMapping("/admin")
     public String AdminForm_vuln(@RequestParam(required = false) String username,
