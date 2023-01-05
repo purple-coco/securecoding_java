@@ -58,7 +58,7 @@ public ResponseEntity<Resource> downloadAttach() throws MalformedURLException {
                               <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@GetMapping("/download/infome.zip")
 public ResponseEntity<Resource> downloadAttach() throws MalformedURLException  {
 
-    String filePath = "http://www.skshieldus.com/download/infome.zip";
+    String filePath = "https://www.skshieldus.com/download/infome.zip";
 
     MyHash hash = new MyHash(dir+filePath);
     String fileHash = hash.getHashString().toString();
