@@ -30,42 +30,6 @@ public class BoardController {
     private final MemberService memberService;
     private final BoardService boardService;
 
-    /* 게시글 생성 */
-    @GetMapping(value = {"/1/11", "/1/11/vuln", "/1/11/secure"})
-    public String CreateBoardForm_CSRF(Model model) {
-
-        BoardForm form = new BoardForm();
-
-        model.addAttribute("form", form);
-
-        return "/1/1.11";
-
-    }
-
-    @PostMapping("/1/11/vuln")
-    public String CSRFForm_vuln(BoardForm form, Model model,
-                                       MultipartHttpServletRequest request, MultipartFile file) throws IOException  {
-
-        HttpSession session = request.getSession();
-
-        MemberInfo memberInfo = (MemberInfo) session.getAttribute("memberInfo");
-        Member member = memberService.findOne(memberInfo.getId());
-
-        Board board = Board.createBoard(
-                member,
-                form.getSubject(),
-                form.getContent(),
-                form.getFileName(),
-                form.getFilePath());
-
-        boardService.saveBoard(board, file);
-
-        model.addAttribute("message", "글 등록이 완료되었습니다.");
-        model.addAttribute("searchUrl", "/board");
-
-        return "message";
-    }
-
     @GetMapping("/board/update/{boardId}/vuln")
     public String updateForm(@PathVariable("boardId") Long boardId, Model model) {
 
@@ -103,42 +67,6 @@ public class BoardController {
 }</textarea></code></pre>
                             </div>
                         </div>
-                        <div class="tab">
-                            <input type="radio" name="css-tabs" id="tab-2" class="tab-switch">
-                            <label for="tab-2" class="tab-label">BoardService.java</label>
-                            <div class="tab-content">
-                                <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Service
-@RequiredArgsConstructor
-public class BoardService {
-
-    private final BoardRepository boardRepository;
-
-    @Value("${file.dir}")
-    private String fileDir;
-
-    @Transactional
-    public Long saveBoard(Board board, MultipartFile file) throws IOException {
-        String originalFilename = "";
-        String filePath = "";
-
-        if (!file.isEmpty()) {
-            originalFilename = file.getOriginalFilename();
-            filePath = fileDir + originalFilename;
-
-            file.transferTo(new File(filePath));
-
-        }
-
-        board.setFileName(originalFilename);
-        board.setFilePath(filePath);
-
-        boardRepository.save(board);
-
-        return board.getId();
-    }
-}</textarea></code>
-                            </div>
-                        </div>
                     </div>
                 </div>
             <br />
@@ -153,8 +81,21 @@ public class BoardService {
               <div class="wrapper" style="width: 100%">
                   <div class="tabs">
                       <div class="tab">
-                          <input type="radio" name="css-tabs" id="tab-4" checked class="tab-switch">
-                          <label for="tab-4" class="tab-label">BoardController.java</label>
+                          <input type="radio" name="css-tabs" id="tab-2" checked class="tab-switch">
+                          <label for="tab-2" class="tab-label">updateBoardForm.html</label>
+                          <div class="tab-content">
+                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em"><!DOCTYPE HTML>
+ <div class="container">
+  <h4>게시글 수정하기</h4>
+  <form th:object="${form}" method="post">
+   <input type="hidden" th:name="_csrf" th:value="${CSRF_TOKEN}" />
+   ....
+</html></textarea></code>
+                          </div>
+                      </div>
+                      <div class="tab">
+                          <input type="radio" name="css-tabs" id="tab-3" class="tab-switch">
+                          <label for="tab-3" class="tab-label">BoardController.java</label>
                           <div class="tab-content">
                               <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Controller
 @RequiredArgsConstructor
@@ -163,74 +104,57 @@ public class BoardController {
     private final MemberService memberService;
     private final BoardService boardService;
 
-    @PostMapping("/1/6/secure")
-    public String CreateBoardForm_secure(BoardForm2 form, Model model,
-                                         MultipartHttpServletRequest request, MultipartFile file) throws IOException {
-        HttpSession session = request.getSession();
+    @GetMapping("/board/update/{boardId}/secure")
+    public String updateForm_secure(HttpServletRequest request,
+                             @PathVariable("boardId") Long boardId, Model model) {
 
-        MemberInfo memberInfo = (MemberInfo) session.getAttribute("memberInfo");
-        Member member = memberService.findOne(memberInfo.getId());
+        // 게시물 수정 페이지 접근 시 사용자 검증
+        MemberInfo member = (MemberInfo) request.getSession().getAttribute("memberInfo");
+        boardService.validateUpdate(member.getId(), boardId);
 
-        Board board = Board.createBoard(
-                member,
-                form.getSubject(),
-                form.getContent(),
-                form.getFileName(),
-                form.getFilePath());
+        Board board = boardService.findBoard(boardId);
+        BoardForm boardForm = new BoardForm();
 
-        boardService.saveBoard_secure(board, file);
+        boardForm.setId(board.getId());
+        boardForm.setSubject(board.getSubject());
+        boardForm.setContent(board.getContent());
+        boardForm.setFileName(board.getFileName());
+        boardForm.setFilePath(board.getFilePath());
+        boardForm.setMember(board.getMember());
 
-        model.addAttribute("message", "글 등록이 완료되었습니다.");
-        model.addAttribute("searchUrl", "/");
+        model.addAttribute("form", boardForm);
 
-        return "message";
+        return "/board/updateBoardForm_secure";
+
     }
-}</textarea></code>
-                          </div>
-                      </div>
-                      <div class="tab">
-                          <input type="radio" name="css-tabs" id="tab-5" class="tab-switch">
-                          <label for="tab-5" class="tab-label">BoardService.java</label>
-                          <div class="tab-content">
-                              <code class="code-area" style="height: 15em"><textarea disabled wrap="off" class="area" style="height: 15em">@Service
-@RequiredArgsConstructor
-public class BoardService {
 
-    private final BoardRepository boardRepository;
+    @PostMapping("/board/update/{boardId}/secure")
+    public String updateBoard_secure(HttpServletRequest request,
+                              @PathVariable("boardId") Long boardId, BoardForm form, Model model) {
 
-    @Value("${file.dir}")
-    private String fileDir;
+        String param = request.getParameter("_csrf");
 
-    @Transactional
-    public Long saveBoard_secure(Board board, MultipartFile file) throws IOException {
-        String originalFilename = " ";
-        String filePath = " ";
+        // CSRF 토큰 정보 비교 로직 구현
+        if (request.getSession().getAttribute("CSRF_TOKEN").equals(param)) {
 
+            // 게시물 수정 시 사용자 검증
+            MemberInfo member = (MemberInfo) request.getSession().getAttribute("memberInfo");
+            boardService.validateUpdate(member.getId(), boardId);
 
-        if (!file.isEmpty()) {
-            String originalFileExt = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")+1);
+            boardService.updateBoard(boardId,
+                    form.getSubject(),
+                    form.getContent(),
+                    form.getFileName(),
+                    form.getFilePath());
 
-            if (file.getOriginalFilename().matches("[\\.\\%\\;\\/\\/]*")) {
-                throw new NotAllowExtException1("파일 이름에 허용하지 않는 문자열이 포함되었습니다.");
-            }
-            if (originalFileExt.equals("jpg") || originalFileExt.equals("png")
-                    || originalFileExt.equals("docx") || originalFileExt.equals("jpeg")) {
+            model.addAttribute("message", "글 수정이 완료되었습니다.");
+            model.addAttribute("searchUrl", "/boards");
 
-                originalFilename = file.getOriginalFilename();
-                filePath = fileDir + originalFilename;
-
-                file.transferTo(new File(filePath));
-            } else {
-                throw new NotAllowExtException2("업로드 허용되는 파일 확장자가 아닙니다.");
-            }
+            return "message";
+        } else {
+            throw new PermissionException("권한이 없습니다.");
         }
 
-        board.setFileName(originalFilename);
-        board.setFilePath(filePath);
-
-        boardRepository.save(board);
-
-        return board.getId();
     }
 }</textarea></code>
                           </div>
