@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.UUID;
 
 @Slf4j
 @Controller
@@ -63,6 +64,7 @@ public class HomeController {
 
                 HttpSession session = request.getSession(true);
                 session.setAttribute("memberInfo", memberInfo);
+                session.setAttribute("CSRF_TOKEN", UUID.randomUUID().toString());
 
                 return "index";
             } else if (!form.getPassword().equals(findMember.getPassword())) {
@@ -98,6 +100,9 @@ public class HomeController {
 
                 HttpSession session = request.getSession(true);
                 session.setAttribute("memberInfo", memberInfo);
+                session.setAttribute("CSRF_TOKEN", UUID.randomUUID().toString());
+
+                log.info("CSRF_TOKEN: {}", session.getAttribute("CSRF_TOKEN"));
 
                 if (findMember.getCount() != 0) {
                     memberService.clearLoginCount(findMember.getUsername());
