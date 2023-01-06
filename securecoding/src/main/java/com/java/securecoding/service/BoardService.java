@@ -132,6 +132,15 @@ public class BoardService {
         Board findItem = boardRepository.findAllById(boardId);
 
         findItem.change(subject, content, fileName, filePath);
+
+    }
+
+    @Transactional
+    public void updateBoard2(Long boardId, String subject, String content, String fileName, String filePath) {
+        Board findItem = boardRepository.findAllById(boardId);
+
+        findItem.change(subject, content, fileName, filePath);
+
     }
 
 
