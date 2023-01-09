@@ -84,7 +84,7 @@ public class HomeController {
         Member findMember = memberService.findByUsername(form.getUsername());
 
         if (findMember == null) {
-            model.addAttribute("message", "아이디, 비밀번호를 확인해주세요1");
+            model.addAttribute("message", "아이디, 비밀번호를 확인해주세요");
             model.addAttribute("searchUrl", "/member/login");
 
             return "message";
@@ -116,7 +116,7 @@ public class HomeController {
 
                 } else {
                     memberService.updateFailure(form.getUsername());
-                    model.addAttribute("message", "아이디, 비밀번호를 확인해주세요3");
+                    model.addAttribute("message", "아이디, 비밀번호를 확인해주세요"+ "(" + findMember.getCount() + "/5)");
 
                 }
                 model.addAttribute("searchUrl", "/member/login");
