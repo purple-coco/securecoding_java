@@ -8,6 +8,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -18,7 +19,8 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession();
         session.setMaxInactiveInterval(1800);
 
-        if(session.getAttribute("memberInfo") == null) {
+
+        if(session == null || session.getAttribute("memberInfo") == null) {
             throw new PermissionException("정상적인 접근이 아닙니다.");
         }
         return true;
