@@ -75,6 +75,7 @@ public String XXEForm_secure(HttpServletRequest request, Model model) throws IOE
 
     DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 
+    // JAXP DocumentBuilderFactory를 사용하는 경우
     // 외부 일반 엔티티를 포함하지 않도록 설정한다.
     documentBuilderFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
     // 외부 파라미터도 포함하지 않도록 설정한다.
@@ -91,10 +92,6 @@ public String XXEForm_secure(HttpServletRequest request, Model model) throws IOE
 
     Node node = document.getDocumentElement().getFirstChild();
     String result = node.getNodeValue();
-
-    if (result == null) {
-        throw new PermissionException("접근할 수 없습니다.");
-    }
 
     model.addAttribute("line2", result);
 
