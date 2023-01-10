@@ -1,10 +1,15 @@
 package com.java.securecoding.controller;
 
+import com.java.securecoding.domain.member.Member;
+import com.java.securecoding.domain.session.MemberInfo;
 import com.java.securecoding.exception.*;
+import com.java.securecoding.service.MemberService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
+
+import javax.servlet.http.HttpSession;
 
 @ControllerAdvice
 public class ExceptionControllerAdvice {
@@ -26,9 +31,13 @@ public class ExceptionControllerAdvice {
     }
 
     @ExceptionHandler(UpdateInfoException.class)
-    public String UpdateMemberInfo(@PathVariable Long memberId, Model model) {
+    public String UpdateMemberInfo(Model model, HttpSession session) {
+
+        MemberInfo memberInfo = (MemberInfo) session.getAttribute("memberInfo");
+        Long memberId = memberInfo.getId();
+
         model.addAttribute("message", "비밀번호는 최소 8자 이상, 영어 대·소문자, 숫자, 특수문자가 혼용되어야 합니다.");
-        model.addAttribute("searchUrl", "/mypage/info/" + memberId);
+        model.addAttribute("searchUrl", "/mypage/info/"+ memberId);
 
         return "message";
     }
