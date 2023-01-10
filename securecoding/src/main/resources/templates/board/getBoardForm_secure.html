@@ -6,8 +6,6 @@
 <body>
 <!-- Navigation -->
 <nav th:replace="fragments/nav :: nav"></nav>
-<!-- Header-->
-<head th:replace="fragments/header :: header"></head>
 <div class="container" style="width: 50%; margin: 0 auto">
     <h4 style="font-weight: 500; text-align: center; margin-top: 5%">게시글 상세보기</h4>
     <form th:object="${form}" style="margin-top: 5%">
@@ -24,12 +22,12 @@
             <a th:text="*{fileName}" th:href="|/download/${form.id}|" class="form-control" style="color:black"/>
         </div>
 
-        <div th:if="${form.member.id != session.memberInfo.id}">
-            <a th:href="@{/boards}" class="btn" style="background-color: #ffe74a;" role="button">목록</a>
+        <div th:if="${form.member.id != session.memberInfo.id}" style="margin-top: 5%">
+            <a th:href="@{/boards}" class="btn" style="background-color: #ffe74a" role="button">목록</a>
         </div>
 
-        <div th:if="${form.member.id == session.memberInfo.id}">
-            <a th:href="@{/board}" class="btn" style="background-color: #F5Df4D;" role="button">목록</a>
+        <div th:if="${form.member.id == session.memberInfo.id}" style="margin-top: 5%">
+            <a th:href="@{/board}" class="btn" style="background-color: #ffe74a" role="button">목록</a>
             <a th:href="@{/board/update/{id}/secure (id=${boardId})}" class="btn" style="background-color: #ffe74a;" role="button">수정</a>
             <a th:href="@{/board/delete/{id}/secure (id=${boardId})}" class="btn" style="background-color: #ffe74a;" role="button">삭제</a>
         </div>
